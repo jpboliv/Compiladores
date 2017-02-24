@@ -8,6 +8,9 @@ letters[a-zA-Z]
 numbers[0-9]
 boollit("true" | "false")
 RESERVED
+DECLIT
+REALLIT
+STRLIT
 
 %%
 bool                {if(flag==1)printf("BOOL\n”);}
