@@ -11,7 +11,7 @@ boollit("true" | "false")
 
 esc_sequence
 
-RESERVED
+
 
 ID
 DECLIT
@@ -59,7 +59,8 @@ bool                {if(flag==1)printf("BOOL\n”);}
 “=”                 {if(flag==1)printf("ASSIGN\n");}
 “;”                 {if(flag==1)printf("SEMI\n");}
 “,”                 {if(flag==1)printf("COMMA\n");}
-{RESERVED}          {if(flag==1)printf("RESERVED\n");}
+
+"++|--|null"        {if(flag==1)printf("RESERVED\n");}
 {ID}                {if(flag==1)printf("ID\n");}
 {DECLIT}            {if(flag==1)printf("DECLIT\n");}
 {REALLIT}           {if(flag==1)printf("REALLIT\n");}
