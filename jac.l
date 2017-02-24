@@ -64,7 +64,6 @@ bool                {if(flag==1)printf("BOOL\n”);}
 {DECLIT}            {if(flag==1)printf("DECLIT\n");}
 {REALLIT}           {if(flag==1)printf("REALLIT\n");}
 {STRLIT}            {if(flag==1)printf("STRLIT\n");}
-%%
 
 %%
 int main(int argv, char **argc){
