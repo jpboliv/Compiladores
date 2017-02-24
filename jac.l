@@ -53,7 +53,7 @@ PUBLIC = “public”
 “=”                 {if(flag==1)printf("ASSIGN\n");}
 “;”                 {if(flag==1)printf("SEMI\n");}
 “,”                 {if(flag==1)printf("COMMA\n");}
-{RESERVED}
+{RESERVED}          {if(flag==1)printf("RESERVED\n");}
 %%
 
 %%
