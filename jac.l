@@ -6,8 +6,14 @@
 
 letters[a-zA-Z]
 numbers[0-9]
+
 boollit("true" | "false")
+
+esc_sequence
+
 RESERVED
+
+ID
 DECLIT
 REALLIT
 STRLIT
@@ -22,9 +28,9 @@ bool                {if(flag==1)printf("BOOL\n”);}
 “else”              {if(flag==1)printf("ELSE\n");}
 “if”                {if(flag==1)printf("IF\n");}
 “int”               {if(flag==1)printf("INT\n");}
-PARSEINT = “Integer.parseInt”
-PRINT = “System.out.println”
-PUBLIC = “public”
+“Integer.parseInt”  {if(flag==1)printf("PARSEINT");}
+“System.out.println” {if(flag==1)printf("PRINT\n");}
+“public”            {if(flag==1)printf("PUBLIC\n");}
 “return”            {if(flag==1)printf("RETURN\n");}
 “static”            {if(flag==1)printf("STATIC\n");}
 “String”            {if(flag==1)printf("STRING\n");}
@@ -54,6 +60,10 @@ PUBLIC = “public”
 “;”                 {if(flag==1)printf("SEMI\n");}
 “,”                 {if(flag==1)printf("COMMA\n");}
 {RESERVED}          {if(flag==1)printf("RESERVED\n");}
+{ID}                {if(flag==1)printf("ID\n");}
+{DECLIT}            {if(flag==1)printf("DECLIT\n");}
+{REALLIT}           {if(flag==1)printf("REALLIT\n");}
+{STRLIT}            {if(flag==1)printf("STRLIT\n");}
 %%
 
 %%
