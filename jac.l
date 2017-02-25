@@ -1,78 +1,80 @@
 %X JAVAC
 %{
   int flag =0;
-
+  int n_column =1;
+  int n_line =1;
+  int comment_line;
+  int comment_column;
 %}
 
 letters[a-zA-Z]
 numbers[0-9]
-
-boollit("true" | "false")
-
-esc_sequence
+boolit("true"|"false")
 
 
 
-ID
-DECLIT
-REALLIT
-STRLIT
+
+ID                  (("_")|{letters}|("$"))(("_")|{letters}|{numbers}|("$"))*
 
 %%
-bool                {if(flag==1)printf("BOOL\n”);}
-{boollit}           {if(flag==1)printf("BOOLLIT\n");}
-"class"             {if(flag==1)printf("CLASS\n”);}
-"do"                {if(flag==1)printf(“DO\n");}
-“.length”           {if(flag==1)printf("DOTLENGTH\n");}
-“double”            {if(flag==1)printf("DOUBLE\n");}
-“else”              {if(flag==1)printf("ELSE\n");}
-“if”                {if(flag==1)printf("IF\n");}
-“int”               {if(flag==1)printf("INT\n");}
-“Integer.parseInt”  {if(flag==1)printf("PARSEINT");}
-“System.out.println” {if(flag==1)printf("PRINT\n");}
-“public”            {if(flag==1)printf("PUBLIC\n");}
-“return”            {if(flag==1)printf("RETURN\n");}
-“static”            {if(flag==1)printf("STATIC\n");}
-“String”            {if(flag==1)printf("STRING\n");}
-“void”              {if(flag==1)printf("VOID\n");}
-“while”             {if(flag==1)printf("WHILE\n");}
-“(”                 {if(flag==1)printf("OCURV\n");}
-“)”                 {if(flag==1)printf("CCURV\n");}
-"{"                 {if(flag==1)printf("OBRACE\n");}
-“}”                 {if(flag==1)printf("CBRACE\n");}
-"["                 {if(flag==1)printf("OSQUARE\n");}
-“]”                 {if(flag==1)printf("CSQUARE\n");}
-“&&”                {if(flag==1)printf("AND\n");}
-“||”                {if(flag==1)printf("OR\n");}
-“<”                 {if(flag==1)printf("LT\n");}
-“>”                 {if(flag==1)printf("GT\n");}
-“==”                {if(flag==1)printf("EQ\n");}
-“!=”                {if(flag==1)printf("NEQ\n");}
-“<=”                {if(flag==1)printf("LEQ\n");}
-“>=”                {if(flag==1)printf("GEQ\n");}
-"+"                 {if(flag==1)printf("PLUS\n");}
-“−”                 {if(flag==1)printf("MINUS\n");}
-"*"                 {if(flag==1)printf("STAR\n");}
-"/"                 {if(flag==1)printf("DIV\n");}
-“%”                 {if(flag==1)printf("MOD\n");}
-“!”                 {if(flag==1)printf("NOT\n");}
-“=”                 {if(flag==1)printf("ASSIGN\n");}
-“;”                 {if(flag==1)printf("SEMI\n");}
-“,”                 {if(flag==1)printf("COMMA\n");}
 
-"++|--|null"        {if(flag==1)printf("RESERVED\n");}
-{ID}                {if(flag==1)printf("ID\n");}
-{DECLIT}            {if(flag==1)printf("DECLIT\n");}
-{REALLIT}           {if(flag==1)printf("REALLIT\n");}
-{STRLIT}            {if(flag==1)printf("STRLIT\n");}
+"bool"              {if(flag==1)printf("BOOL\n");n_column+=yyleng;}
+"class"             {if(flag==1)printf("CLASS\n");n_column+=yyleng;}
+"do"                {if(flag==1)printf("DO\n");n_column+=yyleng;}
+".length"           {if(flag==1)printf("DOTLENGTH\n");n_column+=yyleng;}
+"double"            {if(flag==1)printf("DOUBLE\n");n_column+=yyleng;}
+"else"              {if(flag==1)printf("ELSE\n");n_column+=yyleng;}
+"if"                {if(flag==1)printf("IF\n");n_column+=yyleng;}
+"int"               {if(flag==1)printf("INT\n");n_column+=yyleng;}
+"Integer.parseInt"  {if(flag==1)printf("PARSEINT\n");n_column+=yyleng;}
+"System.out.println" {if(flag==1)printf("PRINT\n");n_column+=yyleng;}
+"public"            {if(flag==1)printf("PUBLIC\n");n_column+=yyleng;}
+"return"            {if(flag==1)printf("RETURN\n");n_column+=yyleng;}
+"static"            {if(flag==1)printf("STATIC\n");n_column+=yyleng;}
+"String"            {if(flag==1)printf("STRING\n");n_column+=yyleng;}
+"void"              {if(flag==1)printf("VOID\n");n_column+=yyleng;}
+"while"             {if(flag==1)printf("WHILE\n");n_column+=yyleng;}
+"("                 {if(flag==1)printf("OCURV\n");n_column+=yyleng;}
+")"                 {if(flag==1)printf("CCURV\n");n_column+=yyleng;}
+"{"                 {if(flag==1)printf("OBRACE\n");n_column+=yyleng;}
+"}"                 {if(flag==1)printf("CBRACE\n");n_column+=yyleng;}
+"["                 {if(flag==1)printf("OSQUARE\n");n_column+=yyleng;}
+"]"                 {if(flag==1)printf("CSQUARE\n");n_column+=yyleng;}
+"&&"                {if(flag==1)printf("AND\n");n_column+=yyleng;}
+"||"                {if(flag==1)printf("OR\n");n_column+=yyleng;}
+"<"                 {if(flag==1)printf("LT\n");n_column+=yyleng;}
+">"                 {if(flag==1)printf("GT\n");n_column+=yyleng;}
+"=="                {if(flag==1)printf("EQ\n");n_column+=yyleng;}
+"!="                {if(flag==1)printf("NEQ\n");n_column+=yyleng;}
+"<="                {if(flag==1)printf("LEQ\n");n_column+=yyleng;}
+">="                {if(flag==1)printf("GEQ\n");n_column+=yyleng;}
+"+"                 {if(flag==1)printf("PLUS\n");n_column+=yyleng;}
+"-"                 {if(flag==1)printf("MINUS\n");n_column+=yyleng;}
+"*"                 {if(flag==1)printf("STAR\n");n_column+=yyleng;}
+"/"                 {if(flag==1)printf("DIV\n");n_column+=yyleng;}
+"%"                 {if(flag==1)printf("MOD\n");n_column+=yyleng;}
+"!"                 {if(flag==1)printf("NOT\n");n_column+=yyleng;}
+"="                 {if(flag==1)printf("ASSIGN\n");n_column+=yyleng;}
+";"                 {if(flag==1)printf("SEMI\n");n_column+=yyleng;}
+","                 {if(flag==1)printf("COMMA\n");n_column+=yyleng;}
+" "                 {n_column+=yyleng;}
+\\n                 {n_column=1; n_line+=1;}
+\\t                 {n_column+=yyleng;}
+\\r                 {n_column=1;}
+\\f                 {n_column+=yyleng;}
+
+"++"|"--"|"null"|"abstract"|"assert"|"break"|"byte"|"case"|"catch"|"char"|"const"|"continue"|"default"|"enum"|"extends"|"final"|"finally"|"goto"|"implements"|"import"|"instanceof"|"interface"|"native"|"new"|"package"|"private"|"protected"|"short"|"static"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"try"|"volatile"        {if(flag==1){printf("RESERVED(%s)\n", &yytext[0]);}}
+{numbers}+          {if(flag==1)printf("INTLIT(%s)\n", yytext);n_column+=yyleng;}
+{boolit}            {if(flag==1)printf("BOOLIT\n");n_column+=yyleng;}
+{ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;}
+.                   {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
+
 
 %%
 int main(int argv, char **argc){
-if(argv>1){
-    if(strcmp(argc[1],"-l")==0){
-        flag = 1;
-    }
-}
+  flag = argv >= 1 && (!strcmp(argc[1], "-1") || !strcmp(argc[1], "-l"));
+  if(!flag)
+    flag=1;
 yylex();
 return 0;
 }
