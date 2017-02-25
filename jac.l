@@ -57,13 +57,13 @@ ID                  (("_")|{letters}|("$"))(("_")|{letters}|{numbers}|("$"))*
 "="                 {if(flag==1)printf("ASSIGN\n");n_column+=yyleng;}
 ";"                 {if(flag==1)printf("SEMI\n");n_column+=yyleng;}
 ","                 {if(flag==1)printf("COMMA\n");n_column+=yyleng;}
-" "                 {n_column+=yyleng;}
-\\n                 {n_column=1; n_line+=1;}
-\\t                 {n_column+=yyleng;}
+\n                  {n_column=1;n_line+=1;}
+\t                  {n_column+=yyleng;}
 \\r                 {n_column=1;}
 \\f                 {n_column+=yyleng;}
+" "                 {n_column+=yyleng;}
 
-"++"|"--"|"null"|"abstract"|"assert"|"break"|"byte"|"case"|"catch"|"char"|"const"|"continue"|"default"|"enum"|"extends"|"final"|"finally"|"goto"|"implements"|"import"|"instanceof"|"interface"|"native"|"new"|"package"|"private"|"protected"|"short"|"static"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"try"|"volatile"        {if(flag==1){printf("RESERVED(%s)\n", &yytext[0]);}}
+"++"|"null"|"--"|"abstract"|"assert"|"break"|"byte"|"case"|"catch"|"char"|"const"|"continue"|"default"|"enum"|"extends"|"final"|"finally"|"float"|"goto"|"implements"|"import"|"instanceof"|"interface"|"long"|"native"|"new"|"package"|"private"|"protected"|"short"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"try"|"volatile"|"Integer"|"System"        {if(flag==1){printf("RESERVED(%s)\n", &yytext[0]);}}
 {numbers}+          {if(flag==1)printf("INTLIT(%s)\n", yytext);n_column+=yyleng;}
 {boolit}            {if(flag==1)printf("BOOLIT\n");n_column+=yyleng;}
 {ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;}
