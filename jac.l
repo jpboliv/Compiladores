@@ -10,13 +10,15 @@
 letters[a-zA-Z]
 numbers[0-9]
 boolit("true"|"false")
-esc_sequence        \\n|\\f|\\r|\\\\|\\"|\\t
-numbersanddigits[0-9]+
+numbersanddigits([0-9]+|"_")
+exponential         "e"|"E"|"."|"e+"|"e-"|"E+"|"E-"
+esc_sequence        \\n|\\f|\\r|\\\\|\\\"|\\t
 
 
-ID                  (("_")|{letters}|("$"))(("_")|{letters}|{numbers}|("$"))*
 STRLIT              \"([^\n\r]|{esc_sequence})*\"
-REALLIT             {numbers}+("e"|"E"|"."|"e+"|"e-"|"E+"|"E-"){numbers}+
+ID                  (("_")|{letters}|("$"))(("_")|{letters}|{numbers}|("$"))*
+DECLIT              0|{numbers}+|([1-9]+("_")*{numbers}+)
+REALLIT             {numbers}+("_")*{exponential}("_")*{numbers}+
 %%
 
 "boolean"           {if(flag==1)printf("BOOL\n");n_column+=yyleng;}
@@ -68,7 +70,9 @@ REALLIT             {numbers}+("e"|"E"|"."|"e+"|"e-"|"E+"|"E-"){numbers}+
 {numbers}+          {if(flag==1)printf("INTLIT(%s)\n", yytext);n_column+=yyleng;}
 {boolit}            {if(flag==1)printf("BOOLLIT(%s)\n", yytext);n_column+=yyleng;}
 {ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;}
-{STRLIT}            {if(flag==1)printf("STRLIT(%s)\n",yytext);n_column+=yyleng;}
+{DECLIT}            {if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;}
+{STRLIT}            {if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;}
+{REALLIT}           {if(flag==1)printf("REALLIT(%s)\n",yytext);n_column+=yyleng;}
 .                   {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 
 
