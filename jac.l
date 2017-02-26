@@ -16,8 +16,8 @@ esc_sequence        \\n|\\f|\\r|\\\\|\\\"|\\t
 
 
 STRLIT              \"([^\n\r]|{esc_sequence})*\"
+DECLIT              0|{numbers}+|([1-9]+(("_")+{numbers}+)*)
 ID                  (("_")|{letters}|("$"))(("_")|{letters}|{numbers}|("$"))*
-DECLIT              0|{numbers}+|([1-9]+("_")*{numbers}+)
 REALLIT             {numbers}+("_")*{exponential}("_")*{numbers}+
 %%
 
