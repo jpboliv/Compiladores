@@ -67,10 +67,10 @@ REALLIT             {numbers}+("_")*{exponential}("_")*{numbers}+
 " "                 {n_column+=yyleng;}
 
 "++"|"null"|"--"|"abstract"|"assert"|"break"|"byte"|"case"|"catch"|"char"|"const"|"continue"|"default"|"enum"|"extends"|"final"|"finally"|"float"|"for"|"goto"|"implements"|"import"|"instanceof"|"interface"|"long"|"native"|"new"|"package"|"private"|"protected"|"short"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"try"|"volatile"|"Integer"|"System"        {if(flag==1){printf("RESERVED(%s)\n", &yytext[0]);}}
+{DECLIT}            {if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;}
 {numbers}+          {if(flag==1)printf("INTLIT(%s)\n", yytext);n_column+=yyleng;}
 {boolit}            {if(flag==1)printf("BOOLLIT(%s)\n", yytext);n_column+=yyleng;}
 {ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;}
-{DECLIT}            {if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;}
 {STRLIT}            {if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;}
 {REALLIT}           {if(flag==1)printf("REALLIT(%s)\n",yytext);n_column+=yyleng;}
 .                   {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
