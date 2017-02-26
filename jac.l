@@ -1,4 +1,4 @@
-%X JAVAC CCOMMENT
+%X JAVAC CCOMMENT SIMPLECOMMENT
 %{
   int flag =0;
   int n_column =1;
@@ -69,13 +69,23 @@ ID                  (("_")|{letters}|("$"))(("_")|{letters}|{numbers}|("$"))*
 {ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;}
 .                   {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 
-"//".*	{n_column+=yyleng;}
+
+"//"          {BEGIN SIMPLECOMMENT;comment_line=n_line; comment_column = n_column; n_column+=yyleng;}
+<SIMPLECOMMENT><<EOF>> 	{BEGIN 0;}
+<SIMPLECOMMENT>"\n"|"\r"|"\r\n"     {BEGIN 0;}
+<SIMPLECOMMENT>.*       {BEGIN 0;}
+
+
+
 
 "/*"              {BEGIN CCOMMENT; comment_line=n_line; comment_column = n_column; n_column+=yyleng;}
 <CCOMMENT>"*/"     {BEGIN 0;n_column+=yyleng;}
 <CCOMMENT><<EOF>> 	{printf("Line %d, col %d: unterminated comment\n", comment_line, comment_column); BEGIN 0;}
 <CCOMMENT>"\n"     {n_column = 1;n_line+=yyleng;}
-<CCOMMENT>.        {n_column += yyleng;}
+<CCOMMENT>.       {n_column += yyleng;}
+
+
+
 
 
 %%
