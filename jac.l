@@ -1,4 +1,4 @@
-%X JAVAC CCOMMENT SIMPLECOMMENT
+%X JAVAC CCOMMENT LINECOMMENT
 %{
   int flag =0;
   int n_column =1;
@@ -10,15 +10,16 @@
 letters[a-zA-Z]
 numbers[0-9]
 boolit("true"|"false")
-
-
+esc_sequence        \\n|\\f|\\r|\\\\|\\"|\\t
+numbersanddigits[0-9]+
 
 
 ID                  (("_")|{letters}|("$"))(("_")|{letters}|{numbers}|("$"))*
-
+STRLIT              \"([^\n\r]|{esc_sequence})*\"
+REALLIT             {numbers}+("e"|"E"|"."|"e+"|"e-"|"E+"|"E-"){numbers}+
 %%
 
-"boolean"              {if(flag==1)printf("BOOL\n");n_column+=yyleng;}
+"boolean"           {if(flag==1)printf("BOOL\n");n_column+=yyleng;}
 "class"             {if(flag==1)printf("CLASS\n");n_column+=yyleng;}
 "do"                {if(flag==1)printf("DO\n");n_column+=yyleng;}
 ".length"           {if(flag==1)printf("DOTLENGTH\n");n_column+=yyleng;}
@@ -57,33 +58,33 @@ ID                  (("_")|{letters}|("$"))(("_")|{letters}|{numbers}|("$"))*
 "="                 {if(flag==1)printf("ASSIGN\n");n_column+=yyleng;}
 ";"                 {if(flag==1)printf("SEMI\n");n_column+=yyleng;}
 ","                 {if(flag==1)printf("COMMA\n");n_column+=yyleng;}
-"\n"                  {n_column=1;n_line+=1;}
-"\t"                  {n_column+=yyleng;}
-"\r"                 {n_column=1;}
-"\f"                 {n_column+=yyleng;}
+"\n"                {n_column=1;n_line+=1;}
+"\t"                {n_column+=yyleng;}
+"\r"                {n_column=1;}
+"\f"                {n_column+=yyleng;}
 " "                 {n_column+=yyleng;}
 
 "++"|"null"|"--"|"abstract"|"assert"|"break"|"byte"|"case"|"catch"|"char"|"const"|"continue"|"default"|"enum"|"extends"|"final"|"finally"|"float"|"for"|"goto"|"implements"|"import"|"instanceof"|"interface"|"long"|"native"|"new"|"package"|"private"|"protected"|"short"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"try"|"volatile"|"Integer"|"System"        {if(flag==1){printf("RESERVED(%s)\n", &yytext[0]);}}
 {numbers}+          {if(flag==1)printf("INTLIT(%s)\n", yytext);n_column+=yyleng;}
 {boolit}            {if(flag==1)printf("BOOLLIT(%s)\n", yytext);n_column+=yyleng;}
 {ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;}
+{STRLIT}            {if(flag==1)printf("STRLIT(%s)\n",yytext);n_column+=yyleng;}
 .                   {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 
 
-"//"          {BEGIN SIMPLECOMMENT;comment_line=n_line; comment_column = n_column; n_column+=yyleng;}
-<SIMPLECOMMENT><<EOF>> 	{BEGIN 0;}
-<SIMPLECOMMENT>"\n"|"\r"|"\r\n"     {BEGIN 0;}
-<SIMPLECOMMENT>.*       {BEGIN 0;}
+"//"                        {BEGIN LINECOMMENT;comment_line=n_line; comment_column = n_column; n_column+=yyleng;}
+<LINECOMMENT><<EOF>>		    {BEGIN 0;};
+<LINECOMMENT>(\n)|(\r\n)    {BEGIN 0;};
+<LINECOMMENT>(\r)			      {BEGIN 0;};
+<LINECOMMENT>.				      ;
 
 
 
-
-"/*"              {BEGIN CCOMMENT; comment_line=n_line; comment_column = n_column; n_column+=yyleng;}
+"/*"               {BEGIN CCOMMENT;comment_line=yylineno;comment_column=n_column;n_column+=yyleng;}
 <CCOMMENT>"*/"     {BEGIN 0;n_column+=yyleng;}
-<CCOMMENT><<EOF>> 	{printf("Line %d, col %d: unterminated comment\n", comment_line, comment_column); BEGIN 0;}
-<CCOMMENT>"\n"     {n_column = 1;n_line+=yyleng;}
-<CCOMMENT>.       {n_column += yyleng;}
-
+<CCOMMENT><<EOF>>  {printf("Line %d, col %d: unterminated comment\n",comment_line,comment_column);BEGIN 0;}
+<CCOMMENT>.        {n_column += yyleng;}
+<CCOMMENT>"\n"     {n_line+=1;n_column =1;}
 
 
 
