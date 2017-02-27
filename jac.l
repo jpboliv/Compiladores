@@ -78,6 +78,7 @@ REALLIT             {numbers}+(("_")*{numbers}+)*"."({numbers}+(("_")*{numbers}+
 {boolit}            {if(flag==1)printf("BOOLLIT(%s)\n", yytext);n_column+=yyleng;}
 {ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;}
 {STRLIT}            {if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;}
+
 .                   {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 
 
@@ -100,7 +101,7 @@ REALLIT             {numbers}+(("_")*{numbers}+)*"."({numbers}+(("_")*{numbers}+
 
 %%
 int main(int argv, char **argc){
-  flag = argv >= 1 && (!strcmp(argc[1], "-1") || !strcmp(argc[1], "-l"));
+  flag = (argv > 1 && (!strcmp(argc[1], "-1") || !strcmp(argc[1], "-l")));
   if(!flag)
     flag=1;
 yylex();

@@ -1221,62 +1221,62 @@ YY_RULE_SETUP
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 81 "jac.l"
+#line 82 "jac.l"
 {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 84 "jac.l"
+#line 85 "jac.l"
 {BEGIN LINECOMMENT;comment_line=n_line; comment_column = n_column; n_column+=yyleng;}
 	YY_BREAK
 case YY_STATE_EOF(LINECOMMENT):
-#line 85 "jac.l"
+#line 86 "jac.l"
 {BEGIN 0;};
 	YY_BREAK
 case 53:
 /* rule 53 can match eol */
 YY_RULE_SETUP
-#line 86 "jac.l"
+#line 87 "jac.l"
 {BEGIN 0;};
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 87 "jac.l"
+#line 88 "jac.l"
 {BEGIN 0;};
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 88 "jac.l"
+#line 89 "jac.l"
 ;
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 92 "jac.l"
+#line 93 "jac.l"
 {BEGIN CCOMMENT;comment_line=yylineno;comment_column=n_column;n_column+=yyleng;}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 93 "jac.l"
+#line 94 "jac.l"
 {BEGIN 0;n_column+=yyleng;}
 	YY_BREAK
 case YY_STATE_EOF(CCOMMENT):
-#line 94 "jac.l"
+#line 95 "jac.l"
 {printf("Line %d, col %d: unterminated comment\n",comment_line,comment_column);BEGIN 0;}
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 95 "jac.l"
+#line 96 "jac.l"
 {n_column += yyleng;}
 	YY_BREAK
 case 59:
 /* rule 59 can match eol */
 YY_RULE_SETUP
-#line 96 "jac.l"
+#line 97 "jac.l"
 {n_line+=1;n_column =1;}
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 101 "jac.l"
+#line 102 "jac.l"
 ECHO;
 	YY_BREAK
 #line 1283 "lex.yy.c"
@@ -2277,11 +2277,11 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 101 "jac.l"
+#line 102 "jac.l"
 
 
 int main(int argv, char **argc){
-  flag = argv >= 1 && (!strcmp(argc[1], "-1") || !strcmp(argc[1], "-l"));
+  flag = (argv > 1 && (!strcmp(argc[1], "-1") || !strcmp(argc[1], "-l")));
   if(!flag)
     flag=1;
 yylex();
