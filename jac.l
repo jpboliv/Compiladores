@@ -11,14 +11,19 @@ letters[a-zA-Z]
 numbers[0-9]
 boolit("true"|"false")
 numbersanddigits([0-9]+|"_")
-exponential         "e"|"E"|"."|"e+"|"e-"|"E+"|"E-"
+exponential         "e"|"E"|"e+"|"e-"|"E+"|"E-"
 esc_sequence        \\n|\\f|\\r|\\\\|\\\"|\\t
 
 
-STRLIT              \"([^\n\r]|{esc_sequence})*\"
-DECLIT              0|{numbers}+|([1-9]+(("_")+{numbers}+)*)
+
+
+STRLIT              \"([^\n\r\\"]|{esc_sequence})*\"
+
+DECLIT              0|([1-9]+(("_")*{numbers}+)*)
+
 ID                  (("_")|{letters}|("$"))(("_")|{letters}|{numbers}|("$"))*
-REALLIT             ({numbers}+("_")*)+{exponential}(("_")*{numbers}+)+
+
+REALLIT             {numbers}+(("_")*{numbers}+)*"."({numbers}+(("_")*{numbers}+)*)?({exponential}({numbers}+(("_")*{numbers}+)*))?|"."({numbers}+(("_")*{numbers}+)*)({exponential}({numbers}+(("_")*{numbers}+)*))?|({numbers}+(("_")*{numbers}+)*)({exponential}({numbers}+(("_")*{numbers}+)*))
 %%
 
 "boolean"           {if(flag==1)printf("BOOL\n");n_column+=yyleng;}
@@ -68,11 +73,11 @@ REALLIT             ({numbers}+("_")*)+{exponential}(("_")*{numbers}+)+
 
 "++"|"null"|"--"|"abstract"|"assert"|"break"|"byte"|"case"|"catch"|"char"|"const"|"continue"|"default"|"enum"|"extends"|"final"|"finally"|"float"|"for"|"goto"|"implements"|"import"|"instanceof"|"interface"|"long"|"native"|"new"|"package"|"private"|"protected"|"short"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"try"|"volatile"|"Integer"|"System"        {if(flag==1){printf("RESERVED(%s)\n", &yytext[0]);}}
 
-{numbers}+          {if(flag==1)printf("INTLIT(%s)\n", yytext);n_column+=yyleng;}
+{REALLIT}           {if(flag==1)printf("REALLIT(%s)\n",yytext);n_column+=yyleng;}
+{DECLIT}            {if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;}
 {boolit}            {if(flag==1)printf("BOOLLIT(%s)\n", yytext);n_column+=yyleng;}
 {ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;}
 {STRLIT}            {if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;}
-{REALLIT}           {if(flag==1)printf("REALLIT(%s)\n",yytext);n_column+=yyleng;}
 .                   {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 
 
