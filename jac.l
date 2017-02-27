@@ -12,12 +12,12 @@ letters[a-zA-Z]
 numbers[0-9]
 boolit("true"|"false")
 exponential         "e"|"E"|"e+"|"e-"|"E+"|"E-"
+line_terminator      "\n"|"\r"|("\r")+"\n"
 esc_sequence        \\n|\\f|\\r|\\\\|\\\"|\\t
 
 
-
 STRLIT              \"([^\n\r\\"]|{esc_sequence})*\"
-INVALIDSTR          abc
+INVALIDSTR          \"([^\n\r\\"])*\"
 UNTERMINATEDSTR     \"([^\n\r\\"]|{esc_sequence})*
 
 DECLIT              0|([1-9]+(("_")*{numbers}+)*)
@@ -72,14 +72,13 @@ REALLIT             {numbers}+(("_")*{numbers}+)*"."({numbers}+(("_")*{numbers}+
 "\f"                {n_column+=yyleng;}
 " "                 {n_column+=yyleng;}
 
-"++"|"null"|"--"|"abstract"|"assert"|"break"|"byte"|"case"|"catch"|"char"|"const"|"continue"|"default"|"enum"|"extends"|"final"|"finally"|"float"|"for"|"goto"|"implements"|"import"|"instanceof"|"interface"|"long"|"native"|"new"|"package"|"private"|"protected"|"short"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"try"|"volatile"|"Integer"|"System"        {if(flag==1){printf("RESERVED(%s)\n", &yytext[0]);}}
+"++"|"null"|"--"|"abstract"|"assert"|"break"|"byte"|"case"|"catch"|"char"|"const"|"continue"|"default"|"enum"|"extends"|"final"|"finally"|"float"|"for"|"goto"|"implements"|"import"|"instanceof"|"interface"|"long"|"native"|"new"|"package"|"private"|"protected"|"short"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"try"|"volatile"|"Integer"|"System"        {if(flag==1){printf("RESERVED(%s)\n", &yytext[0]);n_column+=yyleng;}}
 
 {REALLIT}           {if(flag==1)printf("REALLIT(%s)\n",yytext);n_column+=yyleng;}
 {DECLIT}            {if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;}
 {boolit}            {if(flag==1)printf("BOOLLIT(%s)\n", yytext);n_column+=yyleng;}
 {ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;}
 {STRLIT}            {if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;}
-{INVALIDSTR}        {printf("Line %d, col %d: invalid escape sequence (%s)\n", n_line, n_column,yytext); n_column += yyleng;}
 {UNTERMINATEDSTR}   {printf("Line %d, col %d: unterminated string literal\n",n_line,n_column);n_column+=yyleng;}
 .                   {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 
@@ -87,15 +86,16 @@ REALLIT             {numbers}+(("_")*{numbers}+)*"."({numbers}+(("_")*{numbers}+
 "/*"               {BEGIN CCOMMENT;comment_line=yylineno;comment_column=n_column;n_column+=yyleng;}
 <CCOMMENT>"*/"     {BEGIN 0;n_column+=yyleng;}
 <CCOMMENT><<EOF>>  {printf("Line %d, col %d: unterminated comment\n",comment_line,comment_column);BEGIN 0;}
+<CCOMMENT>{line_terminator} {n_line+=1;n_column =1;}
 <CCOMMENT>.        {n_column += yyleng;}
-<CCOMMENT>"\n"     {n_line+=1;n_column =1;}
 
 
 
-"//"                        {BEGIN LINECOMMENT;comment_line=n_line; comment_column = n_column; n_column+=yyleng;}
-<LINECOMMENT><<EOF>>		    {BEGIN 0;};
-<LINECOMMENT>(\n)|(\r\n)    {BEGIN 0;};
-<LINECOMMENT>(\r)			      {BEGIN 0;};
+
+
+"//"                              {BEGIN LINECOMMENT;comment_line=n_line; comment_column = n_column; n_column+=yyleng;}
+<LINECOMMENT><<EOF>>		          {BEGIN 0;};
+<LINECOMMENT>{line_terminator}    {n_line+=1;n_column=1;BEGIN 0;};
 <LINECOMMENT>.				      ;
 
 
