@@ -1,4 +1,4 @@
-%X JAVAC JCOMMENT LINECOMMENT STRSTUFF
+%X JAVAC JCOMMENT LINECOMMENT STRERROR
 %{
   int flag =0;
   int n_column =1;
@@ -14,9 +14,9 @@ letters[a-zA-Z]
 numbers[0-9]
 boolit("true"|"false")
 exponential         "e"|"E"|"e+"|"e-"|"E+"|"E-"
-line_terminator      "\n"|"\r"|("\r")+"\n"
+line_terminator     "\n"|"\r"|("\r")+"\n"
 esc_sequence        \\n|\\f|\\r|\\\\|\\\"|\\t
-repeater               {numbers}+(("_")*{numbers}+)*
+repeater            {numbers}+(("_")*{numbers}+)*
 
 
 STRLIT              \"([^\n\r\\"]|{esc_sequence})*\"
@@ -86,35 +86,33 @@ REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({re
 {STRLIT}            {if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;}
 
 
-"\"" {BEGIN STRSTUFF;aux_column=n_column;}
-<STRSTUFF>"\\"{esc_sequence}? {printf("Line %d, col %d: invalid escape sequence (%s)\n",n_line,aux_column,yytext);n_column+=yyleng;}
-<STRSTUFF>"\\"["\n""\r""\f""\t""\\"]          {n_column+=yyleng;}
-<STRSTUFF>"\""                              {BEGIN 0;n_column+=yyleng;}
-<STRSTUFF>"\r\n"                           {printf("Line %d, col %d: unterminated string literal\n",n_line,n_column);n_line+=1;n_column=1;BEGIN 0;}
-<STRSTUFF>"\n"                              {printf("Line %d, col %d: unterminated string literal\n",n_line,n_column);n_column=1;n_line+=1;BEGIN 0;}
-<STRSTUFF><<EOF>>                           {printf("Line %d, col %d: unterminated string literal\n",n_line,n_column);return 0;}
-<STRSTUFF>.                                 {n_column+=yyleng;}
+"\""                                                      {aux_column=n_column;n_column+=1;BEGIN STRERROR;}
+<STRERROR>"\\"[^"\r\n""\n""\f""\r""\\""\"""\t"]?          {printf("Line %d, col %d: invalid escape sequence (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
+<STRERROR>"\\"["\n""\r""\f""\t""\\""\\""]                 {n_column+=yyleng;}
+<STRERROR>"\""                                            {BEGIN 0;n_column+=1;}
+<STRERROR>"\r\n"?                                         {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_line+=1;n_column=1;}
+<STRERROR>"\n"                                            {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_column=1;n_line+=1;}
+<STRERROR><<EOF>>                                         {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);return 0;}
+<STRERROR>.                                               {n_column+=yyleng;}
 
 
-
-.                   {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
-
+.                                 {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 
 
-"/*"               {BEGIN JCOMMENT;comment_line=n_line;comment_column=n_column;n_column+=yyleng;}
-<JCOMMENT>"*/"     {BEGIN 0;n_column+=yyleng;}
-<JCOMMENT><<EOF>>  {printf("Line %d, col %d: unterminated comment\n",comment_line,comment_column);BEGIN 0;}
-<JCOMMENT>{line_terminator} {n_line+=1;n_column =1;}
-<JCOMMENT>.        {n_column += yyleng;}
-
+"/*"                              {BEGIN JCOMMENT;comment_line=n_line;comment_column=n_column;n_column+=yyleng;}
+<JCOMMENT>"*/"                    {BEGIN 0;n_column+=yyleng;}
+<JCOMMENT><<EOF>>                 {printf("Line %d, col %d: unterminated comment\n",comment_line,comment_column);BEGIN 0;}
+<JCOMMENT>{line_terminator}       {n_line+=1;n_column =1;}
+<JCOMMENT>.                       {n_column += yyleng;}
 
 
 
 
-"//"                        {BEGIN LINECOMMENT;comment_column = n_column; n_column+=yyleng;}
-<LINECOMMENT><<EOF>>        {BEGIN 0;};
+
+"//"                              {BEGIN LINECOMMENT;comment_column = n_column; n_column+=yyleng;}
+<LINECOMMENT><<EOF>>              {BEGIN 0;};
 <LINECOMMENT>{line_terminator}    {n_line+=1;n_column=1;BEGIN 0;}
-<LINECOMMENT>.              {n_column+=yyleng;}
+<LINECOMMENT>.                    {n_column+=yyleng;}
 
 
 
