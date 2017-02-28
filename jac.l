@@ -14,7 +14,7 @@ boolit("true"|"false")
 exponential         "e"|"E"|"e+"|"e-"|"E+"|"E-"
 line_terminator      "\n"|"\r"|("\r")+"\n"
 esc_sequence        \\n|\\f|\\r|\\\\|\\\"|\\t
-
+repeater               {numbers}+(("_")*{numbers}+)*
 
 
 STRLIT              \"([^\n\r\\"]|{esc_sequence})*\"
@@ -23,7 +23,9 @@ UNTERMINATEDSTR     \"([^\n\r\\"]|{esc_sequence})*
 
 DECLIT              0|([1-9]+(("_")*{numbers}+)*)
 ID                  (("_")|{letters}|("$"))(("_")|{letters}|{numbers}|("$"))*
-REALLIT             {numbers}+(("_")*{numbers}+)*"."({numbers}+(("_")*{numbers}+)*)?({exponential}({numbers}+(("_")*{numbers}+)*))?|"."({numbers}+(("_")*{numbers}+)*)({exponential}({numbers}+(("_")*{numbers}+)*))?|({numbers}+(("_")*{numbers}+)*)({exponential}({numbers}+(("_")*{numbers}+)*))
+REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({repeater})({exponential}{repeater})?|({repeater})({exponential}({repeater}))
+
+
 
 %%
 
