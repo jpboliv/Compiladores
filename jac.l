@@ -16,6 +16,7 @@ line_terminator      "\n"|"\r"|("\r")+"\n"
 esc_sequence        \\n|\\f|\\r|\\\\|\\\"|\\t
 
 
+
 STRLIT              \"([^\n\r\\"]|{esc_sequence})*\"
 INVALIDSTR          \"([^\n\r\\"])*\"
 UNTERMINATEDSTR     \"([^\n\r\\"]|{esc_sequence})*
@@ -72,7 +73,7 @@ REALLIT             {numbers}+(("_")*{numbers}+)*"."({numbers}+(("_")*{numbers}+
 "\f"                {n_column+=yyleng;}
 " "                 {n_column+=yyleng;}
 
-"++"|"null"|"--"|"abstract"|"assert"|"break"|"byte"|"case"|"catch"|"char"|"const"|"continue"|"default"|"enum"|"extends"|"final"|"finally"|"float"|"for"|"goto"|"implements"|"import"|"instanceof"|"interface"|"long"|"native"|"new"|"package"|"private"|"protected"|"short"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"try"|"volatile"|"Integer"|"System"        {if(flag==1){printf("RESERVED(%s)\n", &yytext[0]);n_column+=yyleng;}}
+"++"|"null"|"--"|"abstract"|"assert"|"break"|"byte"|"case"|"catch"|"char"|"const"|"continue"|"default"|"enum"|"extends"|"final"|"finally"|"float"|"for"|"goto"|"implements"|"import"|"instanceof"|"interface"|"long"|"native"|"new"|"package"|"private"|"protected"|"short"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"try"|"volatile"|"Integer"|"System"        {if(flag==1)printf("RESERVED(%s)\n", &yytext[0]);n_column+=yyleng;}
 
 {REALLIT}           {if(flag==1)printf("REALLIT(%s)\n",yytext);n_column+=yyleng;}
 {DECLIT}            {if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;}
@@ -83,7 +84,7 @@ REALLIT             {numbers}+(("_")*{numbers}+)*"."({numbers}+(("_")*{numbers}+
 .                   {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 
 
-"/*"               {BEGIN CCOMMENT;comment_line=yylineno;comment_column=n_column;n_column+=yyleng;}
+"/*"               {BEGIN CCOMMENT;comment_line=n_line;comment_column=n_column;n_column+=yyleng;}
 <CCOMMENT>"*/"     {BEGIN 0;n_column+=yyleng;}
 <CCOMMENT><<EOF>>  {printf("Line %d, col %d: unterminated comment\n",comment_line,comment_column);BEGIN 0;}
 <CCOMMENT>{line_terminator} {n_line+=1;n_column =1;}
@@ -93,10 +94,10 @@ REALLIT             {numbers}+(("_")*{numbers}+)*"."({numbers}+(("_")*{numbers}+
 
 
 
-"//"                              {BEGIN LINECOMMENT;comment_line=n_line; comment_column = n_column; n_column+=yyleng;}
-<LINECOMMENT><<EOF>>		          {BEGIN 0;};
-<LINECOMMENT>{line_terminator}    {n_line+=1;n_column=1;BEGIN 0;};
-<LINECOMMENT>.				      ;
+"//"                        {BEGIN LINECOMMENT;comment_column = n_column; n_column+=yyleng;}
+<LINECOMMENT><<EOF>>		    {BEGIN 0;};
+<LINECOMMENT>{line_terminator}    {n_line+=1;n_column=1;BEGIN 0;}
+<LINECOMMENT>.				      {n_column+=yyleng;}
 
 
 
@@ -104,9 +105,11 @@ REALLIT             {numbers}+(("_")*{numbers}+)*"."({numbers}+(("_")*{numbers}+
 
 %%
 int main(int argv, char **argc){
-  flag = (argv > 1 && (!strcmp(argc[1], "-1") || !strcmp(argc[1], "-l")));
-  if(!flag)
-    flag=1;
+  if(argv > 1){
+    if(strcmp(argc[1], "-1")==0 || strcmp(argc[1], "-l")==0){
+      flag=1;
+    }
+  }
 yylex();
 return 0;
 }
