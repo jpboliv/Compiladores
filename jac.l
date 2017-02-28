@@ -1,10 +1,12 @@
-%X JAVAC CCOMMENT LINECOMMENT STRSTUFF
+%X JAVAC JCOMMENT LINECOMMENT STRSTUFF
 %{
   int flag =0;
   int n_column =1;
   int n_line =1;
   int comment_line;
+   int aux_line;
   int comment_column;
+  int aux_column;
   char* aux;
 %}
 
@@ -17,7 +19,7 @@ esc_sequence        \\n|\\f|\\r|\\\\|\\\"|\\t
 repeater               {numbers}+(("_")*{numbers}+)*
 
 
-STRLIT              ([^\n\r\\"]|{esc_sequence})*
+STRLIT              \"([^\n\r\\"]|{esc_sequence})*\"
 INVALIDSTR          \"([^\n\r\\"])*\"
 UNTERMINATEDSTR     ([^\n\r\\"]|{esc_sequence})*
 
@@ -81,22 +83,29 @@ REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({re
 {DECLIT}            {if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;}
 {boolit}            {if(flag==1)printf("BOOLLIT(%s)\n", yytext);n_column+=yyleng;}
 {ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;}
+{STRLIT}            {if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;}
 
-"\""                {BEGIN STRSTUFF;aux=yytext;}
-<STRSTUFF>{STRLIT}"\""  {if(flag==1)n_column+=yyleng;BEGIN 0;printf("STRLIT(%s)\n", aux);}
-<STRSTUFF>{UNTERMINATEDSTR}{line_terminator} {BEGIN 0;printf("Line %d, col %d: unterminated string literal\n",n_line,n_column);n_column+=yyleng;}
+
+"\"" {BEGIN STRSTUFF;aux_column=n_column;}
+<STRSTUFF>"\\"{esc_sequence}? {printf("Line %d, col %d: invalid escape sequence (%s)\n",n_line,aux_column,yytext);n_column+=yyleng;}
+<STRSTUFF>"\\"["\n""\r""\f""\t""\\"]          {n_column+=yyleng;}
+<STRSTUFF>"\""                              {BEGIN 0;n_column+=yyleng;}
+<STRSTUFF>"\r\n"                           {printf("Line %d, col %d: unterminated string literal\n",n_line,n_column);n_line+=1;n_column=1;BEGIN 0;}
+<STRSTUFF>"\n"                              {printf("Line %d, col %d: unterminated string literal\n",n_line,n_column);n_column=1;n_line+=1;BEGIN 0;}
+<STRSTUFF><<EOF>>                           {printf("Line %d, col %d: unterminated string literal\n",n_line,n_column);return 0;}
+<STRSTUFF>.                                 {n_column+=yyleng;}
+
 
 
 .                   {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 
 
 
-
-"/*"               {BEGIN CCOMMENT;comment_line=n_line;comment_column=n_column;n_column+=yyleng;}
-<CCOMMENT>"*/"     {BEGIN 0;n_column+=yyleng;}
-<CCOMMENT><<EOF>>  {printf("Line %d, col %d: unterminated comment\n",comment_line,comment_column);BEGIN 0;}
-<CCOMMENT>{line_terminator} {n_line+=1;n_column =1;}
-<CCOMMENT>.        {n_column += yyleng;}
+"/*"               {BEGIN JCOMMENT;comment_line=n_line;comment_column=n_column;n_column+=yyleng;}
+<JCOMMENT>"*/"     {BEGIN 0;n_column+=yyleng;}
+<JCOMMENT><<EOF>>  {printf("Line %d, col %d: unterminated comment\n",comment_line,comment_column);BEGIN 0;}
+<JCOMMENT>{line_terminator} {n_line+=1;n_column =1;}
+<JCOMMENT>.        {n_column += yyleng;}
 
 
 
