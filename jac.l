@@ -72,8 +72,8 @@ REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({re
 ","                 {if(flag==1)printf("COMMA\n");n_column+=yyleng;}
 "\n"                {n_column=1;n_line+=1;}
 "\t"                {n_column+=yyleng;}
-"\r"                {n_column=1;n_line+=1;}
 "\r\n"              {n_column=1;n_line+=1;}
+"\r"                {n_column=1;n_line+=1;}
 "\f"                {n_column+=yyleng;}
 " "                 {n_column+=yyleng;}
 
@@ -83,20 +83,21 @@ REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({re
 {DECLIT}            {if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;}
 {boolit}            {if(flag==1)printf("BOOLLIT(%s)\n", yytext);n_column+=yyleng;}
 {ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;}
+
 {STRLIT}            {if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;}
 
-
 "\""                                                      {aux_column=n_column;n_column+=1;BEGIN STRERROR;}
-<STRERROR>"\\"[^"\r\n""\n""\f""\r""\\""\"""\t"]?          {printf("Line %d, col %d: invalid escape sequence (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
-<STRERROR>"\\"["\n""\r""\f""\t""\\""\\""]                 {n_column+=yyleng;}
+<STRERROR>"\\"[^\r\nnr"ft\\]?                        {printf("Line %d, col %d: invalid escape sequence (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
+<STRERROR>"\\"[nr"ft\\]                 {n_column+=yyleng;}
 <STRERROR>"\""                                            {BEGIN 0;n_column+=1;}
-<STRERROR>"\r\n"?                                         {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_line+=1;n_column=1;}
+<STRERROR>"\r\r\n"                                        {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_line+=1;n_column=1;}
+<STRERROR>"\r\n"                                         {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_line+=1;n_column=1;}
+<STRERROR>"\r"                                        {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_line+=1;n_column=1;}
 <STRERROR>"\n"                                            {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_column=1;n_line+=1;}
-<STRERROR><<EOF>>                                         {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);return 0;}
+<STRERROR><<EOF>>                                         {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;}
 <STRERROR>.                                               {n_column+=yyleng;}
 
 
-.                                 {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 
 
 "/*"                              {BEGIN JCOMMENT;comment_line=n_line;comment_column=n_column;n_column+=yyleng;}
@@ -107,13 +108,13 @@ REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({re
 
 
 
-
-
 "//"                              {BEGIN LINECOMMENT;comment_column = n_column; n_column+=yyleng;}
 <LINECOMMENT><<EOF>>              {BEGIN 0;};
 <LINECOMMENT>{line_terminator}    {n_line+=1;n_column=1;BEGIN 0;}
 <LINECOMMENT>.                    {n_column+=yyleng;}
 
+
+.                                 {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 
 
 
