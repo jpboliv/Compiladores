@@ -87,12 +87,11 @@ REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({re
 {STRLIT}            {if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;}
 
 "\""                                                      {aux_column=n_column;n_column+=1;BEGIN STRERROR;}
-<STRERROR>"\\"[^\r\nnr"ft\\]?                        {printf("Line %d, col %d: invalid escape sequence (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
-<STRERROR>"\\"[nr"ft\\]                 {n_column+=yyleng;}
+<STRERROR>"\\"[^\r\nnr"ft\\]?                             {printf("Line %d, col %d: invalid escape sequence (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
+<STRERROR>"\\"[nr"ft\\]                                   {n_column+=yyleng;}
 <STRERROR>"\""                                            {BEGIN 0;n_column+=1;}
-<STRERROR>"\r\r\n"                                        {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_line+=1;n_column=1;}
-<STRERROR>"\r\n"                                         {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_line+=1;n_column=1;}
-<STRERROR>"\r"                                        {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_line+=1;n_column=1;}
+<STRERROR>"\r\n"                                          {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_line+=1;n_column=1;}
+<STRERROR>"\r"                                            {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_line+=1;n_column=1;}
 <STRERROR>"\n"                                            {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;n_column=1;n_line+=1;}
 <STRERROR><<EOF>>                                         {printf("Line %d, col %d: unterminated string literal\n",n_line,aux_column);BEGIN 0;}
 <STRERROR>.                                               {n_column+=yyleng;}
@@ -122,7 +121,7 @@ REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({re
 %%
 int main(int argv, char **argc){
   if(argv > 1){
-    if(strcmp(argc[1], "-1")==0 || strcmp(argc[1], "-l")==0){
+    if(strcmp(argc[1], "-l")==0){
       flag=1;
     }
   }
