@@ -1,5 +1,6 @@
 clear
 lex jac.l
-zip jac.zip jac.l
-cc -o jac lex.yy.c
+yacc -d -v jac.y
+zip jac.zip jac.l jac.y
+cc -o jac y.tab.c lex.yy.c
 ./jac -l < teste.java

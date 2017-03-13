@@ -1,0 +1,142 @@
+Terminals which are not used
+
+   BOOL
+   CLASS
+   DO
+   DOTLENGTH
+   DOUBLE
+   ELSE
+   IF
+   INT
+   PARSEINT
+   PRINT
+   PUBLIC
+   RETURN
+   STATIC
+   STRING
+   VOID
+   WHILE
+   OCURV
+   CCURV
+   OBRACE
+   CBRACE
+   OSQUARE
+   CSQUARE
+   AND
+   OR
+   LT
+   GT
+   EQ
+   NEQ
+   GEQ
+   LEQ
+   PLUS
+   MINUS
+   STAR
+   DIV
+   MOD
+   NOT
+   ASSIGN
+   SEMI
+   COMMA
+   RESERVED
+   REALLIT
+   DECLIT
+   BOOLLIT
+   STRLIT
+
+
+Grammar
+
+    0 $accept: calc $end
+
+    1 calc: ID
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+BOOL (258)
+CLASS (259)
+DO (260)
+DOTLENGTH (261)
+DOUBLE (262)
+ELSE (263)
+IF (264)
+INT (265)
+PARSEINT (266)
+PRINT (267)
+PUBLIC (268)
+RETURN (269)
+STATIC (270)
+STRING (271)
+VOID (272)
+WHILE (273)
+OCURV (274)
+CCURV (275)
+OBRACE (276)
+CBRACE (277)
+OSQUARE (278)
+CSQUARE (279)
+AND (280)
+OR (281)
+LT (282)
+GT (283)
+EQ (284)
+NEQ (285)
+GEQ (286)
+LEQ (287)
+PLUS (288)
+MINUS (289)
+STAR (290)
+DIV (291)
+MOD (292)
+NOT (293)
+ASSIGN (294)
+SEMI (295)
+COMMA (296)
+RESERVED (297)
+REALLIT (298)
+DECLIT (299)
+BOOLLIT (300)
+ID (301) 1
+STRLIT (302)
+
+
+Nonterminals, with rules where they appear
+
+$accept (48)
+    on left: 0
+calc (49)
+    on left: 1, on right: 0
+
+
+state 0
+
+    0 $accept: . calc $end
+
+    ID  shift, and go to state 1
+
+    calc  go to state 2
+
+
+state 1
+
+    1 calc: ID .
+
+    $default  reduce using rule 1 (calc)
+
+
+state 2
+
+    0 $accept: calc . $end
+
+    $end  shift, and go to state 3
+
+
+state 3
+
+    0 $accept: calc $end .
+
+    $default  accept
