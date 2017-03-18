@@ -169,6 +169,7 @@
   #include <stdio.h>
   int yylex(void);
   void yyerror(const char *s);
+  int yyparse(void);
 
 
 /* Enabling traces.  */
@@ -202,7 +203,7 @@ typedef int YYSTYPE;
 
 
 /* Line 216 of yacc.c.  */
-#line 206 "y.tab.c"
+#line 207 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -488,7 +489,7 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    54,    54
+       0,    55,    55
 };
 #endif
 
@@ -1394,13 +1395,13 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 54 "jac.y"
+#line 55 "jac.y"
     {;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1404 "y.tab.c"
+#line 1405 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1614,6 +1615,6 @@ yyreturn:
 }
 
 
-#line 56 "jac.y"
+#line 57 "jac.y"
 
 
