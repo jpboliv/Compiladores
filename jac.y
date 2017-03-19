@@ -3,7 +3,7 @@
   int yylex(void);
   void yyerror(const char *s);
 
-
+extern int flagError;
 extern int nline;
 extern int ncolumn;
 %}
@@ -27,6 +27,8 @@ extern int ncolumn;
 Program : CLASS ID OBRACE {FieldDecl | MethodDecl | SEMI} CBRACE {;}
 
 FieldDecl: PUBLIC STATIC Type ID { COMMA ID } SEMI {;}
+ | error SEMI {;}
+ ;
 
 MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {;}
 
@@ -51,21 +53,25 @@ Statement: OBRACE { Statement } CBRACE    {;}
 	| PRINT OCURV Aux8 CCURV SEMI  {;}
 	| Aux3 SEMI  {;}
 	| RETURN [ Expr ] SEMI   {;}
+	| error SEMI {;}
 	;
 Aux3: Assignment | MethodInvocation | ParseArgs |  {;} 
 Aux8: Expr | STRLIT {;}
 Aux10: ELSE Statement {;}
   | 				  {;}
   ;
+
 Assignment: ID ASSIGN Expr  {;}
 
 MethodInvocation: ID OCURV Aux11 CCURV   {;}
 Aux11: Expr { COMMA Expr } {;}
  	| 					   {;}
+ 	| ID OCURV error CCURV {;}
  	;
 
 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV   {;}
-
+	| PARSEINT OCURV error CCURV {;}
+	;
 Expr: Assignment | MethodInvocation | ParseArgs  {;}
 	| Expr Aux4 Expr  {;}
 	| Expr Aux5 Expr  {;}
@@ -74,6 +80,7 @@ Expr: Assignment | MethodInvocation | ParseArgs  {;}
 	| ID [ DOTLENGTH ]  {;}
 	| OCURV Expr CCURV  {;}
 	| BOOLLIT | DECLIT | REALLIT  {;}
+	| OCURV error CCURV {;}
 	;
 Aux4:  AND | OR  {;}
 Aux5: EQ | GEQ | GT | LEQ | LT | NEQ {;}
