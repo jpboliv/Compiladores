@@ -2,55 +2,27 @@
   #include <stdio.h>
   int yylex(void);
   void yyerror(const char *s);
+
+
+extern int nline;
+extern int ncolumn;
 %}
 
-%token BOOL
-%token CLASS
-%token DO
-%token DOTLENGTH
-%token DOUBLE
-%token ELSE
-%token IF
-%token INT
-%token PARSEINT
-%token PRINT
-%token PUBLIC
-%token RETURN
-%token STATIC
-%token STRING
-%token VOID
-%token WHILE
-%token OCURV
-%token CCURV
-%token OBRACE
-%token CBRACE
-%token OSQUARE
-%token CSQUARE
-%token AND
-%token OR
-%token LT
-%token GT
-%token EQ
-%token NEQ
-%token GEQ
-%token LEQ
-%token PLUS
-%token MINUS
-%token STAR
-%token DIV
-%token MOD
-%token NOT
-%token ASSIGN
-%token SEMI
-%token COMMA
-%token RESERVED
-%token REALLIT
-%token DECLIT
-%token BOOLLIT
-%token ID
-%token STRLIT
+%token BOOL CLASS DO DOTLENGTH DOUBLE ELSE IF INT PARSEINT PRINT PUBLIC RETURN STATIC STRING VOID WHILE OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE AND OR LT GT EQ NEQ GEQ LEQ
+%token PLUS MINUS STAR DIV MOD NOT ASSIGN SEMI COMMA RESERVED REALLIT DECLIT BOOLLIT ID STRLIT
 
-%%
+%left COMMA
+%right ASSIGN
+%left OR
+%left AND
+%left EQ NEQ
+%left LT LEQ GEQ GT
+%left PLUS MINUS
+%left STAR DIV MOD
+%right NOT
+
+%type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr
+%% 
 
 Program : CLASS ID OBRACE {FieldDecl | MethodDecl | SEMI} CBRACE {;}
 
@@ -58,52 +30,57 @@ FieldDecl: PUBLIC STATIC Type ID { COMMA ID } SEMI {;}
 
 MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {;}
 
-MethodHeader: ( Type | VOID ) ID OCURV [ FormalParams ] CCURV {;}
+MethodHeader:  Aux ID OCURV [ FormalParams ] CCURV  {;}
+Aux: VOID | Type {;}
 
-MethodBody: OBRACE { VarDecl | Statement } CBRACE {;}
+MethodBody: OBRACE { Aux2} CBRACE {;}
+Aux2 : VarDecl | Statement {;}
 
 FormalParams:  Type ID { COMMA Type ID }    {;}
-
-FormalParams:  STRING OSQUARE CSQUARE ID    {;}
+	| STRING OSQUARE CSQUARE ID    {;}
+	;
 
 VarDecl: Type ID { COMMA ID } SEMI    {;}
 
 Type: BOOL | INT | DOUBLE {;}
 
 Statement: OBRACE { Statement } CBRACE    {;}
-
-Statement: IF OCURV Expr CCURV Statement [ ELSE Statement ] {;}
-
-Statement: WHILE OCURV Expr CCURV Statement {;}
-
-Statement: DO Statement WHILE OCURV Expr CCURV SEMI  {;}
-
-Statement: PRINT OCURV ( Expr | STRLIT ) CCURV SEMI  {;}
-
-Statement: [ ( Assignment | MethodInvocation | ParseArgs ) ] SEMI  {;}
-
-Statement: RETURN [ Expr ] SEMI   {;}
-
+	| IF OCURV Expr CCURV Statement Aux10 {;}
+	| WHILE OCURV Expr CCURV Statement {;}
+	| DO Statement WHILE OCURV Expr CCURV SEMI  {;}
+	| PRINT OCURV Aux8 CCURV SEMI  {;}
+	| Aux3 SEMI  {;}
+	| RETURN [ Expr ] SEMI   {;}
+	;
+Aux3: Assignment | MethodInvocation | ParseArgs |  {;} 
+Aux8: Expr | STRLIT {;}
+Aux10: ELSE Statement {;}
+  | 				  {;}
+  ;
 Assignment: ID ASSIGN Expr  {;}
 
-MethodInvocation: ID OCURV [ Expr { COMMA Expr } ] CCURV   {;}
+MethodInvocation: ID OCURV Aux11 CCURV   {;}
+Aux11: Expr { COMMA Expr } {;}
+ 	| 					   {;}
+ 	;
 
 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV   {;}
 
 Expr: Assignment | MethodInvocation | ParseArgs  {;}
-
-Expr: Expr ( AND | OR ) Expr  {;}
-
-Expr: Expr ( EQ | GEQ | GT | LEQ | LT | NEQ ) Expr  {;}
-
-Expr: Expr ( PLUS | MINUS | STAR | DIV | MOD ) Expr  {;}
-
-Expr: ( PLUS | MINUS | NOT ) Expr  {;}
-
-Expr: ID [ DOTLENGTH ]  {;}
-
-Expr: OCURV Expr CCURV  {;}
-
-Expr: BOOLLIT | DECLIT | REALLIT  {;}
+	| Expr Aux4 Expr  {;}
+	| Expr Aux5 Expr  {;}
+	| Expr Aux6 Expr  {;}
+	| Expr Aux7  {;}
+	| ID [ DOTLENGTH ]  {;}
+	| OCURV Expr CCURV  {;}
+	| BOOLLIT | DECLIT | REALLIT  {;}
+	;
+Aux4:  AND | OR  {;}
+Aux5: EQ | GEQ | GT | LEQ | LT | NEQ {;}
+Aux6:  PLUS | MINUS | STAR | DIV | MOD  {;}
+Aux7:   PLUS | MINUS | NOT  {;}
 
 %%
+void yyerror (const char *s) {
+	printf ("Line %d, col %d: %s: %s\n", nline, ncolumn, s, yytext);
+}
