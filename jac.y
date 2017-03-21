@@ -2,10 +2,10 @@
   #include <stdio.h>
   int yylex(void);
   void yyerror(const char *s);
- extern char *yytext;
- extern int flagError;
- extern int nline;
- extern int ncolumn;
+  extern char *yytext;
+  extern int flagError;
+  extern int nline;
+  extern int ncolumn;
 %}
 
 %token BOOL CLASS DO DOTLENGTH DOUBLE ELSE IF INT PARSEINT PRINT PUBLIC RETURN STATIC STRING VOID WHILE OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE AND OR LT GT EQ NEQ GEQ LEQ
@@ -20,51 +20,61 @@
 %left PLUS MINUS
 %left STAR DIV MOD
 %right NOT
+%right PRECEDENCE
+%left OBRACE CBRACE LSQ CCURV RSQ
+%nonassoc ELSE
 
  /* %type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr */
-%% 
+%%
 
 Program : CLASS ID OBRACE auxProgram CBRACE {;}
 auxProgram: FieldDecl auxProgram | MethodDecl auxProgram | SEMI auxProgram  {;}
-	| %empty {;}
-	;
+	| {;}
+;
 
 FieldDecl: PUBLIC STATIC Type ID auxFieldDecl SEMI {;}
  	| error SEMI {;}
- 	;
- auxFieldDecl: COMMA ID auxFieldDecl {;}
-  | %empty {;}
-  ;
+;
+auxFieldDecl: COMMA ID auxFieldDecl {;}
+  | {;}
+;
 
 MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {;}
+;
 
-MethodHeader:  AuxMethodHelper1 ID OCURV auxMethodHelper2 CCURV  {;}
-AuxMethodHelper1: VOID | Type {;}
-auxMethodHelper2: FormalParams {;}
-| %empty {;}
+MethodHeader:  VOID ID OCURV AuxMethodHelper2 CCURV  {;}
+    | Type ID OCURV AuxMethodHelper2 CCURV
+;
 
+AuxMethodHelper2: FormalParams {;}
+  | {;}
+;
 MethodBody: OBRACE AuxMethodBody CBRACE {;}
+;
 AuxMethodBody : VarDecl AuxMethodBody {;}
 	| Statement AuxMethodBody {;}
-	| %empty {;}
-	;
+	| {;}
+;
 
 FormalParams:  Type ID auxFormalParams    {;}
 	| STRING OSQUARE CSQUARE ID    {;}
-	;
+;
 auxFormalParams: COMMA Type ID auxFormalParams {;}
-	| %empty {;}
-	;
+	| {;}
+;
 
 VarDecl: Type ID auxVarDecl SEMI    {;}
 auxVarDecl :  COMMA ID auxVarDecl {;}
-  | %empty {;}
-  ;
+  | {;}
+;
 
-Type: BOOL | INT | DOUBLE {;}
+Type: BOOL  {;}
+  | INT     {;}
+  | DOUBLE  {;}
 
 Statement: OBRACE auxStatement4 CBRACE    {;}
-	| IF OCURV Expr CCURV Statement auxStatement3 {;}
+  | IF OCURV Expr CCURV Statement ELSE Statement {;}
+  | IF OCURV Expr CCURV Statement  {;}
 	| WHILE OCURV Expr CCURV Statement {;}
 	| DO Statement WHILE OCURV Expr CCURV SEMI  {;}
 	| PRINT OCURV auxStatement2 CCURV SEMI  {;}
@@ -72,16 +82,16 @@ Statement: OBRACE auxStatement4 CBRACE    {;}
 	| RETURN auxStatement5 SEMI   {;}
 	| error SEMI {;}
 	;
-auxStatement1: Assignment | MethodInvocation | ParseArgs | %empty {;} 
+auxStatement1: Assignment | MethodInvocation | ParseArgs | {;}
 auxStatement2: Expr | STRLIT {;}
-auxStatement3: ELSE Statement {;}
-  | %empty				  {;}
+ /*auxStatement3: ELSE Statement {;}
+  |	{;}
+;*/
+auxStatement4: Statement auxStatement4{;}
+  | {;}
   ;
- auxStatement4: Statement auxStatement4{;}
-  | %empty {;}
-  ;
- auxStatement5: Expr {;}
- 	| %empty{;}
+auxStatement5: Expr {;}
+ 	| {;}
  	;
 
 Assignment: ID ASSIGN Expr  {;}
@@ -90,10 +100,10 @@ MethodInvocation: ID OCURV AuxMethodInvocation1 CCURV   {;}
  	| ID OCURV error CCURV {;}
  	;
 AuxMethodInvocation1: Expr AuxMethodInvocation2 {;}
- 	| 	%empty	     {;}
+ 	| {;}
  	;
- AuxMethodInvocation2: COMMA Expr AuxMethodInvocation2 {;}
- 	| %empty {;}
+AuxMethodInvocation2: COMMA Expr AuxMethodInvocation2 {;}
+ 	| {;}
  	;
 
 
@@ -102,19 +112,36 @@ ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV   {;}
 	;
 
 Expr: Assignment | MethodInvocation | ParseArgs  {;}
-	| Expr AuxExpr1 Expr  {;}
-	| Expr AuxExpr2 Expr  {;}
-	| Expr AuxExpr3 Expr  {;}
-	| Expr AuxExpr4  {;}
-	| ID [ DOTLENGTH ]  {;}
+  | Expr AND Expr  {;}
+  | Expr OR Expr  {;}
+  | Expr EQ Expr  {;}
+  | Expr GEQ Expr  {;}
+  | Expr GT Expr  {;}
+  | Expr LEQ Expr  {;}
+  | Expr LT Expr  {;}
+  | Expr NEQ Expr  {;}
+  | Expr PLUS Expr {;}
+  | Expr MINUS Expr {;}
+  | Expr STAR Expr {;}
+  | Expr DIV Expr {;}
+  | Expr MOD Expr {;}
+	| Expr PLUS  {;}
+  | Expr MINUS  {;}
+  | Expr NOT  {;}
+	| ID DOTLENGTH  {;}
+  | ID {;}
 	| OCURV Expr CCURV  {;}
 	| BOOLLIT | DECLIT | REALLIT  {;}
 	| OCURV error CCURV {;}
-	;
-AuxExpr1:  AND | OR  {;}
-AuxExpr2: EQ | GEQ | GT | LEQ | LT | NEQ {;}
-Auxexpr3:  PLUS | MINUS | STAR | DIV | MOD  {;}
+;
+ /*AuxExpr1:   AND | OR  {;}
+AuxExpr2:   EQ | GEQ | GT | LEQ | LT | NEQ {;}
+AuxExpr3:   PLUS | MINUS | STAR | DIV | MOD  {;}
 AuxExpr4:   PLUS | MINUS | NOT  {;}
+Auxexpr5:   DOTLENGTH  {;}
+  | {;}
+;*/
+
 
 %%
 /*void yyerror (const char *s) {

@@ -83,7 +83,10 @@
      DECLIT = 299,
      BOOLLIT = 300,
      ID = 301,
-     STRLIT = 302
+     STRLIT = 302,
+     PRECEDENCE = 303,
+     RSQ = 304,
+     LSQ = 305
    };
 #endif
 /* Tokens.  */
@@ -132,6 +135,9 @@
 #define BOOLLIT 300
 #define ID 301
 #define STRLIT 302
+#define PRECEDENCE 303
+#define RSQ 304
+#define LSQ 305
 
 
 
