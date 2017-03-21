@@ -2,10 +2,10 @@
   #include <stdio.h>
   int yylex(void);
   void yyerror(const char *s);
-
-extern int flagError;
-extern int nline;
-extern int ncolumn;
+ extern char *yytext;
+ extern int flagError;
+ extern int nline;
+ extern int ncolumn;
 %}
 
 %token BOOL CLASS DO DOTLENGTH DOUBLE ELSE IF INT PARSEINT PRINT PUBLIC RETURN STATIC STRING VOID WHILE OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE AND OR LT GT EQ NEQ GEQ LEQ
@@ -21,73 +21,102 @@ extern int ncolumn;
 %left STAR DIV MOD
 %right NOT
 
-%type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr
+ /* %type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr */
 %% 
 
-Program : CLASS ID OBRACE {FieldDecl | MethodDecl | SEMI} CBRACE {;}
+Program : CLASS ID OBRACE auxProgram CBRACE {;}
+auxProgram: FieldDecl auxProgram | MethodDecl auxProgram | SEMI auxProgram  {;}
+	| %empty {;}
+	;
 
-FieldDecl: PUBLIC STATIC Type ID { COMMA ID } SEMI {;}
- | error SEMI {;}
- ;
+FieldDecl: PUBLIC STATIC Type ID auxFieldDecl SEMI {;}
+ 	| error SEMI {;}
+ 	;
+ auxFieldDecl: COMMA ID auxFieldDecl {;}
+  | %empty {;}
+  ;
 
 MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {;}
 
-MethodHeader:  Aux ID OCURV [ FormalParams ] CCURV  {;}
-Aux: VOID | Type {;}
+MethodHeader:  AuxMethodHelper1 ID OCURV auxMethodHelper2 CCURV  {;}
+AuxMethodHelper1: VOID | Type {;}
+auxMethodHelper2: FormalParams {;}
+| %empty {;}
 
-MethodBody: OBRACE { Aux2} CBRACE {;}
-Aux2 : VarDecl | Statement {;}
-
-FormalParams:  Type ID { COMMA Type ID }    {;}
-	| STRING OSQUARE CSQUARE ID    {;}
+MethodBody: OBRACE AuxMethodBody CBRACE {;}
+AuxMethodBody : VarDecl AuxMethodBody {;}
+	| Statement AuxMethodBody {;}
+	| %empty {;}
 	;
 
-VarDecl: Type ID { COMMA ID } SEMI    {;}
+FormalParams:  Type ID auxFormalParams    {;}
+	| STRING OSQUARE CSQUARE ID    {;}
+	;
+auxFormalParams: COMMA Type ID auxFormalParams {;}
+	| %empty {;}
+	;
+
+VarDecl: Type ID auxVarDecl SEMI    {;}
+auxVarDecl :  COMMA ID auxVarDecl {;}
+  | %empty {;}
+  ;
 
 Type: BOOL | INT | DOUBLE {;}
 
-Statement: OBRACE { Statement } CBRACE    {;}
-	| IF OCURV Expr CCURV Statement Aux10 {;}
+Statement: OBRACE auxStatement4 CBRACE    {;}
+	| IF OCURV Expr CCURV Statement auxStatement3 {;}
 	| WHILE OCURV Expr CCURV Statement {;}
 	| DO Statement WHILE OCURV Expr CCURV SEMI  {;}
-	| PRINT OCURV Aux8 CCURV SEMI  {;}
-	| Aux3 SEMI  {;}
-	| RETURN [ Expr ] SEMI   {;}
+	| PRINT OCURV auxStatement2 CCURV SEMI  {;}
+	| auxStatement1 SEMI  {;}
+	| RETURN auxStatement5 SEMI   {;}
 	| error SEMI {;}
 	;
-Aux3: Assignment | MethodInvocation | ParseArgs |  {;} 
-Aux8: Expr | STRLIT {;}
-Aux10: ELSE Statement {;}
-  | 				  {;}
+auxStatement1: Assignment | MethodInvocation | ParseArgs | %empty {;} 
+auxStatement2: Expr | STRLIT {;}
+auxStatement3: ELSE Statement {;}
+  | %empty				  {;}
   ;
+ auxStatement4: Statement auxStatement4{;}
+  | %empty {;}
+  ;
+ auxStatement5: Expr {;}
+ 	| %empty{;}
+ 	;
 
 Assignment: ID ASSIGN Expr  {;}
 
-MethodInvocation: ID OCURV Aux11 CCURV   {;}
-Aux11: Expr { COMMA Expr } {;}
- 	| 					   {;}
+MethodInvocation: ID OCURV AuxMethodInvocation1 CCURV   {;}
  	| ID OCURV error CCURV {;}
  	;
+AuxMethodInvocation1: Expr AuxMethodInvocation2 {;}
+ 	| 	%empty	     {;}
+ 	;
+ AuxMethodInvocation2: COMMA Expr AuxMethodInvocation2 {;}
+ 	| %empty {;}
+ 	;
+
 
 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV   {;}
 	| PARSEINT OCURV error CCURV {;}
 	;
+
 Expr: Assignment | MethodInvocation | ParseArgs  {;}
-	| Expr Aux4 Expr  {;}
-	| Expr Aux5 Expr  {;}
-	| Expr Aux6 Expr  {;}
-	| Expr Aux7  {;}
+	| Expr AuxExpr1 Expr  {;}
+	| Expr AuxExpr2 Expr  {;}
+	| Expr AuxExpr3 Expr  {;}
+	| Expr AuxExpr4  {;}
 	| ID [ DOTLENGTH ]  {;}
 	| OCURV Expr CCURV  {;}
 	| BOOLLIT | DECLIT | REALLIT  {;}
 	| OCURV error CCURV {;}
 	;
-Aux4:  AND | OR  {;}
-Aux5: EQ | GEQ | GT | LEQ | LT | NEQ {;}
-Aux6:  PLUS | MINUS | STAR | DIV | MOD  {;}
-Aux7:   PLUS | MINUS | NOT  {;}
+AuxExpr1:  AND | OR  {;}
+AuxExpr2: EQ | GEQ | GT | LEQ | LT | NEQ {;}
+Auxexpr3:  PLUS | MINUS | STAR | DIV | MOD  {;}
+AuxExpr4:   PLUS | MINUS | NOT  {;}
 
 %%
-void yyerror (const char *s) {
+/*void yyerror (const char *s) {
 	printf ("Line %d, col %d: %s: %s\n", nline, ncolumn, s, yytext);
-}
+}*/
