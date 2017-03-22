@@ -9,7 +9,7 @@
 %token BOOL CLASS DO DOTLENGTH DOUBLE ELSE IF INT PARSEINT PRINT PUBLIC RETURN STATIC STRING VOID WHILE OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE AND OR LT GT EQ NEQ GEQ LEQ
 %token PLUS MINUS STAR DIV MOD NOT ASSIGN SEMI COMMA RESERVED REALLIT DECLIT BOOLLIT ID STRLIT
 
-%right ELSE
+
 
 %left COMMA
 %right ASSIGN
@@ -21,94 +21,94 @@
 %left STAR DIV MOD
 %right NOT
 %left OBRACE CBRACE LSQ CCURV RSQ
-
+%nonassoc ELSE
 
  /* %type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr */
 %%
 
 Program : CLASS ID OBRACE auxProgram CBRACE {;}
 auxProgram: FieldDecl auxProgram | MethodDecl auxProgram | SEMI auxProgram  {;}
-	| {;}
-;
+  | %empty{;}
+  ;
 
 FieldDecl: PUBLIC STATIC Type ID auxFieldDecl SEMI {;}
- 	| error SEMI {;}
-;
+  | error SEMI {printf("field decl error\n");}
+  ;
 auxFieldDecl: COMMA ID auxFieldDecl {;}
-  | {;}
-;
+  | %empty{;}
+  ;
 
 MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {;}
 ;
 
 MethodHeader:  VOID ID OCURV AuxMethodHelper2 CCURV  {;}
     | Type ID OCURV AuxMethodHelper2 CCURV
-;
+    ;
 
 AuxMethodHelper2: FormalParams {;}
-  | {;}
-;
+  | %empty{;}
+  ;
 MethodBody: OBRACE AuxMethodBody CBRACE {;}
 ;
 AuxMethodBody : VarDecl AuxMethodBody {;}
-	| Statement AuxMethodBody {;}
-	| {;}
+  | Statement AuxMethodBody {;}
+  | %empty{;}
 ;
 
 FormalParams:  Type ID auxFormalParams    {;}
-	| STRING OSQUARE CSQUARE ID    {;}
+  | STRING OSQUARE CSQUARE ID    {;}
 ;
 auxFormalParams: COMMA Type ID auxFormalParams {;}
-	| {;}
+  | %empty{;}
 ;
 
 VarDecl: Type ID auxVarDecl SEMI    {;}
 auxVarDecl :  COMMA ID auxVarDecl {;}
-  | {;}
+  | %empty{;}
 ;
 
 Type: BOOL  {;}
   | INT     {;}
   | DOUBLE  {;}
-
+;
 Statement: OBRACE auxStatement4 CBRACE    {;}
-  | IF OCURV Expr CCURV Statement %prec ELSE {;}
   | IF OCURV Expr CCURV Statement ELSE Statement {;}
-	| WHILE OCURV Expr CCURV Statement {;}
-	| DO Statement WHILE OCURV Expr CCURV SEMI  {;}
-	| PRINT OCURV auxStatement2 CCURV SEMI  {;}
-	| auxStatement1 SEMI  {;}
-	| RETURN auxStatement5 SEMI   {;}
-	| error SEMI {;}
-	;
-auxStatement1: Assignment | MethodInvocation | ParseArgs | {;}
+  | IF OCURV Expr CCURV Statement {;}
+  | WHILE OCURV Expr CCURV Statement {;}
+  | DO Statement WHILE OCURV Expr CCURV SEMI  {;}
+  | PRINT OCURV auxStatement2 CCURV SEMI  {;}
+  | auxStatement1 SEMI  {;}
+  | RETURN auxStatement5 SEMI   {;}
+  | error SEMI {printf("statement error\n");}
+  ;
+auxStatement1: Assignment | MethodInvocation | ParseArgs | %empty{;}
 auxStatement2: Expr | STRLIT {;}
  /*auxStatement3: ELSE Statement {;}
-  |	{;}
+  | {;}
 ;*/
 auxStatement4: Statement auxStatement4{;}
-  | {;}
+  | %empty{;}
   ;
 auxStatement5: Expr {;}
- 	| {;}
- 	;
+  | %empty{;}
+  ;
 
 Assignment: ID ASSIGN Expr  {;}
-
+;
 MethodInvocation: ID OCURV AuxMethodInvocation1 CCURV   {;}
- 	| ID OCURV error CCURV {;}
- 	;
+  | ID OCURV error CCURV {printf("methodinvo error\n");}
+  ;
 AuxMethodInvocation1: Expr AuxMethodInvocation2 {;}
- 	| {;}
- 	;
+  | %empty{;}
+  ;
 AuxMethodInvocation2: COMMA Expr AuxMethodInvocation2 {;}
- 	| {;}
- 	;
+  | %empty{;}
+  ;
 
 
 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV   {;}
-	| PARSEINT OCURV error CCURV {;}
-	;
+  | PARSEINT OCURV error CCURV {printf("parseargs error\n");}
+  ;
 
 Expr: Assignment | MethodInvocation | ParseArgs  {;}
   | Expr AND Expr  {;}
@@ -124,14 +124,14 @@ Expr: Assignment | MethodInvocation | ParseArgs  {;}
   | Expr STAR Expr {;}
   | Expr DIV Expr {;}
   | Expr MOD Expr {;}
-	| Expr PLUS  {;}
-  | Expr MINUS  {;}
-  | Expr NOT  {;}
-	| ID DOTLENGTH  {;}
+  |  PLUS  Expr{;}
+  |  MINUS Expr  {;}
+  |  NOT  Expr{;}
+  | ID DOTLENGTH  {;}
   | ID {;}
-	| OCURV Expr CCURV  {;}
-	| BOOLLIT | DECLIT | REALLIT  {;}
-	| OCURV error CCURV {;}
+  | OCURV Expr CCURV  {;}
+  | BOOLLIT | DECLIT | REALLIT  {;}
+  | OCURV error CCURV {printf("expression error");}
 ;
  /*AuxExpr1:   AND | OR  {;}
 AuxExpr2:   EQ | GEQ | GT | LEQ | LT | NEQ {;}
