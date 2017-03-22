@@ -1,9 +1,8 @@
-Terminals which are not used
+Terminals unused in grammar
 
    RESERVED
-   PRECEDENCE
-   RSQ
    LSQ
+   RSQ
 
 
 Grammar
@@ -15,13 +14,13 @@ Grammar
     2 auxProgram: FieldDecl auxProgram
     3           | MethodDecl auxProgram
     4           | SEMI auxProgram
-    5           | /* empty */
+    5           | %empty
 
     6 FieldDecl: PUBLIC STATIC Type ID auxFieldDecl SEMI
     7          | error SEMI
 
     8 auxFieldDecl: COMMA ID auxFieldDecl
-    9             | /* empty */
+    9             | %empty
 
    10 MethodDecl: PUBLIC STATIC MethodHeader MethodBody
 
@@ -29,32 +28,32 @@ Grammar
    12             | Type ID OCURV AuxMethodHelper2 CCURV
 
    13 AuxMethodHelper2: FormalParams
-   14                 | /* empty */
+   14                 | %empty
 
    15 MethodBody: OBRACE AuxMethodBody CBRACE
 
    16 AuxMethodBody: VarDecl AuxMethodBody
    17              | Statement AuxMethodBody
-   18              | /* empty */
+   18              | %empty
 
    19 FormalParams: Type ID auxFormalParams
    20             | STRING OSQUARE CSQUARE ID
 
    21 auxFormalParams: COMMA Type ID auxFormalParams
-   22                | /* empty */
+   22                | %empty
 
    23 VarDecl: Type ID auxVarDecl SEMI
 
    24 auxVarDecl: COMMA ID auxVarDecl
-   25           | /* empty */
+   25           | %empty
 
    26 Type: BOOL
    27     | INT
    28     | DOUBLE
 
    29 Statement: OBRACE auxStatement4 CBRACE
-   30          | IF OCURV Expr CCURV Statement ELSE Statement
-   31          | IF OCURV Expr CCURV Statement
+   30          | IF OCURV Expr CCURV Statement
+   31          | IF OCURV Expr CCURV Statement ELSE Statement
    32          | WHILE OCURV Expr CCURV Statement
    33          | DO Statement WHILE OCURV Expr CCURV SEMI
    34          | PRINT OCURV auxStatement2 CCURV SEMI
@@ -65,16 +64,16 @@ Grammar
    38 auxStatement1: Assignment
    39              | MethodInvocation
    40              | ParseArgs
-   41              | /* empty */
+   41              | %empty
 
    42 auxStatement2: Expr
    43              | STRLIT
 
    44 auxStatement4: Statement auxStatement4
-   45              | /* empty */
+   45              | %empty
 
    46 auxStatement5: Expr
-   47              | /* empty */
+   47              | %empty
 
    48 Assignment: ID ASSIGN Expr
 
@@ -82,10 +81,10 @@ Grammar
    50                 | ID OCURV error CCURV
 
    51 AuxMethodInvocation1: Expr AuxMethodInvocation2
-   52                     | /* empty */
+   52                     | %empty
 
    53 AuxMethodInvocation2: COMMA Expr AuxMethodInvocation2
-   54                     | /* empty */
+   54                     | %empty
 
    55 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV
    56          | PARSEINT OCURV error CCURV
@@ -127,7 +126,7 @@ CLASS (259) 1
 DO (260) 33
 DOTLENGTH (261) 76
 DOUBLE (262) 28
-ELSE (263) 30
+ELSE (263) 31
 IF (264) 30 31
 INT (265) 27
 PARSEINT (266) 55 56
@@ -167,70 +166,69 @@ DECLIT (299) 80
 BOOLLIT (300) 79
 ID (301) 1 6 8 11 12 19 20 21 23 24 48 49 50 55 76 77
 STRLIT (302) 43
-PRECEDENCE (303)
+LSQ (303)
 RSQ (304)
-LSQ (305)
 
 
 Nonterminals, with rules where they appear
 
-$accept (51)
+$accept (50)
     on left: 0
-Program (52)
+Program (51)
     on left: 1, on right: 0
-auxProgram (53)
+auxProgram (52)
     on left: 2 3 4 5, on right: 1 2 3 4
-FieldDecl (54)
+FieldDecl (53)
     on left: 6 7, on right: 2
-auxFieldDecl (55)
+auxFieldDecl (54)
     on left: 8 9, on right: 6 8
-MethodDecl (56)
+MethodDecl (55)
     on left: 10, on right: 3
-MethodHeader (57)
+MethodHeader (56)
     on left: 11 12, on right: 10
-AuxMethodHelper2 (58)
+AuxMethodHelper2 (57)
     on left: 13 14, on right: 11 12
-MethodBody (59)
+MethodBody (58)
     on left: 15, on right: 10
-AuxMethodBody (60)
+AuxMethodBody (59)
     on left: 16 17 18, on right: 15 16 17
-FormalParams (61)
+FormalParams (60)
     on left: 19 20, on right: 13
-auxFormalParams (62)
+auxFormalParams (61)
     on left: 21 22, on right: 19 21
-VarDecl (63)
+VarDecl (62)
     on left: 23, on right: 16
-auxVarDecl (64)
+auxVarDecl (63)
     on left: 24 25, on right: 23 24
-Type (65)
+Type (64)
     on left: 26 27 28, on right: 6 12 19 21 23
-Statement (66)
+Statement (65)
     on left: 29 30 31 32 33 34 35 36 37, on right: 17 30 31 32 33 44
-auxStatement1 (67)
+auxStatement1 (66)
     on left: 38 39 40 41, on right: 35
-auxStatement2 (68)
+auxStatement2 (67)
     on left: 42 43, on right: 34
-auxStatement4 (69)
+auxStatement4 (68)
     on left: 44 45, on right: 29 44
-auxStatement5 (70)
+auxStatement5 (69)
     on left: 46 47, on right: 36
-Assignment (71)
+Assignment (70)
     on left: 48, on right: 38 57
-MethodInvocation (72)
+MethodInvocation (71)
     on left: 49 50, on right: 39 58
-AuxMethodInvocation1 (73)
+AuxMethodInvocation1 (72)
     on left: 51 52, on right: 49
-AuxMethodInvocation2 (74)
+AuxMethodInvocation2 (73)
     on left: 53 54, on right: 51 53
-ParseArgs (75)
+ParseArgs (74)
     on left: 55 56, on right: 40 59
-Expr (76)
+Expr (75)
     on left: 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
     75 76 77 78 79 80 81 82, on right: 30 31 32 33 42 46 48 51 53 55
     60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 78
 
 
-state 0
+State 0
 
     0 $accept: . Program $end
 
@@ -239,35 +237,35 @@ state 0
     Program  go to state 2
 
 
-state 1
+State 1
 
     1 Program: CLASS . ID OBRACE auxProgram CBRACE
 
     ID  shift, and go to state 3
 
 
-state 2
+State 2
 
     0 $accept: Program . $end
 
     $end  shift, and go to state 4
 
 
-state 3
+State 3
 
     1 Program: CLASS ID . OBRACE auxProgram CBRACE
 
     OBRACE  shift, and go to state 5
 
 
-state 4
+State 4
 
     0 $accept: Program $end .
 
     $default  accept
 
 
-state 5
+State 5
 
     1 Program: CLASS ID OBRACE . auxProgram CBRACE
 
@@ -282,14 +280,14 @@ state 5
     MethodDecl  go to state 11
 
 
-state 6
+State 6
 
     7 FieldDecl: error . SEMI
 
     SEMI  shift, and go to state 12
 
 
-state 7
+State 7
 
     6 FieldDecl: PUBLIC . STATIC Type ID auxFieldDecl SEMI
    10 MethodDecl: PUBLIC . STATIC MethodHeader MethodBody
@@ -297,7 +295,7 @@ state 7
     STATIC  shift, and go to state 13
 
 
-state 8
+State 8
 
     4 auxProgram: SEMI . auxProgram
 
@@ -312,14 +310,14 @@ state 8
     MethodDecl  go to state 11
 
 
-state 9
+State 9
 
     1 Program: CLASS ID OBRACE auxProgram . CBRACE
 
     CBRACE  shift, and go to state 15
 
 
-state 10
+State 10
 
     2 auxProgram: FieldDecl . auxProgram
 
@@ -334,7 +332,7 @@ state 10
     MethodDecl  go to state 11
 
 
-state 11
+State 11
 
     3 auxProgram: MethodDecl . auxProgram
 
@@ -349,14 +347,14 @@ state 11
     MethodDecl  go to state 11
 
 
-state 12
+State 12
 
     7 FieldDecl: error SEMI .
 
     $default  reduce using rule 7 (FieldDecl)
 
 
-state 13
+State 13
 
     6 FieldDecl: PUBLIC STATIC . Type ID auxFieldDecl SEMI
    10 MethodDecl: PUBLIC STATIC . MethodHeader MethodBody
@@ -370,63 +368,63 @@ state 13
     Type          go to state 23
 
 
-state 14
+State 14
 
     4 auxProgram: SEMI auxProgram .
 
     $default  reduce using rule 4 (auxProgram)
 
 
-state 15
+State 15
 
     1 Program: CLASS ID OBRACE auxProgram CBRACE .
 
     $default  reduce using rule 1 (Program)
 
 
-state 16
+State 16
 
     2 auxProgram: FieldDecl auxProgram .
 
     $default  reduce using rule 2 (auxProgram)
 
 
-state 17
+State 17
 
     3 auxProgram: MethodDecl auxProgram .
 
     $default  reduce using rule 3 (auxProgram)
 
 
-state 18
+State 18
 
    26 Type: BOOL .
 
     $default  reduce using rule 26 (Type)
 
 
-state 19
+State 19
 
    28 Type: DOUBLE .
 
     $default  reduce using rule 28 (Type)
 
 
-state 20
+State 20
 
    27 Type: INT .
 
     $default  reduce using rule 27 (Type)
 
 
-state 21
+State 21
 
    11 MethodHeader: VOID . ID OCURV AuxMethodHelper2 CCURV
 
     ID  shift, and go to state 24
 
 
-state 22
+State 22
 
    10 MethodDecl: PUBLIC STATIC MethodHeader . MethodBody
 
@@ -435,7 +433,7 @@ state 22
     MethodBody  go to state 26
 
 
-state 23
+State 23
 
     6 FieldDecl: PUBLIC STATIC Type . ID auxFieldDecl SEMI
    12 MethodHeader: Type . ID OCURV AuxMethodHelper2 CCURV
@@ -443,14 +441,14 @@ state 23
     ID  shift, and go to state 27
 
 
-state 24
+State 24
 
    11 MethodHeader: VOID ID . OCURV AuxMethodHelper2 CCURV
 
     OCURV  shift, and go to state 28
 
 
-state 25
+State 25
 
    15 MethodBody: OBRACE . AuxMethodBody CBRACE
 
@@ -480,14 +478,14 @@ state 25
     ParseArgs         go to state 45
 
 
-state 26
+State 26
 
    10 MethodDecl: PUBLIC STATIC MethodHeader MethodBody .
 
     $default  reduce using rule 10 (MethodDecl)
 
 
-state 27
+State 27
 
     6 FieldDecl: PUBLIC STATIC Type ID . auxFieldDecl SEMI
    12 MethodHeader: Type ID . OCURV AuxMethodHelper2 CCURV
@@ -500,7 +498,7 @@ state 27
     auxFieldDecl  go to state 48
 
 
-state 28
+State 28
 
    11 MethodHeader: VOID ID OCURV . AuxMethodHelper2 CCURV
 
@@ -516,14 +514,14 @@ state 28
     Type              go to state 52
 
 
-state 29
+State 29
 
    37 Statement: error . SEMI
 
     SEMI  shift, and go to state 53
 
 
-state 30
+State 30
 
    33 Statement: DO . Statement WHILE OCURV Expr CCURV SEMI
 
@@ -546,15 +544,15 @@ state 30
     ParseArgs         go to state 45
 
 
-state 31
+State 31
 
-   30 Statement: IF . OCURV Expr CCURV Statement ELSE Statement
-   31          | IF . OCURV Expr CCURV Statement
+   30 Statement: IF . OCURV Expr CCURV Statement
+   31          | IF . OCURV Expr CCURV Statement ELSE Statement
 
     OCURV  shift, and go to state 55
 
 
-state 32
+State 32
 
    55 ParseArgs: PARSEINT . OCURV ID OSQUARE Expr CSQUARE CCURV
    56          | PARSEINT . OCURV error CCURV
@@ -562,14 +560,14 @@ state 32
     OCURV  shift, and go to state 56
 
 
-state 33
+State 33
 
    34 Statement: PRINT . OCURV auxStatement2 CCURV SEMI
 
     OCURV  shift, and go to state 57
 
 
-state 34
+State 34
 
    36 Statement: RETURN . auxStatement5 SEMI
 
@@ -589,14 +587,14 @@ state 34
     Expr              go to state 67
 
 
-state 35
+State 35
 
    32 Statement: WHILE . OCURV Expr CCURV Statement
 
     OCURV  shift, and go to state 68
 
 
-state 36
+State 36
 
    29 Statement: OBRACE . auxStatement4 CBRACE
 
@@ -621,7 +619,7 @@ state 36
     ParseArgs         go to state 45
 
 
-state 37
+State 37
 
    48 Assignment: ID . ASSIGN Expr
    49 MethodInvocation: ID . OCURV AuxMethodInvocation1 CCURV
@@ -631,14 +629,14 @@ state 37
     ASSIGN  shift, and go to state 72
 
 
-state 38
+State 38
 
    15 MethodBody: OBRACE AuxMethodBody . CBRACE
 
     CBRACE  shift, and go to state 73
 
 
-state 39
+State 39
 
    16 AuxMethodBody: VarDecl . AuxMethodBody
 
@@ -668,14 +666,14 @@ state 39
     ParseArgs         go to state 45
 
 
-state 40
+State 40
 
    23 VarDecl: Type . ID auxVarDecl SEMI
 
     ID  shift, and go to state 75
 
 
-state 41
+State 41
 
    17 AuxMethodBody: Statement . AuxMethodBody
 
@@ -705,35 +703,35 @@ state 41
     ParseArgs         go to state 45
 
 
-state 42
+State 42
 
    35 Statement: auxStatement1 . SEMI
 
     SEMI  shift, and go to state 77
 
 
-state 43
+State 43
 
    38 auxStatement1: Assignment .
 
     $default  reduce using rule 38 (auxStatement1)
 
 
-state 44
+State 44
 
    39 auxStatement1: MethodInvocation .
 
     $default  reduce using rule 39 (auxStatement1)
 
 
-state 45
+State 45
 
    40 auxStatement1: ParseArgs .
 
     $default  reduce using rule 40 (auxStatement1)
 
 
-state 46
+State 46
 
    12 MethodHeader: Type ID OCURV . AuxMethodHelper2 CCURV
 
@@ -749,66 +747,66 @@ state 46
     Type              go to state 52
 
 
-state 47
+State 47
 
     8 auxFieldDecl: COMMA . ID auxFieldDecl
 
     ID  shift, and go to state 79
 
 
-state 48
+State 48
 
     6 FieldDecl: PUBLIC STATIC Type ID auxFieldDecl . SEMI
 
     SEMI  shift, and go to state 80
 
 
-state 49
+State 49
 
    20 FormalParams: STRING . OSQUARE CSQUARE ID
 
     OSQUARE  shift, and go to state 81
 
 
-state 50
+State 50
 
    11 MethodHeader: VOID ID OCURV AuxMethodHelper2 . CCURV
 
     CCURV  shift, and go to state 82
 
 
-state 51
+State 51
 
    13 AuxMethodHelper2: FormalParams .
 
     $default  reduce using rule 13 (AuxMethodHelper2)
 
 
-state 52
+State 52
 
    19 FormalParams: Type . ID auxFormalParams
 
     ID  shift, and go to state 83
 
 
-state 53
+State 53
 
    37 Statement: error SEMI .
 
     $default  reduce using rule 37 (Statement)
 
 
-state 54
+State 54
 
    33 Statement: DO Statement . WHILE OCURV Expr CCURV SEMI
 
     WHILE  shift, and go to state 84
 
 
-state 55
+State 55
 
-   30 Statement: IF OCURV . Expr CCURV Statement ELSE Statement
-   31          | IF OCURV . Expr CCURV Statement
+   30 Statement: IF OCURV . Expr CCURV Statement
+   31          | IF OCURV . Expr CCURV Statement ELSE Statement
 
     PARSEINT  shift, and go to state 32
     OCURV     shift, and go to state 58
@@ -823,7 +821,7 @@ state 55
     Expr              go to state 85
 
 
-state 56
+State 56
 
    55 ParseArgs: PARSEINT OCURV . ID OSQUARE Expr CSQUARE CCURV
    56          | PARSEINT OCURV . error CCURV
@@ -832,7 +830,7 @@ state 56
     ID     shift, and go to state 87
 
 
-state 57
+State 57
 
    34 Statement: PRINT OCURV . auxStatement2 CCURV SEMI
 
@@ -851,7 +849,7 @@ state 57
     Expr              go to state 90
 
 
-state 58
+State 58
 
    78 Expr: OCURV . Expr CCURV
    82     | OCURV . error CCURV
@@ -870,28 +868,28 @@ state 58
     Expr              go to state 92
 
 
-state 59
+State 59
 
    81 Expr: REALLIT .
 
     $default  reduce using rule 81 (Expr)
 
 
-state 60
+State 60
 
    80 Expr: DECLIT .
 
     $default  reduce using rule 80 (Expr)
 
 
-state 61
+State 61
 
    79 Expr: BOOLLIT .
 
     $default  reduce using rule 79 (Expr)
 
 
-state 62
+State 62
 
    48 Assignment: ID . ASSIGN Expr
    49 MethodInvocation: ID . OCURV AuxMethodInvocation1 CCURV
@@ -906,35 +904,35 @@ state 62
     $default  reduce using rule 77 (Expr)
 
 
-state 63
+State 63
 
    36 Statement: RETURN auxStatement5 . SEMI
 
     SEMI  shift, and go to state 94
 
 
-state 64
+State 64
 
    57 Expr: Assignment .
 
     $default  reduce using rule 57 (Expr)
 
 
-state 65
+State 65
 
    58 Expr: MethodInvocation .
 
     $default  reduce using rule 58 (Expr)
 
 
-state 66
+State 66
 
    59 Expr: ParseArgs .
 
     $default  reduce using rule 59 (Expr)
 
 
-state 67
+State 67
 
    46 auxStatement5: Expr .
    60 Expr: Expr . AND Expr
@@ -972,7 +970,7 @@ state 67
     $default  reduce using rule 46 (auxStatement5)
 
 
-state 68
+State 68
 
    32 Statement: WHILE OCURV . Expr CCURV Statement
 
@@ -989,7 +987,7 @@ state 68
     Expr              go to state 109
 
 
-state 69
+State 69
 
    44 auxStatement4: Statement . auxStatement4
 
@@ -1014,14 +1012,14 @@ state 69
     ParseArgs         go to state 45
 
 
-state 70
+State 70
 
    29 Statement: OBRACE auxStatement4 . CBRACE
 
     CBRACE  shift, and go to state 111
 
 
-state 71
+State 71
 
    49 MethodInvocation: ID OCURV . AuxMethodInvocation1 CCURV
    50                 | ID OCURV . error CCURV
@@ -1043,7 +1041,7 @@ state 71
     Expr                  go to state 114
 
 
-state 72
+State 72
 
    48 Assignment: ID ASSIGN . Expr
 
@@ -1060,21 +1058,21 @@ state 72
     Expr              go to state 115
 
 
-state 73
+State 73
 
    15 MethodBody: OBRACE AuxMethodBody CBRACE .
 
     $default  reduce using rule 15 (MethodBody)
 
 
-state 74
+State 74
 
    16 AuxMethodBody: VarDecl AuxMethodBody .
 
     $default  reduce using rule 16 (AuxMethodBody)
 
 
-state 75
+State 75
 
    23 VarDecl: Type ID . auxVarDecl SEMI
 
@@ -1085,28 +1083,28 @@ state 75
     auxVarDecl  go to state 117
 
 
-state 76
+State 76
 
    17 AuxMethodBody: Statement AuxMethodBody .
 
     $default  reduce using rule 17 (AuxMethodBody)
 
 
-state 77
+State 77
 
    35 Statement: auxStatement1 SEMI .
 
     $default  reduce using rule 35 (Statement)
 
 
-state 78
+State 78
 
    12 MethodHeader: Type ID OCURV AuxMethodHelper2 . CCURV
 
     CCURV  shift, and go to state 118
 
 
-state 79
+State 79
 
     8 auxFieldDecl: COMMA ID . auxFieldDecl
 
@@ -1117,28 +1115,28 @@ state 79
     auxFieldDecl  go to state 119
 
 
-state 80
+State 80
 
     6 FieldDecl: PUBLIC STATIC Type ID auxFieldDecl SEMI .
 
     $default  reduce using rule 6 (FieldDecl)
 
 
-state 81
+State 81
 
    20 FormalParams: STRING OSQUARE . CSQUARE ID
 
     CSQUARE  shift, and go to state 120
 
 
-state 82
+State 82
 
    11 MethodHeader: VOID ID OCURV AuxMethodHelper2 CCURV .
 
     $default  reduce using rule 11 (MethodHeader)
 
 
-state 83
+State 83
 
    19 FormalParams: Type ID . auxFormalParams
 
@@ -1149,17 +1147,17 @@ state 83
     auxFormalParams  go to state 122
 
 
-state 84
+State 84
 
    33 Statement: DO Statement WHILE . OCURV Expr CCURV SEMI
 
     OCURV  shift, and go to state 123
 
 
-state 85
+State 85
 
-   30 Statement: IF OCURV Expr . CCURV Statement ELSE Statement
-   31          | IF OCURV Expr . CCURV Statement
+   30 Statement: IF OCURV Expr . CCURV Statement
+   31          | IF OCURV Expr . CCURV Statement ELSE Statement
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
    62     | Expr . EQ Expr
@@ -1194,35 +1192,35 @@ state 85
     NOT    shift, and go to state 108
 
 
-state 86
+State 86
 
    56 ParseArgs: PARSEINT OCURV error . CCURV
 
     CCURV  shift, and go to state 125
 
 
-state 87
+State 87
 
    55 ParseArgs: PARSEINT OCURV ID . OSQUARE Expr CSQUARE CCURV
 
     OSQUARE  shift, and go to state 126
 
 
-state 88
+State 88
 
    43 auxStatement2: STRLIT .
 
     $default  reduce using rule 43 (auxStatement2)
 
 
-state 89
+State 89
 
    34 Statement: PRINT OCURV auxStatement2 . CCURV SEMI
 
     CCURV  shift, and go to state 127
 
 
-state 90
+State 90
 
    42 auxStatement2: Expr .
    60 Expr: Expr . AND Expr
@@ -1260,14 +1258,14 @@ state 90
     $default  reduce using rule 42 (auxStatement2)
 
 
-state 91
+State 91
 
    82 Expr: OCURV error . CCURV
 
     CCURV  shift, and go to state 128
 
 
-state 92
+State 92
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -1304,21 +1302,21 @@ state 92
     NOT    shift, and go to state 108
 
 
-state 93
+State 93
 
    76 Expr: ID DOTLENGTH .
 
     $default  reduce using rule 76 (Expr)
 
 
-state 94
+State 94
 
    36 Statement: RETURN auxStatement5 SEMI .
 
     $default  reduce using rule 36 (Statement)
 
 
-state 95
+State 95
 
    60 Expr: Expr AND . Expr
 
@@ -1335,7 +1333,7 @@ state 95
     Expr              go to state 130
 
 
-state 96
+State 96
 
    61 Expr: Expr OR . Expr
 
@@ -1352,7 +1350,7 @@ state 96
     Expr              go to state 131
 
 
-state 97
+State 97
 
    66 Expr: Expr LT . Expr
 
@@ -1369,7 +1367,7 @@ state 97
     Expr              go to state 132
 
 
-state 98
+State 98
 
    64 Expr: Expr GT . Expr
 
@@ -1386,7 +1384,7 @@ state 98
     Expr              go to state 133
 
 
-state 99
+State 99
 
    62 Expr: Expr EQ . Expr
 
@@ -1403,7 +1401,7 @@ state 99
     Expr              go to state 134
 
 
-state 100
+State 100
 
    67 Expr: Expr NEQ . Expr
 
@@ -1420,7 +1418,7 @@ state 100
     Expr              go to state 135
 
 
-state 101
+State 101
 
    63 Expr: Expr GEQ . Expr
 
@@ -1437,7 +1435,7 @@ state 101
     Expr              go to state 136
 
 
-state 102
+State 102
 
    65 Expr: Expr LEQ . Expr
 
@@ -1454,7 +1452,7 @@ state 102
     Expr              go to state 137
 
 
-state 103
+State 103
 
    68 Expr: Expr PLUS . Expr
    73     | Expr PLUS .
@@ -1474,7 +1472,7 @@ state 103
     Expr              go to state 138
 
 
-state 104
+State 104
 
    69 Expr: Expr MINUS . Expr
    74     | Expr MINUS .
@@ -1494,7 +1492,7 @@ state 104
     Expr              go to state 139
 
 
-state 105
+State 105
 
    70 Expr: Expr STAR . Expr
 
@@ -1511,7 +1509,7 @@ state 105
     Expr              go to state 140
 
 
-state 106
+State 106
 
    71 Expr: Expr DIV . Expr
 
@@ -1528,7 +1526,7 @@ state 106
     Expr              go to state 141
 
 
-state 107
+State 107
 
    72 Expr: Expr MOD . Expr
 
@@ -1545,14 +1543,14 @@ state 107
     Expr              go to state 142
 
 
-state 108
+State 108
 
    75 Expr: Expr NOT .
 
     $default  reduce using rule 75 (Expr)
 
 
-state 109
+State 109
 
    32 Statement: WHILE OCURV Expr . CCURV Statement
    60 Expr: Expr . AND Expr
@@ -1589,35 +1587,35 @@ state 109
     NOT    shift, and go to state 108
 
 
-state 110
+State 110
 
    44 auxStatement4: Statement auxStatement4 .
 
     $default  reduce using rule 44 (auxStatement4)
 
 
-state 111
+State 111
 
    29 Statement: OBRACE auxStatement4 CBRACE .
 
     $default  reduce using rule 29 (Statement)
 
 
-state 112
+State 112
 
    50 MethodInvocation: ID OCURV error . CCURV
 
     CCURV  shift, and go to state 144
 
 
-state 113
+State 113
 
    49 MethodInvocation: ID OCURV AuxMethodInvocation1 . CCURV
 
     CCURV  shift, and go to state 145
 
 
-state 114
+State 114
 
    51 AuxMethodInvocation1: Expr . AuxMethodInvocation2
    60 Expr: Expr . AND Expr
@@ -1658,7 +1656,7 @@ state 114
     AuxMethodInvocation2  go to state 147
 
 
-state 115
+State 115
 
    48 Assignment: ID ASSIGN Expr .
    60 Expr: Expr . AND Expr
@@ -1696,42 +1694,42 @@ state 115
     $default  reduce using rule 48 (Assignment)
 
 
-state 116
+State 116
 
    24 auxVarDecl: COMMA . ID auxVarDecl
 
     ID  shift, and go to state 148
 
 
-state 117
+State 117
 
    23 VarDecl: Type ID auxVarDecl . SEMI
 
     SEMI  shift, and go to state 149
 
 
-state 118
+State 118
 
    12 MethodHeader: Type ID OCURV AuxMethodHelper2 CCURV .
 
     $default  reduce using rule 12 (MethodHeader)
 
 
-state 119
+State 119
 
     8 auxFieldDecl: COMMA ID auxFieldDecl .
 
     $default  reduce using rule 8 (auxFieldDecl)
 
 
-state 120
+State 120
 
    20 FormalParams: STRING OSQUARE CSQUARE . ID
 
     ID  shift, and go to state 150
 
 
-state 121
+State 121
 
    21 auxFormalParams: COMMA . Type ID auxFormalParams
 
@@ -1742,14 +1740,14 @@ state 121
     Type  go to state 151
 
 
-state 122
+State 122
 
    19 FormalParams: Type ID auxFormalParams .
 
     $default  reduce using rule 19 (FormalParams)
 
 
-state 123
+State 123
 
    33 Statement: DO Statement WHILE OCURV . Expr CCURV SEMI
 
@@ -1766,10 +1764,10 @@ state 123
     Expr              go to state 152
 
 
-state 124
+State 124
 
-   30 Statement: IF OCURV Expr CCURV . Statement ELSE Statement
-   31          | IF OCURV Expr CCURV . Statement
+   30 Statement: IF OCURV Expr CCURV . Statement
+   31          | IF OCURV Expr CCURV . Statement ELSE Statement
 
     error     shift, and go to state 29
     DO        shift, and go to state 30
@@ -1790,14 +1788,14 @@ state 124
     ParseArgs         go to state 45
 
 
-state 125
+State 125
 
    56 ParseArgs: PARSEINT OCURV error CCURV .
 
     $default  reduce using rule 56 (ParseArgs)
 
 
-state 126
+State 126
 
    55 ParseArgs: PARSEINT OCURV ID OSQUARE . Expr CSQUARE CCURV
 
@@ -1814,28 +1812,28 @@ state 126
     Expr              go to state 154
 
 
-state 127
+State 127
 
    34 Statement: PRINT OCURV auxStatement2 CCURV . SEMI
 
     SEMI  shift, and go to state 155
 
 
-state 128
+State 128
 
    82 Expr: OCURV error CCURV .
 
     $default  reduce using rule 82 (Expr)
 
 
-state 129
+State 129
 
    78 Expr: OCURV Expr CCURV .
 
     $default  reduce using rule 78 (Expr)
 
 
-state 130
+State 130
 
    60 Expr: Expr . AND Expr
    60     | Expr AND Expr .
@@ -1871,7 +1869,7 @@ state 130
     $default  reduce using rule 60 (Expr)
 
 
-state 131
+State 131
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -1908,7 +1906,7 @@ state 131
     $default  reduce using rule 61 (Expr)
 
 
-state 132
+State 132
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -1938,7 +1936,7 @@ state 132
     $default  reduce using rule 66 (Expr)
 
 
-state 133
+State 133
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -1968,7 +1966,7 @@ state 133
     $default  reduce using rule 64 (Expr)
 
 
-state 134
+State 134
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -2002,7 +2000,7 @@ state 134
     $default  reduce using rule 62 (Expr)
 
 
-state 135
+State 135
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -2036,7 +2034,7 @@ state 135
     $default  reduce using rule 67 (Expr)
 
 
-state 136
+State 136
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -2066,7 +2064,7 @@ state 136
     $default  reduce using rule 63 (Expr)
 
 
-state 137
+State 137
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -2096,7 +2094,7 @@ state 137
     $default  reduce using rule 65 (Expr)
 
 
-state 138
+State 138
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -2124,7 +2122,7 @@ state 138
     $default  reduce using rule 68 (Expr)
 
 
-state 139
+State 139
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -2152,7 +2150,7 @@ state 139
     $default  reduce using rule 69 (Expr)
 
 
-state 140
+State 140
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -2177,7 +2175,7 @@ state 140
     $default  reduce using rule 70 (Expr)
 
 
-state 141
+State 141
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -2202,7 +2200,7 @@ state 141
     $default  reduce using rule 71 (Expr)
 
 
-state 142
+State 142
 
    60 Expr: Expr . AND Expr
    61     | Expr . OR Expr
@@ -2227,7 +2225,7 @@ state 142
     $default  reduce using rule 72 (Expr)
 
 
-state 143
+State 143
 
    32 Statement: WHILE OCURV Expr CCURV . Statement
 
@@ -2250,21 +2248,21 @@ state 143
     ParseArgs         go to state 45
 
 
-state 144
+State 144
 
    50 MethodInvocation: ID OCURV error CCURV .
 
     $default  reduce using rule 50 (MethodInvocation)
 
 
-state 145
+State 145
 
    49 MethodInvocation: ID OCURV AuxMethodInvocation1 CCURV .
 
     $default  reduce using rule 49 (MethodInvocation)
 
 
-state 146
+State 146
 
    53 AuxMethodInvocation2: COMMA . Expr AuxMethodInvocation2
 
@@ -2281,14 +2279,14 @@ state 146
     Expr              go to state 157
 
 
-state 147
+State 147
 
    51 AuxMethodInvocation1: Expr AuxMethodInvocation2 .
 
     $default  reduce using rule 51 (AuxMethodInvocation1)
 
 
-state 148
+State 148
 
    24 auxVarDecl: COMMA ID . auxVarDecl
 
@@ -2299,28 +2297,28 @@ state 148
     auxVarDecl  go to state 158
 
 
-state 149
+State 149
 
    23 VarDecl: Type ID auxVarDecl SEMI .
 
     $default  reduce using rule 23 (VarDecl)
 
 
-state 150
+State 150
 
    20 FormalParams: STRING OSQUARE CSQUARE ID .
 
     $default  reduce using rule 20 (FormalParams)
 
 
-state 151
+State 151
 
    21 auxFormalParams: COMMA Type . ID auxFormalParams
 
     ID  shift, and go to state 159
 
 
-state 152
+State 152
 
    33 Statement: DO Statement WHILE OCURV Expr . CCURV SEMI
    60 Expr: Expr . AND Expr
@@ -2357,17 +2355,17 @@ state 152
     NOT    shift, and go to state 108
 
 
-state 153
+State 153
 
-   30 Statement: IF OCURV Expr CCURV Statement . ELSE Statement
-   31          | IF OCURV Expr CCURV Statement .
+   30 Statement: IF OCURV Expr CCURV Statement .
+   31          | IF OCURV Expr CCURV Statement . ELSE Statement
 
     ELSE  shift, and go to state 161
 
-    $default  reduce using rule 31 (Statement)
+    $default  reduce using rule 30 (Statement)
 
 
-state 154
+State 154
 
    55 ParseArgs: PARSEINT OCURV ID OSQUARE Expr . CSQUARE CCURV
    60 Expr: Expr . AND Expr
@@ -2404,21 +2402,21 @@ state 154
     NOT      shift, and go to state 108
 
 
-state 155
+State 155
 
    34 Statement: PRINT OCURV auxStatement2 CCURV SEMI .
 
     $default  reduce using rule 34 (Statement)
 
 
-state 156
+State 156
 
    32 Statement: WHILE OCURV Expr CCURV Statement .
 
     $default  reduce using rule 32 (Statement)
 
 
-state 157
+State 157
 
    53 AuxMethodInvocation2: COMMA Expr . AuxMethodInvocation2
    60 Expr: Expr . AND Expr
@@ -2459,14 +2457,14 @@ state 157
     AuxMethodInvocation2  go to state 163
 
 
-state 158
+State 158
 
    24 auxVarDecl: COMMA ID auxVarDecl .
 
     $default  reduce using rule 24 (auxVarDecl)
 
 
-state 159
+State 159
 
    21 auxFormalParams: COMMA Type ID . auxFormalParams
 
@@ -2477,16 +2475,16 @@ state 159
     auxFormalParams  go to state 164
 
 
-state 160
+State 160
 
    33 Statement: DO Statement WHILE OCURV Expr CCURV . SEMI
 
     SEMI  shift, and go to state 165
 
 
-state 161
+State 161
 
-   30 Statement: IF OCURV Expr CCURV Statement ELSE . Statement
+   31 Statement: IF OCURV Expr CCURV Statement ELSE . Statement
 
     error     shift, and go to state 29
     DO        shift, and go to state 30
@@ -2507,42 +2505,42 @@ state 161
     ParseArgs         go to state 45
 
 
-state 162
+State 162
 
    55 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE . CCURV
 
     CCURV  shift, and go to state 167
 
 
-state 163
+State 163
 
    53 AuxMethodInvocation2: COMMA Expr AuxMethodInvocation2 .
 
     $default  reduce using rule 53 (AuxMethodInvocation2)
 
 
-state 164
+State 164
 
    21 auxFormalParams: COMMA Type ID auxFormalParams .
 
     $default  reduce using rule 21 (auxFormalParams)
 
 
-state 165
+State 165
 
    33 Statement: DO Statement WHILE OCURV Expr CCURV SEMI .
 
     $default  reduce using rule 33 (Statement)
 
 
-state 166
+State 166
 
-   30 Statement: IF OCURV Expr CCURV Statement ELSE Statement .
+   31 Statement: IF OCURV Expr CCURV Statement ELSE Statement .
 
-    $default  reduce using rule 30 (Statement)
+    $default  reduce using rule 31 (Statement)
 
 
-state 167
+State 167
 
    55 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV .
 

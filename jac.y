@@ -1,15 +1,15 @@
 %{
   #include <stdio.h>
+  #include <string.h>
+
   int yylex(void);
   void yyerror(const char *s);
-  extern char *yytext;
-  extern int flagError;
-  extern int nline;
-  extern int ncolumn;
 %}
 
 %token BOOL CLASS DO DOTLENGTH DOUBLE ELSE IF INT PARSEINT PRINT PUBLIC RETURN STATIC STRING VOID WHILE OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE AND OR LT GT EQ NEQ GEQ LEQ
 %token PLUS MINUS STAR DIV MOD NOT ASSIGN SEMI COMMA RESERVED REALLIT DECLIT BOOLLIT ID STRLIT
+
+%right ELSE
 
 %left COMMA
 %right ASSIGN
@@ -20,9 +20,8 @@
 %left PLUS MINUS
 %left STAR DIV MOD
 %right NOT
-%right PRECEDENCE
 %left OBRACE CBRACE LSQ CCURV RSQ
-%nonassoc ELSE
+
 
  /* %type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr */
 %%
@@ -73,8 +72,8 @@ Type: BOOL  {;}
   | DOUBLE  {;}
 
 Statement: OBRACE auxStatement4 CBRACE    {;}
+  | IF OCURV Expr CCURV Statement %prec ELSE {;}
   | IF OCURV Expr CCURV Statement ELSE Statement {;}
-  | IF OCURV Expr CCURV Statement  {;}
 	| WHILE OCURV Expr CCURV Statement {;}
 	| DO Statement WHILE OCURV Expr CCURV SEMI  {;}
 	| PRINT OCURV auxStatement2 CCURV SEMI  {;}
@@ -144,6 +143,3 @@ Auxexpr5:   DOTLENGTH  {;}
 
 
 %%
-/*void yyerror (const char *s) {
-	printf ("Line %d, col %d: %s: %s\n", nline, ncolumn, s, yytext);
-}*/

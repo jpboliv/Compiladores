@@ -3,4 +3,4 @@ lex jac.l
 yacc -d -v jac.y
 zip jac.zip jac.l jac.y
 cc -o jac y.tab.c lex.yy.c
-./jac -l < teste.java
+./jac  < teste.java
