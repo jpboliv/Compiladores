@@ -2367,6 +2367,6 @@ return 1;
 }
 
 void yyerror (const char *s) {
-	printf ("Line %d, col %lu: %s: %s\n", n_line, n_column-yyleng, s, yytext);
+  printf ("Line %d, col %lu: %s: %s\n", n_line, n_column-strlen(yytext), s, yytext);
 }
 
