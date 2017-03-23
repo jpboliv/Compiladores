@@ -1,6 +1,26 @@
 %{
-  #include <stdio.h>
+    #include <stdio.h>
   #include <string.h>
+  #define NSYMS 100
+  
+ typedef struct _symtab{
+  char *name;
+  double value; //nao pode ser so double(exemplo da aula)
+  }symtab;
+
+  //ast
+ typedef struct node {
+  int flagComma;
+  char* type;
+  char* value;
+  char* type_print;
+  struct node *son;
+  struct node *brother;
+  //faltam cenas COMEBACK HERE
+} node;
+
+  symtab tab[NSYMS];
+
   int yylex(void);
   void yyerror(const char *s);
 %}
@@ -137,3 +157,15 @@ Expr: Assignment | MethodInvocation | ParseArgs  {;}
 
 
 %%
+/*symtab *symlook(char *varname){
+  int i;
+  for(i=0; i<NSYMS; i++){
+    if(tab[i].name && strcmp(varname, tab[i].name)==0)
+      return &tab[i];
+      if(!tab[i].name){
+        tab[i].name=varname;
+        return &tab[i];
+      }
+  }
+  yyerror("tamanha maximo ultrapassado"); 
+ } */
