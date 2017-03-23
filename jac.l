@@ -15,7 +15,7 @@ letters[a-zA-Z]
 numbers[0-9]
 boolit("true"|"false")
 exponential         "e"|"E"|"e+"|"e-"|"E+"|"E-"
-line_terminator     "\n"|"\r"|("\r")+"\n"
+line_terminator     "\n"|"\r"|("\r")"\n"
 esc_sequence        \\n|\\f|\\r|\\\\|\\\"|\\t
 repeater            {numbers}+(("_")*{numbers}+)*
 
@@ -109,10 +109,11 @@ REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({re
 
 
 "//"                              {BEGIN LINECOMMENT;comment_column = n_column; n_column+=yyleng;}
-<LINECOMMENT><<EOF>>              {BEGIN 0;};
+<LINECOMMENT><<EOF>>              {BEGIN 0;}
 <LINECOMMENT>{line_terminator}    {n_line+=1;n_column=1;BEGIN 0;}
 <LINECOMMENT>.                    {n_column+=yyleng;}
 
+<<EOF>>                           {return 0;}
 
 .                                 {printf("Line %d, col %d: illegal character (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}
 

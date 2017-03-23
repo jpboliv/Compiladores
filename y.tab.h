@@ -89,9 +89,7 @@ extern int yydebug;
     DECLIT = 299,
     BOOLLIT = 300,
     ID = 301,
-    STRLIT = 302,
-    LSQ = 303,
-    RSQ = 304
+    STRLIT = 302
   };
 #endif
 /* Tokens.  */
@@ -140,8 +138,6 @@ extern int yydebug;
 #define BOOLLIT 300
 #define ID 301
 #define STRLIT 302
-#define LSQ 303
-#define RSQ 304
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

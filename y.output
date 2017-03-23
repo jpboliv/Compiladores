@@ -1,8 +1,6 @@
 Terminals unused in grammar
 
    RESERVED
-   LSQ
-   RSQ
 
 
 Grammar
@@ -166,63 +164,61 @@ DECLIT (299) 80
 BOOLLIT (300) 79
 ID (301) 1 6 8 11 12 19 20 21 23 24 48 49 50 55 76 77
 STRLIT (302) 43
-LSQ (303)
-RSQ (304)
 
 
 Nonterminals, with rules where they appear
 
-$accept (50)
+$accept (48)
     on left: 0
-Program (51)
+Program (49)
     on left: 1, on right: 0
-auxProgram (52)
+auxProgram (50)
     on left: 2 3 4 5, on right: 1 2 3 4
-FieldDecl (53)
+FieldDecl (51)
     on left: 6 7, on right: 2
-auxFieldDecl (54)
+auxFieldDecl (52)
     on left: 8 9, on right: 6 8
-MethodDecl (55)
+MethodDecl (53)
     on left: 10, on right: 3
-MethodHeader (56)
+MethodHeader (54)
     on left: 11 12, on right: 10
-AuxMethodHelper2 (57)
+AuxMethodHelper2 (55)
     on left: 13 14, on right: 11 12
-MethodBody (58)
+MethodBody (56)
     on left: 15, on right: 10
-AuxMethodBody (59)
+AuxMethodBody (57)
     on left: 16 17 18, on right: 15 16 17
-FormalParams (60)
+FormalParams (58)
     on left: 19 20, on right: 13
-auxFormalParams (61)
+auxFormalParams (59)
     on left: 21 22, on right: 19 21
-VarDecl (62)
+VarDecl (60)
     on left: 23, on right: 16
-auxVarDecl (63)
+auxVarDecl (61)
     on left: 24 25, on right: 23 24
-Type (64)
+Type (62)
     on left: 26 27 28, on right: 6 11 19 21 23
-Statement (65)
+Statement (63)
     on left: 29 30 31 32 33 34 35 36 37, on right: 17 30 31 32 33 44
-auxStatement1 (66)
+auxStatement1 (64)
     on left: 38 39 40 41, on right: 35
-auxStatement2 (67)
+auxStatement2 (65)
     on left: 42 43, on right: 34
-auxStatement4 (68)
+auxStatement4 (66)
     on left: 44 45, on right: 29 44
-auxStatement5 (69)
+auxStatement5 (67)
     on left: 46 47, on right: 36
-Assignment (70)
+Assignment (68)
     on left: 48, on right: 38 57
-MethodInvocation (71)
+MethodInvocation (69)
     on left: 49 50, on right: 39 58
-AuxMethodInvocation1 (72)
+AuxMethodInvocation1 (70)
     on left: 51 52, on right: 49
-AuxMethodInvocation2 (73)
+AuxMethodInvocation2 (71)
     on left: 53 54, on right: 51 53
-ParseArgs (74)
+ParseArgs (72)
     on left: 55 56, on right: 40 59
-Expr (75)
+Expr (73)
     on left: 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
     75 76 77 78 79 80 81 82, on right: 30 31 32 33 42 46 48 51 53 55
     60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 78

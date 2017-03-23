@@ -148,9 +148,7 @@ extern int yydebug;
     DECLIT = 299,
     BOOLLIT = 300,
     ID = 301,
-    STRLIT = 302,
-    LSQ = 303,
-    RSQ = 304
+    STRLIT = 302
   };
 #endif
 /* Tokens.  */
@@ -199,8 +197,6 @@ extern int yydebug;
 #define BOOLLIT 300
 #define ID 301
 #define STRLIT 302
-#define LSQ 303
-#define RSQ 304
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -218,7 +214,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 222 "y.tab.c" /* yacc.c:358  */
+#line 218 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -463,7 +459,7 @@ union yyalloc
 #define YYLAST   401
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  50
+#define YYNTOKENS  48
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  26
 /* YYNRULES -- Number of rules.  */
@@ -474,7 +470,7 @@ union yyalloc
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   304
+#define YYMAXUTOK   302
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -513,7 +509,7 @@ static const yytype_uint8 yytranslate[] =
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
-      45,    46,    47,    48,    49
+      45,    46,    47
 };
 
 #if YYDEBUG
@@ -543,7 +539,7 @@ static const char *const yytname[] =
   "CBRACE", "OSQUARE", "CSQUARE", "AND", "OR", "LT", "GT", "EQ", "NEQ",
   "GEQ", "LEQ", "PLUS", "MINUS", "STAR", "DIV", "MOD", "NOT", "ASSIGN",
   "SEMI", "COMMA", "RESERVED", "REALLIT", "DECLIT", "BOOLLIT", "ID",
-  "STRLIT", "LSQ", "RSQ", "$accept", "Program", "auxProgram", "FieldDecl",
+  "STRLIT", "$accept", "Program", "auxProgram", "FieldDecl",
   "auxFieldDecl", "MethodDecl", "MethodHeader", "AuxMethodHelper2",
   "MethodBody", "AuxMethodBody", "FormalParams", "auxFormalParams",
   "VarDecl", "auxVarDecl", "Type", "Statement", "auxStatement1",
@@ -562,7 +558,7 @@ static const yytype_uint16 yytoknum[] =
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
      285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
-     295,   296,   297,   298,   299,   300,   301,   302,   303,   304
+     295,   296,   297,   298,   299,   300,   301,   302
 };
 # endif
 
@@ -738,38 +734,38 @@ static const yytype_int16 yycheck[] =
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     4,    51,    46,     0,    21,     1,    13,    40,    52,
-      53,    55,    40,    15,    52,    22,    52,    52,     3,     7,
-      10,    17,    56,    64,    46,    21,    58,    46,    19,     1,
-       5,     9,    11,    12,    14,    18,    21,    46,    59,    62,
-      64,    65,    66,    70,    71,    74,    19,    41,    54,    16,
-      57,    60,    64,    40,    65,    19,    19,    19,    19,    33,
-      34,    38,    43,    44,    45,    46,    69,    70,    71,    74,
-      75,    19,    65,    68,    19,    39,    22,    59,    46,    59,
-      40,    57,    46,    40,    23,    20,    46,    18,    75,     1,
-      46,    47,    67,    75,     1,    75,    75,    75,    75,     6,
+       0,     4,    49,    46,     0,    21,     1,    13,    40,    50,
+      51,    53,    40,    15,    50,    22,    50,    50,     3,     7,
+      10,    17,    54,    62,    46,    21,    56,    46,    19,     1,
+       5,     9,    11,    12,    14,    18,    21,    46,    57,    60,
+      62,    63,    64,    68,    69,    72,    19,    41,    52,    16,
+      55,    58,    62,    40,    63,    19,    19,    19,    19,    33,
+      34,    38,    43,    44,    45,    46,    67,    68,    69,    72,
+      73,    19,    63,    66,    19,    39,    22,    57,    46,    57,
+      40,    55,    46,    40,    23,    20,    46,    18,    73,     1,
+      46,    47,    65,    73,     1,    73,    73,    73,    73,     6,
       40,    25,    26,    27,    28,    29,    30,    31,    32,    33,
-      34,    35,    36,    37,    75,    68,    22,     1,    72,    75,
-      75,    41,    63,    20,    54,    24,    41,    61,    19,    20,
-      20,    23,    20,    20,    20,    75,    75,    75,    75,    75,
-      75,    75,    75,    75,    75,    75,    75,    75,    20,    20,
-      20,    41,    73,    46,    40,    46,    64,    75,    65,    75,
-      40,    65,    75,    63,    46,    20,     8,    24,    73,    61,
-      40,    65,    20
+      34,    35,    36,    37,    73,    66,    22,     1,    70,    73,
+      73,    41,    61,    20,    52,    24,    41,    59,    19,    20,
+      20,    23,    20,    20,    20,    73,    73,    73,    73,    73,
+      73,    73,    73,    73,    73,    73,    73,    73,    20,    20,
+      20,    41,    71,    46,    40,    46,    62,    73,    63,    73,
+      40,    63,    73,    61,    46,    20,     8,    24,    71,    59,
+      40,    63,    20
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    50,    51,    52,    52,    52,    52,    53,    53,    54,
-      54,    55,    56,    56,    57,    57,    58,    59,    59,    59,
-      60,    60,    61,    61,    62,    63,    63,    64,    64,    64,
-      65,    65,    65,    65,    65,    65,    65,    65,    65,    66,
-      66,    66,    66,    67,    67,    68,    68,    69,    69,    70,
-      71,    71,    72,    72,    73,    73,    74,    74,    75,    75,
-      75,    75,    75,    75,    75,    75,    75,    75,    75,    75,
-      75,    75,    75,    75,    75,    75,    75,    75,    75,    75,
-      75,    75,    75,    75
+       0,    48,    49,    50,    50,    50,    50,    51,    51,    52,
+      52,    53,    54,    54,    55,    55,    56,    57,    57,    57,
+      58,    58,    59,    59,    60,    61,    61,    62,    62,    62,
+      63,    63,    63,    63,    63,    63,    63,    63,    63,    64,
+      64,    64,    64,    65,    65,    66,    66,    67,    67,    68,
+      69,    69,    70,    70,    71,    71,    72,    72,    73,    73,
+      73,    73,    73,    73,    73,    73,    73,    73,    73,    73,
+      73,    73,    73,    73,    73,    73,    73,    73,    73,    73,
+      73,    73,    73,    73
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -1462,443 +1458,443 @@ yyreduce:
         case 2:
 #line 28 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1466 "y.tab.c" /* yacc.c:1661  */
+#line 1462 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 5:
 #line 30 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1472 "y.tab.c" /* yacc.c:1661  */
+#line 1468 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 6:
 #line 31 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1478 "y.tab.c" /* yacc.c:1661  */
+#line 1474 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 7:
 #line 34 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1484 "y.tab.c" /* yacc.c:1661  */
+#line 1480 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 8:
 #line 35 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1490 "y.tab.c" /* yacc.c:1661  */
+#line 1486 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 9:
 #line 37 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1496 "y.tab.c" /* yacc.c:1661  */
+#line 1492 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 10:
 #line 38 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1502 "y.tab.c" /* yacc.c:1661  */
+#line 1498 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 11:
 #line 41 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1508 "y.tab.c" /* yacc.c:1661  */
+#line 1504 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 12:
 #line 44 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1514 "y.tab.c" /* yacc.c:1661  */
+#line 1510 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 13:
 #line 45 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1520 "y.tab.c" /* yacc.c:1661  */
+#line 1516 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 14:
 #line 48 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1526 "y.tab.c" /* yacc.c:1661  */
+#line 1522 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 15:
 #line 49 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1532 "y.tab.c" /* yacc.c:1661  */
+#line 1528 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 16:
 #line 51 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1538 "y.tab.c" /* yacc.c:1661  */
+#line 1534 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 17:
 #line 53 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1544 "y.tab.c" /* yacc.c:1661  */
+#line 1540 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 18:
 #line 54 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1550 "y.tab.c" /* yacc.c:1661  */
+#line 1546 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 19:
 #line 55 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1556 "y.tab.c" /* yacc.c:1661  */
+#line 1552 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 20:
 #line 58 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1562 "y.tab.c" /* yacc.c:1661  */
+#line 1558 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 21:
 #line 59 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1568 "y.tab.c" /* yacc.c:1661  */
+#line 1564 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 22:
 #line 61 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1574 "y.tab.c" /* yacc.c:1661  */
+#line 1570 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 23:
 #line 62 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1580 "y.tab.c" /* yacc.c:1661  */
+#line 1576 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 24:
 #line 65 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1586 "y.tab.c" /* yacc.c:1661  */
+#line 1582 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 25:
 #line 67 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1592 "y.tab.c" /* yacc.c:1661  */
+#line 1588 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 26:
 #line 68 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1598 "y.tab.c" /* yacc.c:1661  */
+#line 1594 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 27:
 #line 71 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1604 "y.tab.c" /* yacc.c:1661  */
+#line 1600 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 28:
 #line 72 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1610 "y.tab.c" /* yacc.c:1661  */
+#line 1606 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 29:
 #line 73 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1616 "y.tab.c" /* yacc.c:1661  */
+#line 1612 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 30:
 #line 75 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1622 "y.tab.c" /* yacc.c:1661  */
+#line 1618 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 31:
 #line 76 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1628 "y.tab.c" /* yacc.c:1661  */
+#line 1624 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 32:
 #line 77 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1634 "y.tab.c" /* yacc.c:1661  */
+#line 1630 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 33:
 #line 78 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1640 "y.tab.c" /* yacc.c:1661  */
+#line 1636 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 34:
 #line 79 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1646 "y.tab.c" /* yacc.c:1661  */
+#line 1642 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 35:
 #line 80 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1652 "y.tab.c" /* yacc.c:1661  */
+#line 1648 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 36:
 #line 81 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1658 "y.tab.c" /* yacc.c:1661  */
+#line 1654 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 37:
 #line 82 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1664 "y.tab.c" /* yacc.c:1661  */
+#line 1660 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 38:
 #line 83 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1670 "y.tab.c" /* yacc.c:1661  */
+#line 1666 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 41:
 #line 85 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1676 "y.tab.c" /* yacc.c:1661  */
+#line 1672 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 42:
 #line 86 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1682 "y.tab.c" /* yacc.c:1661  */
+#line 1678 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 44:
 #line 88 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1688 "y.tab.c" /* yacc.c:1661  */
+#line 1684 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 45:
 #line 90 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1694 "y.tab.c" /* yacc.c:1661  */
+#line 1690 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 46:
 #line 91 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1700 "y.tab.c" /* yacc.c:1661  */
+#line 1696 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 47:
 #line 93 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1706 "y.tab.c" /* yacc.c:1661  */
+#line 1702 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 48:
 #line 94 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1712 "y.tab.c" /* yacc.c:1661  */
+#line 1708 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 49:
 #line 97 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1718 "y.tab.c" /* yacc.c:1661  */
+#line 1714 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 50:
 #line 99 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1724 "y.tab.c" /* yacc.c:1661  */
+#line 1720 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 51:
 #line 100 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1730 "y.tab.c" /* yacc.c:1661  */
+#line 1726 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 52:
 #line 102 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1736 "y.tab.c" /* yacc.c:1661  */
+#line 1732 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 53:
 #line 103 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1742 "y.tab.c" /* yacc.c:1661  */
+#line 1738 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 54:
 #line 105 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1748 "y.tab.c" /* yacc.c:1661  */
+#line 1744 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 55:
 #line 106 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1754 "y.tab.c" /* yacc.c:1661  */
+#line 1750 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 56:
 #line 110 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1760 "y.tab.c" /* yacc.c:1661  */
+#line 1756 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 57:
 #line 111 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1766 "y.tab.c" /* yacc.c:1661  */
+#line 1762 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 60:
 #line 114 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1772 "y.tab.c" /* yacc.c:1661  */
+#line 1768 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 61:
 #line 115 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1778 "y.tab.c" /* yacc.c:1661  */
+#line 1774 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 62:
 #line 116 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1784 "y.tab.c" /* yacc.c:1661  */
+#line 1780 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 63:
 #line 117 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1790 "y.tab.c" /* yacc.c:1661  */
+#line 1786 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 64:
 #line 118 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1796 "y.tab.c" /* yacc.c:1661  */
+#line 1792 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 65:
 #line 119 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1802 "y.tab.c" /* yacc.c:1661  */
+#line 1798 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 66:
 #line 120 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1808 "y.tab.c" /* yacc.c:1661  */
+#line 1804 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 67:
 #line 121 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1814 "y.tab.c" /* yacc.c:1661  */
+#line 1810 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 68:
 #line 122 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1820 "y.tab.c" /* yacc.c:1661  */
+#line 1816 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 69:
 #line 123 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1826 "y.tab.c" /* yacc.c:1661  */
+#line 1822 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 70:
 #line 124 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1832 "y.tab.c" /* yacc.c:1661  */
+#line 1828 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 71:
 #line 125 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1838 "y.tab.c" /* yacc.c:1661  */
+#line 1834 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 72:
 #line 126 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1844 "y.tab.c" /* yacc.c:1661  */
+#line 1840 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 73:
 #line 127 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1850 "y.tab.c" /* yacc.c:1661  */
+#line 1846 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 74:
 #line 128 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1856 "y.tab.c" /* yacc.c:1661  */
+#line 1852 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 75:
 #line 129 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1862 "y.tab.c" /* yacc.c:1661  */
+#line 1858 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 76:
 #line 130 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1868 "y.tab.c" /* yacc.c:1661  */
+#line 1864 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 77:
 #line 131 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1874 "y.tab.c" /* yacc.c:1661  */
+#line 1870 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 78:
 #line 132 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1880 "y.tab.c" /* yacc.c:1661  */
+#line 1876 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 79:
 #line 133 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1886 "y.tab.c" /* yacc.c:1661  */
+#line 1882 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 82:
 #line 134 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1892 "y.tab.c" /* yacc.c:1661  */
+#line 1888 "y.tab.c" /* yacc.c:1661  */
     break;
 
   case 83:
 #line 135 "jac.y" /* yacc.c:1661  */
     {;}
-#line 1898 "y.tab.c" /* yacc.c:1661  */
+#line 1894 "y.tab.c" /* yacc.c:1661  */
     break;
 
 
-#line 1902 "y.tab.c" /* yacc.c:1661  */
+#line 1898 "y.tab.c" /* yacc.c:1661  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

@@ -19,8 +19,8 @@
 %left PLUS MINUS
 %left STAR DIV MOD
 %right NOT
-%left OBRACE CBRACE LSQ CCURV RSQ
-%nonassoc ELSE
+%left OBRACE CBRACE CCURV OCURV
+%right ELSE
 
  /* %type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr */
 %%
@@ -74,7 +74,7 @@ Type: BOOL  {;}
 ;
 Statement: OBRACE auxStatement4 CBRACE    {;}
   | IF OCURV Expr CCURV Statement ELSE Statement {;}
-  | IF OCURV Expr CCURV Statement {;}
+  | IF OCURV Expr CCURV Statement %prec ELSE {;}
   | WHILE OCURV Expr CCURV Statement {;}
   | DO Statement WHILE OCURV Expr CCURV SEMI  {;}
   | PRINT OCURV auxStatement2 CCURV SEMI  {;}
