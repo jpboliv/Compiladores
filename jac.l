@@ -1,6 +1,7 @@
 %X JAVAC JCOMMENT LINECOMMENT STRERROR
 %{
   #include "y.tab.h"
+  //#include "functions.h"
   int flag =0;
   int n_column =1;
   int n_line =1;
@@ -121,6 +122,7 @@ REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({re
 
 
 %%
+
 int main(int argv, char **argc){
   if(argv > 1){
     if(strcmp(argc[1], "-l")==0 || strcmp(argc[1], "-1")==0){

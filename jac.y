@@ -1,16 +1,16 @@
 %{
-    #include <stdio.h>
+  #include <stdio.h>
   #include <string.h>
   #define NSYMS 100
-  
+
  typedef struct _symtab{
   char *name;
-  double value; //nao pode ser so double(exemplo da aula)
+  //nao pode ser so double(exemplo da aula)
+  double value;
   }symtab;
 
-  //ast
+  //arvore
  typedef struct node {
-  int flagComma;
   char* type;
   char* value;
   char* type_print;
@@ -51,11 +51,11 @@ auxProgram: FieldDecl auxProgram | MethodDecl auxProgram | SEMI auxProgram  {;}
   | %empty {;}
 ;
 
-FieldDecl: PUBLIC STATIC Type ID auxFieldDecl SEMI {;}
+FieldDecl: PUBLIC STATIC auxFieldDecl SEMI {;}
   | error SEMI {;}
 ;
-auxFieldDecl: COMMA ID auxFieldDecl {;}
-  | %empty {;}
+auxFieldDecl: Type ID {;}
+  | auxFieldDecl COMMA ID  {;}
 ;
 
 MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {;}
@@ -157,6 +157,7 @@ Expr: Assignment | MethodInvocation | ParseArgs  {;}
 
 
 %%
+
 /*symtab *symlook(char *varname){
   int i;
   for(i=0; i<NSYMS; i++){
@@ -167,5 +168,5 @@ Expr: Assignment | MethodInvocation | ParseArgs  {;}
         return &tab[i];
       }
   }
-  yyerror("tamanha maximo ultrapassado"); 
+  yyerror("tamanha maximo ultrapassado");
  } */
