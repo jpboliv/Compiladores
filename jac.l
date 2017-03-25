@@ -1,7 +1,7 @@
 %X JAVAC JCOMMENT LINECOMMENT STRERROR
 %{
   #include "y.tab.h"
-  //#include "functions.h"
+  #include "functions.h"
   int flag =0;
   int n_column =1;
   int n_line =1;
@@ -9,7 +9,9 @@
   int aux_line;
   int comment_column;
   int aux_column;
+  node *root=NULL;
   char* aux;
+  int flagTreeErros = 1;
 %}
 
 letters[a-zA-Z]
@@ -130,6 +132,13 @@ int main(int argv, char **argc){
         flag = 1;
       }
       yylex();
+    }
+    else if(strcmp(argc[1], "-t")==0){
+      yylex();
+      yyparse();
+      if(flagTreeErros == 1 && root != NULL){
+        print_tree(root,0);
+      }
     }
   }
   else{

@@ -1,6 +1,7 @@
 %{
   #include <stdio.h>
   #include <string.h>
+  #include "functions.h"
   #define NSYMS 100
 
  typedef struct _symtab{
@@ -9,15 +10,7 @@
   double value;
   }symtab;
 
-  //arvore
- typedef struct node {
-  char* type;
-  char* value;
-  char* type_print;
-  struct node *son;
-  struct node *brother;
-  //faltam cenas COMEBACK HERE
-} node;
+  extern int flagTreeErros;
 
   symtab tab[NSYMS];
 
@@ -47,12 +40,14 @@
 
 Program : CLASS ID OBRACE auxProgram CBRACE {;}
 ;
-auxProgram: FieldDecl auxProgram | MethodDecl auxProgram | SEMI auxProgram  {;}
+auxProgram: FieldDecl auxProgram {;}
+  | MethodDecl auxProgram {;}
+  | SEMI auxProgram  {;}
   | %empty {;}
 ;
 
 FieldDecl: PUBLIC STATIC auxFieldDecl SEMI {;}
-  | error SEMI {;}
+  | error SEMI {flagTreeErros = 0;}
 ;
 auxFieldDecl: Type ID {;}
   | auxFieldDecl COMMA ID  {;}
@@ -61,13 +56,10 @@ auxFieldDecl: Type ID {;}
 MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {;}
 ;
 
-MethodHeader:  Type ID OCURV AuxMethodHelper2 CCURV  {;}
-  | VOID ID OCURV AuxMethodHelper2 CCURV {;}
+MethodHeader:  Type ID OCURV FormalParams CCURV  {;}
+  | VOID ID OCURV FormalParams CCURV {;}
 ;
 
-AuxMethodHelper2: FormalParams {;}
-  | %empty{;}
-;
 MethodBody: OBRACE AuxMethodBody CBRACE {;}
 ;
 AuxMethodBody : VarDecl AuxMethodBody {;}
@@ -77,10 +69,12 @@ AuxMethodBody : VarDecl AuxMethodBody {;}
 
 FormalParams:  Type ID auxFormalParams    {;}
   | STRING OSQUARE CSQUARE ID    {;}
+  | %empty {;}
 ;
 auxFormalParams: COMMA Type ID auxFormalParams {;}
   | %empty{;}
 ;
+
 
 VarDecl: Type ID auxVarDecl SEMI    {;}
 ;
@@ -100,7 +94,7 @@ Statement: OBRACE auxStatement4 CBRACE    {;}
   | PRINT OCURV auxStatement2 CCURV SEMI  {;}
   | auxStatement1 SEMI  {;}
   | RETURN auxStatement5 SEMI   {;}
-  | error SEMI {;}
+  | error SEMI {flagTreeErros = 0;}
 ;
 auxStatement1: Assignment | MethodInvocation | ParseArgs {;}
   | %empty{;}
@@ -117,7 +111,7 @@ auxStatement5: Expr {;}
 Assignment: ID ASSIGN Expr  {;}
 ;
 MethodInvocation: ID OCURV AuxMethodInvocation1 CCURV   {;}
-  | ID OCURV error CCURV {;}
+  | ID OCURV error CCURV {flagTreeErros = 0;}
 ;
 AuxMethodInvocation1: Expr AuxMethodInvocation2 {;}
   | %empty{;}
@@ -128,7 +122,7 @@ AuxMethodInvocation2: COMMA Expr AuxMethodInvocation2 {;}
 
 
 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV   {;}
-  | PARSEINT OCURV error CCURV {;}
+  | PARSEINT OCURV error CCURV {flagTreeErros = 0;}
 ;
 
 Expr: Assignment | MethodInvocation | ParseArgs  {;}
@@ -152,7 +146,7 @@ Expr: Assignment | MethodInvocation | ParseArgs  {;}
   | ID {;}
   | OCURV Expr CCURV  {;}
   | BOOLLIT | DECLIT | REALLIT  {;}
-  | OCURV error CCURV {;}
+  | OCURV error CCURV {flagTreeErros = 0;}
 ;
 
 

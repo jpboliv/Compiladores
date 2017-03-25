@@ -1,2 +1,44 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "functions.h"
+
+
+
+
+//arvore
+node* new_node(char* type, char* value) {
+	node* n = (node*)malloc(sizeof(node));
+	n->type = (char*)malloc(sizeof(char)*strlen(type) +1);
+	n->value = (char*)malloc(sizeof(char)*strlen(value) +1);
+	n->type_print = (char*)malloc(sizeof(char)*10);
+	strcpy(n->type,type);
+	strcpy(n->value,value);
+	n->son = NULL;
+	n->brother = NULL;
+
+	return n;
+}
+
+
+void print_tree(node* aux, int tabs){
+	int i;
+	
+
+	node *son;
+
+	for(i = 0; i < tabs; i++){
+		printf(".");
+	}
+	if (strcmp(aux->value, aux->type) != 0){
+		printf("%s(%s)\n", aux->type, aux->value);
+	}
+	else{
+		printf("%s\n", aux->value);
+	}
+	
+	for(son = aux->son; son != NULL; son = son->brother){
+		print_tree(son, tabs + 2);
+	}
+	
+}
