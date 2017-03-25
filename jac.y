@@ -28,12 +28,12 @@
 %%
 
 
-Program: auxProgram CBRACE {;}
+Program: auxProgram CBRACE {if(flagTreeErros ==1){};}
 ;
-auxProgram: CLASS ID OBRACE {;}
-  | auxProgram FieldDecl {;}
-  | auxProgram MethodDecl  {;}
-  | auxProgram SEMI {;}
+auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){};}
+  | auxProgram FieldDecl {if(flagTreeErros ==1){};}
+  | auxProgram MethodDecl  {if(flagTreeErros ==1){};}
+  | auxProgram SEMI {if(flagTreeErros ==1){};}
 ;
 
 FieldDecl: PUBLIC STATIC auxFieldDecl SEMI     {if(flagTreeErros ==1){};}
@@ -50,11 +50,11 @@ MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){};}
   | VOID ID OCURV FormalParams CCURV {if(flagTreeErros ==1){};}
 ;
 
-MethodBody: AuxMethodBody CBRACE {;}
+MethodBody: AuxMethodBody CBRACE {if(flagTreeErros ==1){};}
 ;
-AuxMethodBody: OBRACE {;}
-  | AuxMethodBody VarDecl {;}
-  | AuxMethodBody Statement {;}
+AuxMethodBody: OBRACE {if(flagTreeErros ==1){};}
+  | AuxMethodBody VarDecl {if(flagTreeErros ==1){};}
+  | AuxMethodBody Statement {if(flagTreeErros ==1){};}
 ;
 
 FormalParams:  Type ID auxFormalParams    {if(flagTreeErros ==1){};}
@@ -65,10 +65,10 @@ auxFormalParams: COMMA Type ID auxFormalParams {if(flagTreeErros ==1){};}
   | %empty{;}
 ;
 
-VarDecl: auxVarDecl SEMI    {;}
+VarDecl: auxVarDecl SEMI    {if(flagTreeErros ==1){};}
 ;
-auxVarDecl : Type ID {;}
-  | auxVarDecl COMMA ID {;}
+auxVarDecl : Type ID {if(flagTreeErros ==1){};}
+  | auxVarDecl COMMA ID {if(flagTreeErros ==1){};}
 ;
 
 Type: BOOL  {if(flagTreeErros ==1){};}
@@ -106,7 +106,7 @@ MethodInvocation: ID OCURV AuxMethodInvocation1 CCURV   {if(flagTreeErros ==1){}
   | ID OCURV error CCURV {flagTreeErros = 0;}
 ;
 AuxMethodInvocation1: Expr  {if(flagTreeErros ==1){};}
-  | AuxMethodInvocation1 COMMA Expr{;}
+  | AuxMethodInvocation1 COMMA Expr{if(flagTreeErros ==1){};}
 ;
 
 
