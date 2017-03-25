@@ -81,14 +81,14 @@ REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({re
 "\f"                {n_column+=yyleng;}
 " "                 {n_column+=yyleng;}
 
-"++"|"null"|"--"|"abstract"|"assert"|"break"|"byte"|"case"|"catch"|"char"|"const"|"continue"|"default"|"enum"|"extends"|"final"|"finally"|"float"|"for"|"goto"|"implements"|"import"|"instanceof"|"interface"|"long"|"native"|"new"|"package"|"private"|"protected"|"short"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"try"|"volatile"|"Integer"|"System"        {if(flag==1)printf("RESERVED(%s)\n", &yytext[0]);n_column+=yyleng;if(flag==2)return RESERVED;}
+"++"|"null"|"--"|"abstract"|"assert"|"break"|"byte"|"case"|"catch"|"char"|"const"|"continue"|"default"|"enum"|"extends"|"final"|"finally"|"float"|"for"|"goto"|"implements"|"import"|"instanceof"|"interface"|"long"|"native"|"new"|"package"|"private"|"protected"|"short"|"strictfp"|"super"|"switch"|"synchronized"|"this"|"throw"|"throws"|"transient"|"try"|"volatile"|"Integer"|"System"        {if(flag==1)printf("RESERVED(%s)\n", &yytext[0]);n_column+=yyleng;if(flag==2){yylval.string = strdup(yytext);return RESERVED;}}
 
-{REALLIT}           {if(flag==1)printf("REALLIT(%s)\n",yytext);n_column+=yyleng;if(flag==2)return REALLIT;}
-{DECLIT}            {if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2)return DECLIT;}
+{REALLIT}           {if(flag==1)printf("REALLIT(%s)\n",yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return REALLIT;}}
+{DECLIT}            {if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return DECLIT;}}
 {boolit}            {if(flag==1)printf("BOOLLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2)return BOOLLIT;}
-{ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;if(flag==2)return ID;}
+{ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return ID;}}
 
-{STRLIT}            {if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2)return STRLIT;}
+{STRLIT}            {if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return STRLIT;}}
 
 "\""                                                      {aux_column=n_column;n_column+=1;BEGIN STRERROR;}
 <STRERROR>"\\"[^\r\nnr"ft\\]?                             {printf("Line %d, col %d: invalid escape sequence (%s)\n",n_line,n_column,yytext);n_column+=yyleng;}

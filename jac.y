@@ -5,12 +5,20 @@
 
   extern int flagTreeErros;
 
+  
+
   int yylex(void);
   void yyerror(const char *s);
 %}
 
+%union{
+  char *string;
+  struct node *node;
+}
+
 %token BOOL CLASS DO DOTLENGTH DOUBLE ELSE IF INT PARSEINT PRINT PUBLIC RETURN STATIC STRING VOID WHILE OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE AND OR LT GT EQ NEQ GEQ LEQ
-%token PLUS MINUS STAR DIV MOD NOT ASSIGN SEMI COMMA RESERVED REALLIT DECLIT BOOLLIT ID STRLIT
+%token PLUS MINUS STAR DIV MOD NOT ASSIGN SEMI COMMA 
+%token <value> RESERVED REALLIT DECLIT BOOLLIT ID STRLIT
 
 %left COMMA
 %right ASSIGN
@@ -24,7 +32,8 @@
 %left OBRACE CBRACE CCURV OCURV
 %right ELSE
 
-  /*%type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr */
+%type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr
+%type <node> auxFieldDecl AuxMethodBody auxFormalParams auxVarDecl auxStatement1 auxStatement2 auxStatement4 auxStatement5 AuxMethodInvocation1
 %%
 
 
@@ -59,10 +68,10 @@ AuxMethodBody: OBRACE {if(flagTreeErros ==1){};}
 
 FormalParams:  Type ID auxFormalParams    {if(flagTreeErros ==1){};}
   | STRING OSQUARE CSQUARE ID    {if(flagTreeErros ==1){};}
-  | %empty {;}
+  | %empty {$$=NULL;}
 ;
 auxFormalParams: COMMA Type ID auxFormalParams {if(flagTreeErros ==1){};}
-  | %empty{;}
+  | %empty{$$=NULL;}
 ;
 
 VarDecl: auxVarDecl SEMI    {if(flagTreeErros ==1){};}
@@ -88,16 +97,16 @@ Statement: OBRACE auxStatement4 CBRACE    {if(flagTreeErros ==1){};}
 auxStatement1: Assignment               {if(flagTreeErros ==1){};}
   | MethodInvocation                    {if(flagTreeErros ==1){};}
   | ParseArgs                           {if(flagTreeErros ==1){};}
-  | %empty                              {;}
+  | %empty                              {$$=NULL;}
 ;
 auxStatement2: Expr {if(flagTreeErros ==1){};}
   | STRLIT {if(flagTreeErros ==1){};}
 ;
 auxStatement4: Statement auxStatement4      {if(flagTreeErros ==1){};}
-  | %empty {;}
+  | %empty {$$=NULL;}
 ;
 auxStatement5: Expr {if(flagTreeErros ==1){};}
-  | %empty{;}
+  | %empty{$$=NULL;}
 ;
 
 Assignment: ID ASSIGN Expr  {if(flagTreeErros ==1){};}
