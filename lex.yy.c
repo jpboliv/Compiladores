@@ -1218,17 +1218,17 @@ YY_RULE_SETUP
 case 46:
 YY_RULE_SETUP
 #line 84 "jac.l"
-{if(flag==1)printf("RESERVED(%s)\n", &yytext[0]);n_column+=yyleng;if(flag==2)return RESERVED;}
+{if(flag==1)printf("RESERVED(%s)\n", &yytext[0]);n_column+=yyleng;if(flag==2){yylval.string = strdup(yytext);return RESERVED;}}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
 #line 86 "jac.l"
-{if(flag==1)printf("REALLIT(%s)\n",yytext);n_column+=yyleng;if(flag==2)return REALLIT;}
+{if(flag==1)printf("REALLIT(%s)\n",yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return REALLIT;}}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
 #line 87 "jac.l"
-{if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2)return DECLIT;}
+{if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return DECLIT;}}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
@@ -1238,12 +1238,12 @@ YY_RULE_SETUP
 case 50:
 YY_RULE_SETUP
 #line 89 "jac.l"
-{if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;if(flag==2)return ID;}
+{if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return ID;}}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
 #line 91 "jac.l"
-{if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2)return STRLIT;}
+{if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return STRLIT;}}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP

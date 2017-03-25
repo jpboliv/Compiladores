@@ -2,13 +2,15 @@
   #include <stdio.h>
   #include <string.h>
   #include "functions.h"
-
   extern int flagTreeErros;
-
-  
 
   int yylex(void);
   void yyerror(const char *s);
+
+  node* root;
+  node* aux_node;
+
+  node* value_node;
 %}
 
 %union{
@@ -17,8 +19,8 @@
 }
 
 %token BOOL CLASS DO DOTLENGTH DOUBLE ELSE IF INT PARSEINT PRINT PUBLIC RETURN STATIC STRING VOID WHILE OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE AND OR LT GT EQ NEQ GEQ LEQ
-%token PLUS MINUS STAR DIV MOD NOT ASSIGN SEMI COMMA 
-%token <value> RESERVED REALLIT DECLIT BOOLLIT ID STRLIT
+%token PLUS MINUS STAR DIV MOD NOT ASSIGN SEMI COMMA RESERVED
+%token <string>  REALLIT DECLIT BOOLLIT ID STRLIT
 
 %left COMMA
 %right ASSIGN
@@ -33,13 +35,12 @@
 %right ELSE
 
 %type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr
-%type <node> auxFieldDecl AuxMethodBody auxFormalParams auxVarDecl auxStatement1 auxStatement2 auxStatement4 auxStatement5 AuxMethodInvocation1
+%type <node> auxProgram auxFieldDecl AuxMethodBody auxFormalParams auxVarDecl auxStatement1 auxStatement2 auxStatement4 auxStatement5 AuxMethodInvocation1
 %%
 
-
-Program: auxProgram CBRACE {if(flagTreeErros ==1){};}
+Program: auxProgram CBRACE {if(flagTreeErros ==1){$$=root=new_node("Program","Program"); ($$)->son=$1;};}
 ;
-auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){};}
+auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){$$=new_node("auxProgram",""); value_node=new_node("ID",$2); aux_node=append_brother($$);aux_node->brother=value_node;};}
   | auxProgram FieldDecl {if(flagTreeErros ==1){};}
   | auxProgram MethodDecl  {if(flagTreeErros ==1){};}
   | auxProgram SEMI {if(flagTreeErros ==1){};}

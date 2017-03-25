@@ -33,7 +33,7 @@ node* append_brother(node* first){
 
 void print_tree(node* aux, int tabs){
 	int i;
-	
+
 
 	node *son;
 
@@ -46,9 +46,9 @@ void print_tree(node* aux, int tabs){
 	else{
 		printf("%s\n", aux->value);
 	}
-	
+
 	for(son = aux->son; son != NULL; son = son->brother){
 		print_tree(son, tabs + 2);
 	}
-	
+
 }
