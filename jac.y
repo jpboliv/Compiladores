@@ -12,8 +12,6 @@
 %token BOOL CLASS DO DOTLENGTH DOUBLE ELSE IF INT PARSEINT PRINT PUBLIC RETURN STATIC STRING VOID WHILE OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE AND OR LT GT EQ NEQ GEQ LEQ
 %token PLUS MINUS STAR DIV MOD NOT ASSIGN SEMI COMMA RESERVED REALLIT DECLIT BOOLLIT ID STRLIT
 
-
-
 %left COMMA
 %right ASSIGN
 %left OR
@@ -29,12 +27,13 @@
   /*%type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr */
 %%
 
-Program : CLASS ID OBRACE auxProgram CBRACE   {if(flagTreeErros ==1){};}
+
+Program: auxProgram CBRACE {;}
 ;
-auxProgram: FieldDecl auxProgram              {if(flagTreeErros ==1){};}
-  | MethodDecl auxProgram                     {if(flagTreeErros ==1){};}
-  | SEMI auxProgram                           {if(flagTreeErros ==1){};}
-  | %empty {;}
+auxProgram: CLASS ID OBRACE {;}
+  | auxProgram FieldDecl {;}
+  | auxProgram MethodDecl  {;}
+  | auxProgram SEMI {;}
 ;
 
 FieldDecl: PUBLIC STATIC auxFieldDecl SEMI     {if(flagTreeErros ==1){};}
@@ -51,11 +50,11 @@ MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){};}
   | VOID ID OCURV FormalParams CCURV {if(flagTreeErros ==1){};}
 ;
 
-MethodBody: OBRACE AuxMethodBody CBRACE {if(flagTreeErros ==1){};}
+MethodBody: AuxMethodBody CBRACE {;}
 ;
-AuxMethodBody : VarDecl AuxMethodBody {if(flagTreeErros ==1){};}
-  | Statement AuxMethodBody {if(flagTreeErros ==1){};}
-  | %empty{;}
+AuxMethodBody: OBRACE {;}
+  | AuxMethodBody VarDecl {;}
+  | AuxMethodBody Statement {;}
 ;
 
 FormalParams:  Type ID auxFormalParams    {if(flagTreeErros ==1){};}
@@ -66,10 +65,9 @@ auxFormalParams: COMMA Type ID auxFormalParams {if(flagTreeErros ==1){};}
   | %empty{;}
 ;
 
-
 VarDecl: auxVarDecl SEMI    {;}
 ;
-auxVarDecl : Type ID {;} 
+auxVarDecl : Type ID {;}
   | auxVarDecl COMMA ID {;}
 ;
 
@@ -146,4 +144,3 @@ Expr: Assignment                    {if(flagTreeErros ==1){};}
 
 
 %%
-
