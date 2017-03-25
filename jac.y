@@ -2,17 +2,8 @@
   #include <stdio.h>
   #include <string.h>
   #include "functions.h"
-  #define NSYMS 100
-
- typedef struct _symtab{
-  char *name;
-  //nao pode ser so double(exemplo da aula)
-  double value;
-  }symtab;
 
   extern int flagTreeErros;
-
-  symtab tab[NSYMS];
 
   int yylex(void);
   void yyerror(const char *s);
@@ -35,132 +26,124 @@
 %left OBRACE CBRACE CCURV OCURV
 %right ELSE
 
- /* %type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr */
+  /*%type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr */
 %%
 
-Program : CLASS ID OBRACE auxProgram CBRACE {;}
+Program : CLASS ID OBRACE auxProgram CBRACE   {if(flagTreeErros ==1){};}
 ;
-auxProgram: FieldDecl auxProgram {;}
-  | MethodDecl auxProgram {;}
-  | SEMI auxProgram  {;}
+auxProgram: FieldDecl auxProgram              {if(flagTreeErros ==1){};}
+  | MethodDecl auxProgram                     {if(flagTreeErros ==1){};}
+  | SEMI auxProgram                           {if(flagTreeErros ==1){};}
   | %empty {;}
 ;
 
-FieldDecl: PUBLIC STATIC auxFieldDecl SEMI {;}
+FieldDecl: PUBLIC STATIC auxFieldDecl SEMI     {if(flagTreeErros ==1){};}
+  | error SEMI                                 {flagTreeErros = 0;}
+;
+auxFieldDecl: Type ID                           {if(flagTreeErros ==1){};}
+  | auxFieldDecl COMMA ID                      {if(flagTreeErros ==1){};}
+;
+
+MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {if(flagTreeErros ==1){};}
+;
+
+MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){};}
+  | VOID ID OCURV FormalParams CCURV {if(flagTreeErros ==1){};}
+;
+
+MethodBody: OBRACE AuxMethodBody CBRACE {if(flagTreeErros ==1){};}
+;
+AuxMethodBody : VarDecl AuxMethodBody {if(flagTreeErros ==1){};}
+  | Statement AuxMethodBody {if(flagTreeErros ==1){};}
+  | %empty{;}
+;
+
+FormalParams:  Type ID auxFormalParams    {if(flagTreeErros ==1){};}
+  | STRING OSQUARE CSQUARE ID    {if(flagTreeErros ==1){};}
+  | %empty {;}
+;
+auxFormalParams: COMMA Type ID auxFormalParams {if(flagTreeErros ==1){};}
+  | %empty{;}
+;
+
+
+VarDecl: auxVarDecl SEMI    {;}
+;
+auxVarDecl : Type ID {;} 
+  | auxVarDecl COMMA ID {;}
+;
+
+Type: BOOL  {if(flagTreeErros ==1){};}
+  | INT     {if(flagTreeErros ==1){};}
+  | DOUBLE  {if(flagTreeErros ==1){};}
+;
+Statement: OBRACE auxStatement4 CBRACE    {if(flagTreeErros ==1){};}
+  | IF OCURV Expr CCURV Statement ELSE Statement {if(flagTreeErros ==1){};}
+  | IF OCURV Expr CCURV Statement %prec ELSE {if(flagTreeErros ==1){};}
+  | WHILE OCURV Expr CCURV Statement {if(flagTreeErros ==1){};}
+  | DO Statement WHILE OCURV Expr CCURV SEMI  {if(flagTreeErros ==1){};}
+  | PRINT OCURV auxStatement2 CCURV SEMI  {if(flagTreeErros ==1){};}
+  | auxStatement1 SEMI  {if(flagTreeErros ==1){};}
+  | RETURN auxStatement5 SEMI   {if(flagTreeErros ==1){};}
   | error SEMI {flagTreeErros = 0;}
 ;
-auxFieldDecl: Type ID {;}
-  | auxFieldDecl COMMA ID  {;}
+auxStatement1: Assignment               {if(flagTreeErros ==1){};}
+  | MethodInvocation                    {if(flagTreeErros ==1){};}
+  | ParseArgs                           {if(flagTreeErros ==1){};}
+  | %empty                              {;}
 ;
-
-MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {;}
+auxStatement2: Expr {if(flagTreeErros ==1){};}
+  | STRLIT {if(flagTreeErros ==1){};}
 ;
-
-MethodHeader:  Type ID OCURV FormalParams CCURV  {;}
-  | VOID ID OCURV FormalParams CCURV {;}
-;
-
-MethodBody: OBRACE AuxMethodBody CBRACE {;}
-;
-AuxMethodBody : VarDecl AuxMethodBody {;}
-  | Statement AuxMethodBody {;}
-  | %empty{;}
-;
-
-FormalParams:  Type ID auxFormalParams    {;}
-  | STRING OSQUARE CSQUARE ID    {;}
+auxStatement4: Statement auxStatement4      {if(flagTreeErros ==1){};}
   | %empty {;}
 ;
-auxFormalParams: COMMA Type ID auxFormalParams {;}
+auxStatement5: Expr {if(flagTreeErros ==1){};}
   | %empty{;}
 ;
 
-
-VarDecl: Type ID auxVarDecl SEMI    {;}
+Assignment: ID ASSIGN Expr  {if(flagTreeErros ==1){};}
 ;
-auxVarDecl :  COMMA ID auxVarDecl {;}
-  | %empty{;}
-;
-
-Type: BOOL  {;}
-  | INT     {;}
-  | DOUBLE  {;}
-;
-Statement: OBRACE auxStatement4 CBRACE    {;}
-  | IF OCURV Expr CCURV Statement ELSE Statement {;}
-  | IF OCURV Expr CCURV Statement %prec ELSE {;}
-  | WHILE OCURV Expr CCURV Statement {;}
-  | DO Statement WHILE OCURV Expr CCURV SEMI  {;}
-  | PRINT OCURV auxStatement2 CCURV SEMI  {;}
-  | auxStatement1 SEMI  {;}
-  | RETURN auxStatement5 SEMI   {;}
-  | error SEMI {flagTreeErros = 0;}
-;
-auxStatement1: Assignment | MethodInvocation | ParseArgs {;}
-  | %empty{;}
-;
-auxStatement2: Expr | STRLIT {;}
-;
-auxStatement4: Statement auxStatement4{;}
-  | %empty {;}
-;
-auxStatement5: Expr {;}
-  | %empty{;}
-;
-
-Assignment: ID ASSIGN Expr  {;}
-;
-MethodInvocation: ID OCURV AuxMethodInvocation1 CCURV   {;}
+MethodInvocation: ID OCURV AuxMethodInvocation1 CCURV   {if(flagTreeErros ==1){};}
   | ID OCURV error CCURV {flagTreeErros = 0;}
 ;
-AuxMethodInvocation1: Expr AuxMethodInvocation2 {;}
-  | %empty{;}
-;
-AuxMethodInvocation2: COMMA Expr AuxMethodInvocation2 {;}
-  | %empty{;}
+AuxMethodInvocation1: Expr  {if(flagTreeErros ==1){};}
+  | AuxMethodInvocation1 COMMA Expr{;}
 ;
 
 
-ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV   {;}
+ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV   {if(flagTreeErros ==1){};}
   | PARSEINT OCURV error CCURV {flagTreeErros = 0;}
 ;
 
-Expr: Assignment | MethodInvocation | ParseArgs  {;}
-  | Expr AND Expr  {;}
-  | Expr OR Expr  {;}
-  | Expr EQ Expr  {;}
-  | Expr GEQ Expr  {;}
-  | Expr GT Expr  {;}
-  | Expr LEQ Expr  {;}
-  | Expr LT Expr  {;}
-  | Expr NEQ Expr  {;}
-  | Expr PLUS Expr {;}
-  | Expr MINUS Expr {;}
-  | Expr STAR Expr {;}
-  | Expr DIV Expr {;}
-  | Expr MOD Expr {;}
-  | PLUS  Expr{;}
-  | MINUS Expr  {;}
-  | NOT  Expr{;}
-  | ID DOTLENGTH  {;}
-  | ID {;}
-  | OCURV Expr CCURV  {;}
-  | BOOLLIT | DECLIT | REALLIT  {;}
+Expr: Assignment                    {if(flagTreeErros ==1){};}
+  | MethodInvocation                {if(flagTreeErros ==1){};}
+  | ParseArgs                       {if(flagTreeErros ==1){};}
+  | Expr AND Expr                   {if(flagTreeErros ==1){};}
+  | Expr OR Expr                    {if(flagTreeErros ==1){};}
+  | Expr EQ Expr                    {if(flagTreeErros ==1){};}
+  | Expr GEQ Expr                   {if(flagTreeErros ==1){};}
+  | Expr GT Expr                    {if(flagTreeErros ==1){};}
+  | Expr LEQ Expr  {if(flagTreeErros ==1){};}
+  | Expr LT Expr  {if(flagTreeErros ==1){};}
+  | Expr NEQ Expr  {if(flagTreeErros ==1){};}
+  | Expr PLUS Expr {if(flagTreeErros ==1){};}
+  | Expr MINUS Expr {if(flagTreeErros ==1){};}
+  | Expr STAR Expr {if(flagTreeErros ==1){};}
+  | Expr DIV Expr {if(flagTreeErros ==1){};}
+  | Expr MOD Expr {if(flagTreeErros ==1){};}
+  | PLUS  Expr{if(flagTreeErros ==1){};}
+  | MINUS Expr  {if(flagTreeErros ==1){};}
+  | NOT  Expr{if(flagTreeErros ==1){};}
+  | ID DOTLENGTH  {if(flagTreeErros ==1){};}
+  | ID {if(flagTreeErros ==1){};}
+  | OCURV Expr CCURV  {if(flagTreeErros ==1){};}
+  | BOOLLIT  {if(flagTreeErros ==1){};}
+  | DECLIT   {if(flagTreeErros ==1){};}
+  | REALLIT  {if(flagTreeErros ==1){};}
   | OCURV error CCURV {flagTreeErros = 0;}
 ;
 
 
 %%
 
-/*symtab *symlook(char *varname){
-  int i;
-  for(i=0; i<NSYMS; i++){
-    if(tab[i].name && strcmp(varname, tab[i].name)==0)
-      return &tab[i];
-      if(!tab[i].name){
-        tab[i].name=varname;
-        return &tab[i];
-      }
-  }
-  yyerror("tamanha maximo ultrapassado");
- } */

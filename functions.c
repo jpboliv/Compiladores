@@ -20,6 +20,16 @@ node* new_node(char* type, char* value) {
 	return n;
 }
 
+//adiciona um irmao
+node* append_brother(node* first){
+	if (first == NULL){
+		return first;
+	}
+	node* aux = first;
+	for(;aux->brother!=NULL;aux=aux->brother){}
+	return aux;
+}
+
 
 void print_tree(node* aux, int tabs){
 	int i;
