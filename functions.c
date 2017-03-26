@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 #include "functions.h"
 
 
@@ -8,7 +9,7 @@
 
 //arvore
 node* new_node(char* type, char* value) {
-	printf("NEW NODE %s\n",type);
+	printf("NEW NODE %s AND %s\n",type,value);
 	node* n = (node*)malloc(sizeof(node));
 	n->type = (char*)malloc(sizeof(char)*strlen(type) +1);
 	n->value = (char*)malloc(sizeof(char)*strlen(value) +1);
@@ -20,6 +21,7 @@ node* new_node(char* type, char* value) {
 
 	return n;
 }
+
 
 //adiciona um irmao
 node* append_brother(node* first){

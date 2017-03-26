@@ -144,7 +144,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 25 "jac.y" /* yacc.c:1909  */
+#line 26 "jac.y" /* yacc.c:1909  */
 
   char *string;
   struct node *node;

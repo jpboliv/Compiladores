@@ -17,6 +17,7 @@
 
   node* root;
   node* main_node;
+  node* main2_node;
   node* aux_node;
   node* present_node;
   node* value_node;
@@ -49,16 +50,16 @@
 
 Program: auxProgram CBRACE {if(flagTreeErros ==1){($$)=root=new_node("Program","Program");root->son=main_node;};}
 ;
-auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){main_node=new_node("ID",$2);};}
-  | auxProgram FieldDecl {if(flagTreeErros ==1){value_node=new_node("FieldDecl","FieldDecl"); aux_node = append_brother(main_node); aux_node->brother= value_node; };}
-  | auxProgram MethodDecl  {if(flagTreeErros ==1){value_node=new_node("MethodDecl","MethodDecl");aux_node = append_brother(main_node); aux_node->brother= value_node; };}
+auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){main_node=new_node("Id",$2);};}
+  | auxProgram FieldDecl {if(flagTreeErros ==1){ aux_node = append_brother(main_node); aux_node->brother = present_node;};}
+  | auxProgram MethodDecl  {if(flagTreeErros ==1){value_node=new_node("MethodDecl","MethodDecl");aux_node = append_brother(main_node); aux_node->brother= value_node; present_node = value_node;};}
   | auxProgram SEMI {if(flagTreeErros ==1){};}
 ;
 
-FieldDecl: PUBLIC STATIC auxFieldDecl SEMI     {if(flagTreeErros ==1){printf("ola\n");};}
+FieldDecl: PUBLIC STATIC auxFieldDecl SEMI     {if(flagTreeErros ==1){value_node=new_node("FieldDecl","FieldDecl");value_node->son = aux_node;present_node = value_node;};}
   | error SEMI                                 {flagTreeErros = 0;}
 ;
-auxFieldDecl: Type ID                           {if(flagTreeErros ==1){};}
+auxFieldDecl: Type ID                           {if(flagTreeErros ==1){aux_node = $1;aux_node = append_brother(aux_node); aux_node->brother= new_node("Id",$2);};}
   | auxFieldDecl COMMA ID                      {if(flagTreeErros ==1){};}
 ;
 
@@ -90,9 +91,9 @@ auxVarDecl : Type ID {if(flagTreeErros ==1){};}
   | auxVarDecl COMMA ID {if(flagTreeErros ==1){};}
 ;
 
-Type: BOOL  {if(flagTreeErros ==1){};}
-  | INT     {if(flagTreeErros ==1){};}
-  | DOUBLE  {if(flagTreeErros ==1){};}
+Type: BOOL  {if(flagTreeErros ==1){$$=new_node("Boolean","Boolean");};}
+  | INT     {if(flagTreeErros ==1){$$=new_node("Int","Int");};}
+  | DOUBLE  {if(flagTreeErros ==1){$$=new_node("Double","Double");};}
 ;
 Statement: OBRACE auxStatement4 CBRACE    {if(flagTreeErros ==1){};}
   | IF OCURV Expr CCURV Statement ELSE Statement {if(flagTreeErros ==1){};}
