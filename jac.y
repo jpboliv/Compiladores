@@ -19,6 +19,7 @@
   node* main_node;
   node* main2_node;
   node* aux_node;
+  node* aux2_node;
   node* present_node;
   node* value_node;
 %}
@@ -48,19 +49,21 @@
 %type <node> auxProgram auxFieldDecl AuxMethodBody auxFormalParams auxVarDecl auxStatement1 auxStatement2 auxStatement4 auxStatement5 AuxMethodInvocation1
 %%
 
-Program: auxProgram CBRACE {if(flagTreeErros ==1){($$)=root=new_node("Program","Program");root->son=main_node;};}
+Program: auxProgram CBRACE {if(flagTreeErros ==1){($$)=root=new_node("Program","Program");root->son=$1;};}
 ;
-auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){main_node=new_node("Id",$2);};}
-  | auxProgram FieldDecl {if(flagTreeErros ==1){ aux_node = append_brother(main_node); aux_node->brother = present_node;};}
-  | auxProgram MethodDecl  {if(flagTreeErros ==1){value_node=new_node("MethodDecl","MethodDecl");aux_node = append_brother(main_node); aux_node->brother= value_node; present_node = value_node;};}
+auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){$$ = new_node("Id",$2);};}
+  | auxProgram FieldDecl {if(flagTreeErros ==1){$1->brother = $2;} ;}
+  | auxProgram MethodDecl  {if(flagTreeErros ==1){};}
   | auxProgram SEMI {if(flagTreeErros ==1){};}
 ;
 
-FieldDecl: PUBLIC STATIC auxFieldDecl SEMI     {if(flagTreeErros ==1){value_node=new_node("FieldDecl","FieldDecl");value_node->son = aux_node;present_node = value_node;};}
+FieldDecl: PUBLIC STATIC auxFieldDecl SEMI     {if(flagTreeErros ==1){$$ = $3;};}
   | error SEMI                                 {flagTreeErros = 0;}
 ;
-auxFieldDecl: Type ID                           {if(flagTreeErros ==1){aux_node = $1;aux_node = append_brother(aux_node); aux_node->brother= new_node("Id",$2);};}
-  | auxFieldDecl COMMA ID                      {if(flagTreeErros ==1){};}
+auxFieldDecl: Type ID                           {if(flagTreeErros ==1){$$ = aux_node = new_node("FieldDecl","FieldDecl");$$->son=$1;
+                                                                      $$->son->brother=new_node("Id",$2);};}
+  | auxFieldDecl COMMA ID                      {if(flagTreeErros ==1){ $1= new_node("FieldDecl","FieldDecl");$1->son=$$;main_node=append_brother($1->son);main_node=new_node("Id",$3);
+                                                                        printf("%s and %s and %s\n",$$->son->type,$$->son->value,$3);};}
 ;
 
 MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {if(flagTreeErros ==1){};}
