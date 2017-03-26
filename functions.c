@@ -8,6 +8,7 @@
 
 //arvore
 node* new_node(char* type, char* value) {
+	printf("NEW NODE %s\n",type);
 	node* n = (node*)malloc(sizeof(node));
 	n->type = (char*)malloc(sizeof(char)*strlen(type) +1);
 	n->value = (char*)malloc(sizeof(char)*strlen(value) +1);

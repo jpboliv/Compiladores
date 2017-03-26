@@ -11,7 +11,6 @@
   int aux_column;
   node *root=NULL;
   char* aux;
-  int flagTreeErros = 1;
 %}
 
 letters[a-zA-Z]
@@ -125,33 +124,7 @@ REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({re
 
 %%
 
-int main(int argv, char **argc){
-  if(argv > 1){
-    if(strcmp(argc[1], "-l")==0 || strcmp(argc[1], "-1")==0){
-      if(strcmp(argc[1], "-l")==0){
-        flag = 1;
-      }
-      yylex();
-    }
-    else if(strcmp(argc[1], "-t")==0){
-      yylex();
-      yyparse();
-      if(flagTreeErros == 1 && root != NULL){
-        print_tree(root,0);
-      }
-    }
-  }
-  else{
-    flag=2;
-    yyparse();
-  }
-return 0;
-}
 
 int yywrap(){
-return 1;
-}
-
-void yyerror (const char *s) {
-  printf ("Line %d, col %lu: %s: %s\n", n_line, n_column-strlen(yytext), s, yytext);
+  return 1;
 }

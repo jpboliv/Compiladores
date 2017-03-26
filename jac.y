@@ -1,15 +1,24 @@
 %{
   #include <stdio.h>
   #include <string.h>
+  #include <stdarg.h>
   #include "functions.h"
-  extern int flagTreeErros;
+  
 
-  int yylex(void);
+  
   void yyerror(const char *s);
+  int yylex();
+  extern int flag;
+  extern int n_line;
+  extern int n_column;
+  extern char* yytext;
+
+  int flagTreeErros = 1;
 
   node* root;
+  node* main_node;
   node* aux_node;
-
+  node* present_node;
   node* value_node;
 %}
 
@@ -38,15 +47,15 @@
 %type <node> auxProgram auxFieldDecl AuxMethodBody auxFormalParams auxVarDecl auxStatement1 auxStatement2 auxStatement4 auxStatement5 AuxMethodInvocation1
 %%
 
-Program: auxProgram CBRACE {if(flagTreeErros ==1){$$=root=new_node("Program","Program"); ($$)->son=$1;};}
+Program: auxProgram CBRACE {if(flagTreeErros ==1){($$)=root=new_node("Program","Program");root->son=main_node;};}
 ;
-auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){$$=new_node("auxProgram",""); value_node=new_node("ID",$2); aux_node=append_brother($$);aux_node->brother=value_node;};}
-  | auxProgram FieldDecl {if(flagTreeErros ==1){};}
-  | auxProgram MethodDecl  {if(flagTreeErros ==1){};}
+auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){main_node=new_node("ID",$2);};}
+  | auxProgram FieldDecl {if(flagTreeErros ==1){value_node=new_node("FieldDecl","FieldDecl"); aux_node = append_brother(main_node); aux_node->brother= value_node; };}
+  | auxProgram MethodDecl  {if(flagTreeErros ==1){value_node=new_node("MethodDecl","MethodDecl");aux_node = append_brother(main_node); aux_node->brother= value_node; };}
   | auxProgram SEMI {if(flagTreeErros ==1){};}
 ;
 
-FieldDecl: PUBLIC STATIC auxFieldDecl SEMI     {if(flagTreeErros ==1){};}
+FieldDecl: PUBLIC STATIC auxFieldDecl SEMI     {if(flagTreeErros ==1){printf("ola\n");};}
   | error SEMI                                 {flagTreeErros = 0;}
 ;
 auxFieldDecl: Type ID                           {if(flagTreeErros ==1){};}
@@ -154,3 +163,33 @@ Expr: Assignment                    {if(flagTreeErros ==1){};}
 
 
 %%
+
+void yyerror (const char *s) {
+  printf ("Line %d, col %lu: %s: %s\n", n_line, n_column-strlen(yytext), s, yytext);
+}
+
+int main(int argv, char **argc){
+  if(argv > 1){
+    if(strcmp(argc[1], "-l")==0 || strcmp(argc[1], "-1")==0){
+      if(strcmp(argc[1], "-l")==0){
+        flag = 1;
+      }
+      yylex();
+    }
+    else if(strcmp(argc[1], "-t")==0){
+      flag=2;
+      yyparse();
+      if(flagTreeErros == 1 && root!=NULL ){
+        print_tree(root,0);
+      }
+    }
+  }
+  else{
+    flag=2;
+    yyparse();
+  }
+return 0;
+}
+
+
+
