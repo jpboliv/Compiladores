@@ -68,27 +68,27 @@ auxFieldDecl: Type ID                           {if(flagTreeErros ==1){$$  = new
                                                                         add_brother($1->son,new_node("Id",$3)); add_brother($$,$1);};}
 ;
 
-MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {if(flagTreeErros ==1){$$ = new_node("MethodDecl","MethodDecl");($$)->son= $3;$3->brother=$4;};}
+MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {if(flagTreeErros ==1){$$ = new_node("MethodDecl","MethodDecl");add_son($$,$3);};}
 ;
 
-MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){$$->son = $1; 
-                                                                        ($1)->brother = new_node("Id",$2);$1->brother= $4;};}
-  | VOID ID OCURV FormalParams CCURV {if(flagTreeErros ==1){aux_node= new_node("Void", "Void"); 
-                                                                        aux_node->brother = new_node("Id",$2);aux_node->brother= $4;$$->son = aux_node;};}
+MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){$$= new_node("MethodHeader","MethodHeader");  add_son($$,$1); 
+                                                                          add_brother($1,new_node("Id",$2));  add_brother($1,$4);};}
+  | VOID ID OCURV FormalParams CCURV {if(flagTreeErros ==1){$$= new_node("MethodHeader","MethodHeader");add_son($$,aux_node=new_void("Void","Void"));
+                                                                            add_brother(aux_node,new_node("Id",$2));add_brother($1,$4);};}
 ;
 
 MethodBody: AuxMethodBody CBRACE {if(flagTreeErros ==1){};}
 ;
-AuxMethodBody: OBRACE {if(flagTreeErros ==1){};}
-  | AuxMethodBody VarDecl {if(flagTreeErros ==1){};}
-  | AuxMethodBody Statement {if(flagTreeErros ==1){};}
+AuxMethodBody: OBRACE                                   {if(flagTreeErros ==1){};}
+  | AuxMethodBody VarDecl                               {if(flagTreeErros ==1){};}
+  | AuxMethodBody Statement                             {if(flagTreeErros ==1){};}
 ;
 
-FormalParams:  Type ID auxFormalParams    {if(flagTreeErros ==1){};}
-  | STRING OSQUARE CSQUARE ID    {if(flagTreeErros ==1){};}
-  | %empty {$$=NULL;}
+FormalParams:  Type ID auxFormalParams                  {if(flagTreeErros ==1){$$=NULL;};}
+  | STRING OSQUARE CSQUARE ID                           {if(flagTreeErros ==1){$$=NULL;};}
+  | %empty                                              {$$=NULL;}
 ;
-auxFormalParams: COMMA Type ID auxFormalParams {if(flagTreeErros ==1){};}
+auxFormalParams: COMMA Type ID auxFormalParams {if(flagTreeErros ==1){$$=NULL;};}
   | %empty{$$=NULL;}
 ;
 
