@@ -68,7 +68,7 @@ auxFieldDecl: Type ID                           {if(flagTreeErros ==1){$$  = new
                                                                         add_brother($1->son,new_node("Id",$3)); add_brother($$,$1);};}
 ;
 
-MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {if(flagTreeErros ==1){$$ = new_node("MethodDecl","MethodDecl");add_son($$,$3);};}
+MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {if(flagTreeErros ==1){$$ = new_node("MethodDecl","MethodDecl");add_son($$,$3);add_brother($3,$4);};}
 ;
 
 MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){$$= new_node("MethodHeader","MethodHeader");
@@ -81,11 +81,11 @@ MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){$$= new_
                                                                             add_brother(aux_node,$4);};}
 ;
 
-MethodBody: AuxMethodBody CBRACE {if(flagTreeErros ==1){};}
+MethodBody: AuxMethodBody CBRACE {if(flagTreeErros ==1){$$= $1;};}
 ;
-AuxMethodBody: OBRACE                                   {if(flagTreeErros ==1){};}
-  | AuxMethodBody VarDecl                               {if(flagTreeErros ==1){};}
-  | AuxMethodBody Statement                             {if(flagTreeErros ==1){};}
+AuxMethodBody: OBRACE                                   {if(flagTreeErros ==1){$$=NULL;};}
+  | AuxMethodBody VarDecl                               {if(flagTreeErros ==1){$$= new_node("MethodBody","MethodBody");add_son($$,$2);};}
+  | AuxMethodBody Statement                             {if(flagTreeErros ==1){$$= new_node("MethodBody","MethodBody");add_son($$,$2);};}
 ;
 
 FormalParams:  Type ID auxFormalParams                  {if(flagTreeErros ==1){$$= new_node("MethodParams","MethodParams");
@@ -111,10 +111,13 @@ auxFormalParams: COMMA Type ID auxFormalParams {if(flagTreeErros ==1){$$ = new_n
   | %empty                                                            {$$=NULL;}
 ;
 
-VarDecl: auxVarDecl SEMI      {if(flagTreeErros ==1){};}
+VarDecl: auxVarDecl SEMI      {if(flagTreeErros ==1){$$ = $1;};}
 ;
-auxVarDecl : Type ID          {if(flagTreeErros ==1){};}
-  | auxVarDecl COMMA ID       {if(flagTreeErros ==1){};}
+auxVarDecl : Type ID          {if(flagTreeErros ==1){$$  = new_node("VarDecl","VarDecl");add_son($$,$1);
+                                                                      add_brother($$->son, new_node("Id",$2));};}
+  | auxVarDecl COMMA ID       {if(flagTreeErros ==1){$1= new_node("VarDecl","VarDecl");
+                                                                        add_son($1,new_node($$->son->type,$$->son->type));
+                                                                        add_brother($1->son,new_node("Id",$3)); add_brother($$,$1);};}
 ;
 
 Type: BOOL  {if(flagTreeErros ==1){$$=new_node("Boolean","Boolean");};}
