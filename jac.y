@@ -88,12 +88,14 @@ AuxMethodBody: OBRACE                                   {if(flagTreeErros ==1){}
   | AuxMethodBody Statement                             {if(flagTreeErros ==1){};}
 ;
 
-FormalParams:  Type ID auxFormalParams                  {if(flagTreeErros ==1){$$= new_node("MethodParam","MethodParam");
-                                                                                  $3 = new_node("ParamDecl","ParamDecl");
-                                                                                  add_son($$,$3);
-                                                                                  add_brother($1,new_node("Id",$2));  
-                                                                                  add_son($3,$1);                           };}
-  | STRING OSQUARE CSQUARE ID                           {if(flagTreeErros ==1){ $$= new_node("MethodParam","MethodParam");
+FormalParams:  Type ID auxFormalParams                  {if(flagTreeErros ==1){$$= new_node("MethodParams","MethodParams");
+                                                                                  aux2_node=new_node("ParamDecl","ParamDecl");
+                                                                                  add_son(aux2_node,$1); 
+                                                                                  add_brother($1,new_node("Id",$2)); 
+                                                                                  add_brother(aux2_node,$3); 
+                                                                                  add_son($$,aux2_node);
+                                                                                  };}
+  | STRING OSQUARE CSQUARE ID                           {if(flagTreeErros ==1){ $$= new_node("MethodParams","MethodParams");
                                                                                 aux2_node = new_node("ParamDecl","ParamDecl");
                                                                                 main_node = new_node("StringArray","StringArray");
                                                                                 add_son($$,aux2_node);
@@ -102,14 +104,17 @@ FormalParams:  Type ID auxFormalParams                  {if(flagTreeErros ==1){$
                                                                                 };}
   | %empty                                              {$$=NULL;}
 ;
-auxFormalParams: COMMA Type ID auxFormalParams {if(flagTreeErros ==1){$$=NULL;};}
-  | %empty{$$=NULL;}
+auxFormalParams: COMMA Type ID auxFormalParams {if(flagTreeErros ==1){$$ = new_node("ParamDecl","ParamDecl");
+                                                                        add_son($$,$2);
+                                                                        add_brother($2,new_node("Id",$3)); 
+                                                                        add_brother($$,$4);};}
+  | %empty                                                            {$$=NULL;}
 ;
 
-VarDecl: auxVarDecl SEMI    {if(flagTreeErros ==1){};}
+VarDecl: auxVarDecl SEMI      {if(flagTreeErros ==1){};}
 ;
-auxVarDecl : Type ID {if(flagTreeErros ==1){};}
-  | auxVarDecl COMMA ID {if(flagTreeErros ==1){};}
+auxVarDecl : Type ID          {if(flagTreeErros ==1){};}
+  | auxVarDecl COMMA ID       {if(flagTreeErros ==1){};}
 ;
 
 Type: BOOL  {if(flagTreeErros ==1){$$=new_node("Boolean","Boolean");};}
