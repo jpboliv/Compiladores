@@ -88,8 +88,18 @@ AuxMethodBody: OBRACE                                   {if(flagTreeErros ==1){}
   | AuxMethodBody Statement                             {if(flagTreeErros ==1){};}
 ;
 
-FormalParams:  Type ID auxFormalParams                  {if(flagTreeErros ==1){$$=NULL;};}
-  | STRING OSQUARE CSQUARE ID                           {if(flagTreeErros ==1){$$=NULL;};}
+FormalParams:  Type ID auxFormalParams                  {if(flagTreeErros ==1){$$= new_node("MethodParam","MethodParam");
+                                                                                  $3 = new_node("ParamDecl","ParamDecl");
+                                                                                  add_son($$,$3);
+                                                                                  add_brother($1,new_node("Id",$2));  
+                                                                                  add_son($3,$1);                           };}
+  | STRING OSQUARE CSQUARE ID                           {if(flagTreeErros ==1){ $$= new_node("MethodParam","MethodParam");
+                                                                                aux2_node = new_node("ParamDecl","ParamDecl");
+                                                                                main_node = new_node("StringArray","StringArray");
+                                                                                add_son($$,aux2_node);
+                                                                                add_brother(main_node,new_node("Id",$4));
+                                                                                add_son(aux2_node,main_node);
+                                                                                };}
   | %empty                                              {$$=NULL;}
 ;
 auxFormalParams: COMMA Type ID auxFormalParams {if(flagTreeErros ==1){$$=NULL;};}
