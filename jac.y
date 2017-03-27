@@ -71,10 +71,14 @@ auxFieldDecl: Type ID                           {if(flagTreeErros ==1){$$  = new
 MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {if(flagTreeErros ==1){$$ = new_node("MethodDecl","MethodDecl");add_son($$,$3);};}
 ;
 
-MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){$$= new_node("MethodHeader","MethodHeader");  add_son($$,$1); 
-                                                                          add_brother($1,new_node("Id",$2));  add_brother($1,$4);};}
-  | VOID ID OCURV FormalParams CCURV {if(flagTreeErros ==1){$$= new_node("MethodHeader","MethodHeader");add_son($$,aux_node=new_void("Void","Void"));
-                                                                            add_brother(aux_node,new_node("Id",$2));add_brother($1,$4);};}
+MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){$$= new_node("MethodHeader","MethodHeader");
+                                                                            add_son($$,$1); 
+                                                                          add_brother($1,new_node("Id",$2));  
+                                                                          add_brother($1,$4);};}
+  | VOID ID OCURV FormalParams CCURV {if(flagTreeErros ==1)               {$$= new_node("MethodHeader","MethodHeader");
+                                                                            add_son($$,aux_node=new_node("Void","Void"));
+                                                                            add_brother(aux_node,new_node("Id",$2));
+                                                                            add_brother(aux_node,$4);};}
 ;
 
 MethodBody: AuxMethodBody CBRACE {if(flagTreeErros ==1){};}
