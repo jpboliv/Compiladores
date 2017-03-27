@@ -1566,7 +1566,7 @@ yyreduce:
 
   case 15:
 #line 86 "jac.y" /* yacc.c:1646  */
-    {if(flagTreeErros ==1){(yyval.node)=NULL;};}
+    {if(flagTreeErros ==1){(yyval.node)=new_node("MethodBody","MethodBody");};}
 #line 1571 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1608,7 +1608,7 @@ yyreduce:
 
   case 20:
 #line 105 "jac.y" /* yacc.c:1646  */
-    {(yyval.node)=NULL;}
+    {(yyval.node)= new_node("MethodParams","MethodParams");}
 #line 1613 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1650,7 +1650,7 @@ yyreduce:
 
   case 26:
 #line 123 "jac.y" /* yacc.c:1646  */
-    {if(flagTreeErros ==1){(yyval.node)=new_node("Boolean","Boolean");};}
+    {if(flagTreeErros ==1){(yyval.node)=new_node("Bool","Bool");};}
 #line 1655 "y.tab.c" /* yacc.c:1646  */
     break;
 

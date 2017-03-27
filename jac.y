@@ -83,7 +83,7 @@ MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){$$= new_
 
 MethodBody: AuxMethodBody CBRACE {if(flagTreeErros ==1){$$= $1;};}
 ;
-AuxMethodBody: OBRACE                                   {if(flagTreeErros ==1){$$=NULL;};}
+AuxMethodBody: OBRACE                                   {if(flagTreeErros ==1){$$=new_node("MethodBody","MethodBody");};}
   | AuxMethodBody VarDecl                               {if(flagTreeErros ==1){$$= new_node("MethodBody","MethodBody");add_son($$,$2);};}
   | AuxMethodBody Statement                             {if(flagTreeErros ==1){$$= new_node("MethodBody","MethodBody");add_son($$,$2);};}
 ;
@@ -102,7 +102,7 @@ FormalParams:  Type ID auxFormalParams                  {if(flagTreeErros ==1){$
                                                                                 add_brother(main_node,new_node("Id",$4));
                                                                                 add_son(aux2_node,main_node);
                                                                                 };}
-  | %empty                                              {$$=NULL;}
+  | %empty                                              {$$= new_node("MethodParams","MethodParams");}
 ;
 auxFormalParams: COMMA Type ID auxFormalParams {if(flagTreeErros ==1){$$ = new_node("ParamDecl","ParamDecl");
                                                                         add_son($$,$2);
@@ -120,7 +120,7 @@ auxVarDecl : Type ID          {if(flagTreeErros ==1){$$  = new_node("VarDecl","V
                                                                         add_brother($1->son,new_node("Id",$3)); add_brother($$,$1);};}
 ;
 
-Type: BOOL  {if(flagTreeErros ==1){$$=new_node("Boolean","Boolean");};}
+Type: BOOL  {if(flagTreeErros ==1){$$=new_node("Bool","Bool");};}
   | INT     {if(flagTreeErros ==1){$$=new_node("Int","Int");};}
   | DOUBLE  {if(flagTreeErros ==1){$$=new_node("Double","Double");};}
 ;
