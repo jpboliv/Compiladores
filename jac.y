@@ -50,11 +50,11 @@
 %type <node> auxProgram auxFieldDecl AuxMethodBody auxFormalParams auxVarDecl auxStatement1 auxStatement2 auxStatement4 auxStatement5 AuxMethodInvocation1
 %%
 
-Program: auxProgram CBRACE {if(flagTreeErros ==1){($$)=root=new_node("Program","Program");root->son=$1;};}
+Program: auxProgram CBRACE {if(flagTreeErros ==1){($$)=root=new_node("Program","Program");add_son(root,$1);};}
 ;
 auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){$$ = new_node("Id",$2);};}
-  | auxProgram FieldDecl {if(flagTreeErros ==1){$1->brother = $2;} ;}
-  | auxProgram MethodDecl  {if(flagTreeErros ==1){$1->brother = $2;};}
+  | auxProgram FieldDecl {if(flagTreeErros ==1){add_brother($1,$2);} ;}
+  | auxProgram MethodDecl  {if(flagTreeErros ==1){add_brother($1, $2);};}
   | auxProgram SEMI {if(flagTreeErros ==1){};}
 ;
 

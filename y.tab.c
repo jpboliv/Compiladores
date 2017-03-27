@@ -1479,7 +1479,7 @@ yyreduce:
     {
         case 2:
 #line 53 "jac.y" /* yacc.c:1646  */
-    {if(flagTreeErros ==1){((yyval.node))=root=new_node("Program","Program");root->son=(yyvsp[-1].node);};}
+    {if(flagTreeErros ==1){((yyval.node))=root=new_node("Program","Program");add_son(root,(yyvsp[-1].node));};}
 #line 1484 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1491,13 +1491,13 @@ yyreduce:
 
   case 4:
 #line 56 "jac.y" /* yacc.c:1646  */
-    {if(flagTreeErros ==1){(yyvsp[-1].node)->brother = (yyvsp[0].node);} ;}
+    {if(flagTreeErros ==1){add_brother((yyvsp[-1].node),(yyvsp[0].node));} ;}
 #line 1496 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
 #line 57 "jac.y" /* yacc.c:1646  */
-    {if(flagTreeErros ==1){(yyvsp[-1].node)->brother = (yyvsp[0].node);};}
+    {if(flagTreeErros ==1){add_brother((yyvsp[-1].node), (yyvsp[0].node));};}
 #line 1502 "y.tab.c" /* yacc.c:1646  */
     break;
 
