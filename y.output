@@ -78,51 +78,52 @@ Grammar
 
    50 AuxMethodInvocation1: Expr
    51                     | AuxMethodInvocation1 COMMA Expr
+   52                     | %empty
 
-   52 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV
-   53          | PARSEINT OCURV error CCURV
+   53 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV
+   54          | PARSEINT OCURV error CCURV
 
-   54 Expr: Assignment
-   55     | MethodInvocation
-   56     | ParseArgs
-   57     | Expr AND Expr
-   58     | Expr OR Expr
-   59     | Expr EQ Expr
-   60     | Expr GEQ Expr
-   61     | Expr GT Expr
-   62     | Expr LEQ Expr
-   63     | Expr LT Expr
-   64     | Expr NEQ Expr
-   65     | Expr PLUS Expr
-   66     | Expr MINUS Expr
-   67     | Expr STAR Expr
-   68     | Expr DIV Expr
-   69     | Expr MOD Expr
-   70     | PLUS Expr
-   71     | MINUS Expr
-   72     | NOT Expr
-   73     | ID DOTLENGTH
-   74     | ID
-   75     | OCURV Expr CCURV
-   76     | BOOLLIT
-   77     | DECLIT
-   78     | REALLIT
-   79     | OCURV error CCURV
+   55 Expr: Assignment
+   56     | MethodInvocation
+   57     | ParseArgs
+   58     | Expr AND Expr
+   59     | Expr OR Expr
+   60     | Expr EQ Expr
+   61     | Expr GEQ Expr
+   62     | Expr GT Expr
+   63     | Expr LEQ Expr
+   64     | Expr LT Expr
+   65     | Expr NEQ Expr
+   66     | Expr PLUS Expr
+   67     | Expr MINUS Expr
+   68     | Expr STAR Expr
+   69     | Expr DIV Expr
+   70     | Expr MOD Expr
+   71     | PLUS Expr
+   72     | MINUS Expr
+   73     | NOT Expr
+   74     | ID DOTLENGTH
+   75     | ID
+   76     | OCURV Expr CCURV
+   77     | BOOLLIT
+   78     | DECLIT
+   79     | REALLIT
+   80     | OCURV error CCURV
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
-error (256) 7 36 49 53 79
+error (256) 7 36 49 54 80
 BOOL (258) 25
 CLASS (259) 2
 DO (260) 32
-DOTLENGTH (261) 73
+DOTLENGTH (261) 74
 DOUBLE (262) 27
 ELSE (263) 29
 IF (264) 29 30
 INT (265) 26
-PARSEINT (266) 52 53
+PARSEINT (266) 53 54
 PRINT (267) 33
 PUBLIC (268) 6 10
 RETURN (269) 35
@@ -130,34 +131,34 @@ STATIC (270) 6 10
 STRING (271) 18
 VOID (272) 12
 WHILE (273) 31 32
-OCURV (274) 11 12 29 30 31 32 33 48 49 52 53 75 79
-CCURV (275) 11 12 29 30 31 32 33 48 49 52 53 75 79
+OCURV (274) 11 12 29 30 31 32 33 48 49 53 54 76 80
+CCURV (275) 11 12 29 30 31 32 33 48 49 53 54 76 80
 OBRACE (276) 2 14 28
 CBRACE (277) 1 13 28
-OSQUARE (278) 18 52
-CSQUARE (279) 18 52
-AND (280) 57
-OR (281) 58
-LT (282) 63
-GT (283) 61
-EQ (284) 59
-NEQ (285) 64
-GEQ (286) 60
-LEQ (287) 62
-PLUS (288) 65 70
-MINUS (289) 66 71
-STAR (290) 67
-DIV (291) 68
-MOD (292) 69
-NOT (293) 72
+OSQUARE (278) 18 53
+CSQUARE (279) 18 53
+AND (280) 58
+OR (281) 59
+LT (282) 64
+GT (283) 62
+EQ (284) 60
+NEQ (285) 65
+GEQ (286) 61
+LEQ (287) 63
+PLUS (288) 66 71
+MINUS (289) 67 72
+STAR (290) 68
+DIV (291) 69
+MOD (292) 70
+NOT (293) 73
 ASSIGN (294) 47
 SEMI (295) 5 6 7 22 32 33 34 35 36
 COMMA (296) 9 20 24 51
 RESERVED (297)
-REALLIT (298) 78
-DECLIT (299) 77
-BOOLLIT (300) 76
-ID (301) 2 8 9 11 12 17 18 20 23 24 47 48 49 52 73 74
+REALLIT (298) 79
+DECLIT (299) 78
+BOOLLIT (300) 77
+ID (301) 2 8 9 11 12 17 18 20 23 24 47 48 49 53 74 75
 STRLIT (302) 42
 
 
@@ -202,17 +203,17 @@ auxStatement4 (65)
 auxStatement5 (66)
     on left: 45 46, on right: 35
 Assignment (67)
-    on left: 47, on right: 37 54
+    on left: 47, on right: 37 55
 MethodInvocation (68)
-    on left: 48 49, on right: 38 55
+    on left: 48 49, on right: 38 56
 AuxMethodInvocation1 (69)
-    on left: 50 51, on right: 48 51
+    on left: 50 51 52, on right: 48 51
 ParseArgs (70)
-    on left: 52 53, on right: 39 56
+    on left: 53 54, on right: 39 57
 Expr (71)
-    on left: 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
-    72 73 74 75 76 77 78 79, on right: 29 30 31 32 41 45 47 50 51 52
-    57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 75
+    on left: 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72
+    73 74 75 76 77 78 79 80, on right: 29 30 31 32 41 45 47 50 51 53
+    58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 76
 
 
 State 0
@@ -535,8 +536,8 @@ State 33
 
 State 34
 
-   52 ParseArgs: PARSEINT . OCURV ID OSQUARE Expr CSQUARE CCURV
-   53          | PARSEINT . OCURV error CCURV
+   53 ParseArgs: PARSEINT . OCURV ID OSQUARE Expr CSQUARE CCURV
+   54          | PARSEINT . OCURV error CCURV
 
     OCURV  shift, and go to state 56
 
@@ -751,8 +752,8 @@ State 55
 
 State 56
 
-   52 ParseArgs: PARSEINT OCURV . ID OSQUARE Expr CSQUARE CCURV
-   53          | PARSEINT OCURV . error CCURV
+   53 ParseArgs: PARSEINT OCURV . ID OSQUARE Expr CSQUARE CCURV
+   54          | PARSEINT OCURV . error CCURV
 
     error  shift, and go to state 86
     ID     shift, and go to state 87
@@ -782,8 +783,8 @@ State 57
 
 State 58
 
-   75 Expr: OCURV . Expr CCURV
-   79     | OCURV . error CCURV
+   76 Expr: OCURV . Expr CCURV
+   80     | OCURV . error CCURV
 
     error     shift, and go to state 91
     PARSEINT  shift, and go to state 34
@@ -804,7 +805,7 @@ State 58
 
 State 59
 
-   70 Expr: PLUS . Expr
+   71 Expr: PLUS . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -824,7 +825,7 @@ State 59
 
 State 60
 
-   71 Expr: MINUS . Expr
+   72 Expr: MINUS . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -844,7 +845,7 @@ State 60
 
 State 61
 
-   72 Expr: NOT . Expr
+   73 Expr: NOT . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -864,23 +865,23 @@ State 61
 
 State 62
 
-   78 Expr: REALLIT .
+   79 Expr: REALLIT .
 
-    $default  reduce using rule 78 (Expr)
+    $default  reduce using rule 79 (Expr)
 
 
 State 63
 
-   77 Expr: DECLIT .
+   78 Expr: DECLIT .
 
-    $default  reduce using rule 77 (Expr)
+    $default  reduce using rule 78 (Expr)
 
 
 State 64
 
-   76 Expr: BOOLLIT .
+   77 Expr: BOOLLIT .
 
-    $default  reduce using rule 76 (Expr)
+    $default  reduce using rule 77 (Expr)
 
 
 State 65
@@ -888,14 +889,14 @@ State 65
    47 Assignment: ID . ASSIGN Expr
    48 MethodInvocation: ID . OCURV AuxMethodInvocation1 CCURV
    49                 | ID . OCURV error CCURV
-   73 Expr: ID . DOTLENGTH
-   74     | ID .
+   74 Expr: ID . DOTLENGTH
+   75     | ID .
 
     DOTLENGTH  shift, and go to state 96
     OCURV      shift, and go to state 74
     ASSIGN     shift, and go to state 75
 
-    $default  reduce using rule 74 (Expr)
+    $default  reduce using rule 75 (Expr)
 
 
 State 66
@@ -907,41 +908,41 @@ State 66
 
 State 67
 
-   54 Expr: Assignment .
-
-    $default  reduce using rule 54 (Expr)
-
-
-State 68
-
-   55 Expr: MethodInvocation .
+   55 Expr: Assignment .
 
     $default  reduce using rule 55 (Expr)
 
 
-State 69
+State 68
 
-   56 Expr: ParseArgs .
+   56 Expr: MethodInvocation .
 
     $default  reduce using rule 56 (Expr)
+
+
+State 69
+
+   57 Expr: ParseArgs .
+
+    $default  reduce using rule 57 (Expr)
 
 
 State 70
 
    45 auxStatement5: Expr .
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
     AND    shift, and go to state 98
     OR     shift, and go to state 99
@@ -1027,6 +1028,9 @@ State 74
     DECLIT    shift, and go to state 63
     BOOLLIT   shift, and go to state 64
     ID        shift, and go to state 65
+
+    CCURV  reduce using rule 52 (AuxMethodInvocation1)
+    COMMA  reduce using rule 52 (AuxMethodInvocation1)
 
     Assignment            go to state 67
     MethodInvocation      go to state 68
@@ -1126,19 +1130,19 @@ State 85
 
    29 Statement: IF OCURV Expr . CCURV Statement ELSE Statement
    30          | IF OCURV Expr . CCURV Statement
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
     CCURV  shift, and go to state 124
     AND    shift, and go to state 98
@@ -1158,14 +1162,14 @@ State 85
 
 State 86
 
-   53 ParseArgs: PARSEINT OCURV error . CCURV
+   54 ParseArgs: PARSEINT OCURV error . CCURV
 
     CCURV  shift, and go to state 125
 
 
 State 87
 
-   52 ParseArgs: PARSEINT OCURV ID . OSQUARE Expr CSQUARE CCURV
+   53 ParseArgs: PARSEINT OCURV ID . OSQUARE Expr CSQUARE CCURV
 
     OSQUARE  shift, and go to state 126
 
@@ -1187,19 +1191,19 @@ State 89
 State 90
 
    41 auxStatement2: Expr .
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
     AND    shift, and go to state 98
     OR     shift, and go to state 99
@@ -1220,27 +1224,27 @@ State 90
 
 State 91
 
-   79 Expr: OCURV error . CCURV
+   80 Expr: OCURV error . CCURV
 
     CCURV  shift, and go to state 128
 
 
 State 92
 
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
-   75     | OCURV Expr . CCURV
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
+   76     | OCURV Expr . CCURV
 
     CCURV  shift, and go to state 129
     AND    shift, and go to state 98
@@ -1260,44 +1264,20 @@ State 92
 
 State 93
 
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
-   70     | PLUS Expr .
-
-    STAR  shift, and go to state 108
-    DIV   shift, and go to state 109
-    MOD   shift, and go to state 110
-
-    $default  reduce using rule 70 (Expr)
-
-
-State 94
-
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
-   71     | MINUS Expr .
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
+   71     | PLUS Expr .
 
     STAR  shift, and go to state 108
     DIV   shift, and go to state 109
@@ -1306,31 +1286,55 @@ State 94
     $default  reduce using rule 71 (Expr)
 
 
-State 95
+State 94
 
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
-   72     | NOT Expr .
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
+   72     | MINUS Expr .
+
+    STAR  shift, and go to state 108
+    DIV   shift, and go to state 109
+    MOD   shift, and go to state 110
 
     $default  reduce using rule 72 (Expr)
 
 
-State 96
+State 95
 
-   73 Expr: ID DOTLENGTH .
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
+   73     | NOT Expr .
 
     $default  reduce using rule 73 (Expr)
+
+
+State 96
+
+   74 Expr: ID DOTLENGTH .
+
+    $default  reduce using rule 74 (Expr)
 
 
 State 97
@@ -1342,7 +1346,7 @@ State 97
 
 State 98
 
-   57 Expr: Expr AND . Expr
+   58 Expr: Expr AND . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1362,7 +1366,7 @@ State 98
 
 State 99
 
-   58 Expr: Expr OR . Expr
+   59 Expr: Expr OR . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1382,7 +1386,7 @@ State 99
 
 State 100
 
-   63 Expr: Expr LT . Expr
+   64 Expr: Expr LT . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1402,7 +1406,7 @@ State 100
 
 State 101
 
-   61 Expr: Expr GT . Expr
+   62 Expr: Expr GT . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1422,7 +1426,7 @@ State 101
 
 State 102
 
-   59 Expr: Expr EQ . Expr
+   60 Expr: Expr EQ . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1442,7 +1446,7 @@ State 102
 
 State 103
 
-   64 Expr: Expr NEQ . Expr
+   65 Expr: Expr NEQ . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1462,7 +1466,7 @@ State 103
 
 State 104
 
-   60 Expr: Expr GEQ . Expr
+   61 Expr: Expr GEQ . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1482,7 +1486,7 @@ State 104
 
 State 105
 
-   62 Expr: Expr LEQ . Expr
+   63 Expr: Expr LEQ . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1502,7 +1506,7 @@ State 105
 
 State 106
 
-   65 Expr: Expr PLUS . Expr
+   66 Expr: Expr PLUS . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1522,7 +1526,7 @@ State 106
 
 State 107
 
-   66 Expr: Expr MINUS . Expr
+   67 Expr: Expr MINUS . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1542,7 +1546,7 @@ State 107
 
 State 108
 
-   67 Expr: Expr STAR . Expr
+   68 Expr: Expr STAR . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1562,7 +1566,7 @@ State 108
 
 State 109
 
-   68 Expr: Expr DIV . Expr
+   69 Expr: Expr DIV . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1582,7 +1586,7 @@ State 109
 
 State 110
 
-   69 Expr: Expr MOD . Expr
+   70 Expr: Expr MOD . Expr
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1603,19 +1607,19 @@ State 110
 State 111
 
    31 Statement: WHILE OCURV Expr . CCURV Statement
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
     CCURV  shift, and go to state 143
     AND    shift, and go to state 98
@@ -1666,19 +1670,19 @@ State 115
 State 116
 
    50 AuxMethodInvocation1: Expr .
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
     AND    shift, and go to state 98
     OR     shift, and go to state 99
@@ -1700,19 +1704,19 @@ State 116
 State 117
 
    47 Assignment: ID ASSIGN Expr .
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
     AND    shift, and go to state 98
     OR     shift, and go to state 99
@@ -1816,14 +1820,14 @@ State 124
 
 State 125
 
-   53 ParseArgs: PARSEINT OCURV error CCURV .
+   54 ParseArgs: PARSEINT OCURV error CCURV .
 
-    $default  reduce using rule 53 (ParseArgs)
+    $default  reduce using rule 54 (ParseArgs)
 
 
 State 126
 
-   52 ParseArgs: PARSEINT OCURV ID OSQUARE . Expr CSQUARE CCURV
+   53 ParseArgs: PARSEINT OCURV ID OSQUARE . Expr CSQUARE CCURV
 
     PARSEINT  shift, and go to state 34
     OCURV     shift, and go to state 58
@@ -1850,68 +1854,35 @@ State 127
 
 State 128
 
-   79 Expr: OCURV error CCURV .
+   80 Expr: OCURV error CCURV .
 
-    $default  reduce using rule 79 (Expr)
+    $default  reduce using rule 80 (Expr)
 
 
 State 129
 
-   75 Expr: OCURV Expr CCURV .
+   76 Expr: OCURV Expr CCURV .
 
-    $default  reduce using rule 75 (Expr)
+    $default  reduce using rule 76 (Expr)
 
 
 State 130
 
-   57 Expr: Expr . AND Expr
-   57     | Expr AND Expr .
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   58     | Expr AND Expr .
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
-    LT     shift, and go to state 100
-    GT     shift, and go to state 101
-    EQ     shift, and go to state 102
-    NEQ    shift, and go to state 103
-    GEQ    shift, and go to state 104
-    LEQ    shift, and go to state 105
-    PLUS   shift, and go to state 106
-    MINUS  shift, and go to state 107
-    STAR   shift, and go to state 108
-    DIV    shift, and go to state 109
-    MOD    shift, and go to state 110
-
-    $default  reduce using rule 57 (Expr)
-
-
-State 131
-
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   58     | Expr OR Expr .
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
-
-    AND    shift, and go to state 98
     LT     shift, and go to state 100
     GT     shift, and go to state 101
     EQ     shift, and go to state 102
@@ -1927,77 +1898,28 @@ State 131
     $default  reduce using rule 58 (Expr)
 
 
-State 132
+State 131
 
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   63     | Expr LT Expr .
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   59     | Expr OR Expr .
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
-    PLUS   shift, and go to state 106
-    MINUS  shift, and go to state 107
-    STAR   shift, and go to state 108
-    DIV    shift, and go to state 109
-    MOD    shift, and go to state 110
-
-    $default  reduce using rule 63 (Expr)
-
-
-State 133
-
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   61     | Expr GT Expr .
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
-
-    PLUS   shift, and go to state 106
-    MINUS  shift, and go to state 107
-    STAR   shift, and go to state 108
-    DIV    shift, and go to state 109
-    MOD    shift, and go to state 110
-
-    $default  reduce using rule 61 (Expr)
-
-
-State 134
-
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   59     | Expr EQ Expr .
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
-
+    AND    shift, and go to state 98
     LT     shift, and go to state 100
     GT     shift, and go to state 101
+    EQ     shift, and go to state 102
+    NEQ    shift, and go to state 103
     GEQ    shift, and go to state 104
     LEQ    shift, and go to state 105
     PLUS   shift, and go to state 106
@@ -2009,22 +1931,74 @@ State 134
     $default  reduce using rule 59 (Expr)
 
 
-State 135
+State 132
 
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   64     | Expr NEQ Expr .
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   64     | Expr LT Expr .
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
+
+    PLUS   shift, and go to state 106
+    MINUS  shift, and go to state 107
+    STAR   shift, and go to state 108
+    DIV    shift, and go to state 109
+    MOD    shift, and go to state 110
+
+    $default  reduce using rule 64 (Expr)
+
+
+State 133
+
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   62     | Expr GT Expr .
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
+
+    PLUS   shift, and go to state 106
+    MINUS  shift, and go to state 107
+    STAR   shift, and go to state 108
+    DIV    shift, and go to state 109
+    MOD    shift, and go to state 110
+
+    $default  reduce using rule 62 (Expr)
+
+
+State 134
+
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   60     | Expr EQ Expr .
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
     LT     shift, and go to state 100
     GT     shift, and go to state 101
@@ -2036,101 +2010,107 @@ State 135
     DIV    shift, and go to state 109
     MOD    shift, and go to state 110
 
-    $default  reduce using rule 64 (Expr)
-
-
-State 136
-
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   60     | Expr GEQ Expr .
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
-
-    PLUS   shift, and go to state 106
-    MINUS  shift, and go to state 107
-    STAR   shift, and go to state 108
-    DIV    shift, and go to state 109
-    MOD    shift, and go to state 110
-
     $default  reduce using rule 60 (Expr)
 
 
-State 137
+State 135
 
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   62     | Expr LEQ Expr .
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   65     | Expr NEQ Expr .
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
+    LT     shift, and go to state 100
+    GT     shift, and go to state 101
+    GEQ    shift, and go to state 104
+    LEQ    shift, and go to state 105
     PLUS   shift, and go to state 106
     MINUS  shift, and go to state 107
     STAR   shift, and go to state 108
     DIV    shift, and go to state 109
     MOD    shift, and go to state 110
-
-    $default  reduce using rule 62 (Expr)
-
-
-State 138
-
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   65     | Expr PLUS Expr .
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
-
-    STAR  shift, and go to state 108
-    DIV   shift, and go to state 109
-    MOD   shift, and go to state 110
 
     $default  reduce using rule 65 (Expr)
 
 
-State 139
+State 136
 
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   66     | Expr MINUS Expr .
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   61     | Expr GEQ Expr .
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
+
+    PLUS   shift, and go to state 106
+    MINUS  shift, and go to state 107
+    STAR   shift, and go to state 108
+    DIV    shift, and go to state 109
+    MOD    shift, and go to state 110
+
+    $default  reduce using rule 61 (Expr)
+
+
+State 137
+
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   63     | Expr LEQ Expr .
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
+
+    PLUS   shift, and go to state 106
+    MINUS  shift, and go to state 107
+    STAR   shift, and go to state 108
+    DIV    shift, and go to state 109
+    MOD    shift, and go to state 110
+
+    $default  reduce using rule 63 (Expr)
+
+
+State 138
+
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   66     | Expr PLUS Expr .
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
     STAR  shift, and go to state 108
     DIV   shift, and go to state 109
@@ -2139,64 +2119,88 @@ State 139
     $default  reduce using rule 66 (Expr)
 
 
-State 140
+State 139
 
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   67     | Expr STAR Expr .
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   67     | Expr MINUS Expr .
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
+
+    STAR  shift, and go to state 108
+    DIV   shift, and go to state 109
+    MOD   shift, and go to state 110
 
     $default  reduce using rule 67 (Expr)
 
 
-State 141
+State 140
 
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   68     | Expr DIV Expr .
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   68     | Expr STAR Expr .
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
     $default  reduce using rule 68 (Expr)
 
 
-State 142
+State 141
 
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
-   69     | Expr MOD Expr .
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   69     | Expr DIV Expr .
+   70     | Expr . MOD Expr
 
     $default  reduce using rule 69 (Expr)
+
+
+State 142
+
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
+   70     | Expr MOD Expr .
+
+    $default  reduce using rule 70 (Expr)
 
 
 State 143
@@ -2273,19 +2277,19 @@ State 148
 State 149
 
    32 Statement: DO Statement WHILE OCURV Expr . CCURV SEMI
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
     CCURV  shift, and go to state 156
     AND    shift, and go to state 98
@@ -2315,20 +2319,20 @@ State 150
 
 State 151
 
-   52 ParseArgs: PARSEINT OCURV ID OSQUARE Expr . CSQUARE CCURV
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   53 ParseArgs: PARSEINT OCURV ID OSQUARE Expr . CSQUARE CCURV
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
     CSQUARE  shift, and go to state 158
     AND      shift, and go to state 98
@@ -2363,19 +2367,19 @@ State 153
 State 154
 
    51 AuxMethodInvocation1: AuxMethodInvocation1 COMMA Expr .
-   57 Expr: Expr . AND Expr
-   58     | Expr . OR Expr
-   59     | Expr . EQ Expr
-   60     | Expr . GEQ Expr
-   61     | Expr . GT Expr
-   62     | Expr . LEQ Expr
-   63     | Expr . LT Expr
-   64     | Expr . NEQ Expr
-   65     | Expr . PLUS Expr
-   66     | Expr . MINUS Expr
-   67     | Expr . STAR Expr
-   68     | Expr . DIV Expr
-   69     | Expr . MOD Expr
+   58 Expr: Expr . AND Expr
+   59     | Expr . OR Expr
+   60     | Expr . EQ Expr
+   61     | Expr . GEQ Expr
+   62     | Expr . GT Expr
+   63     | Expr . LEQ Expr
+   64     | Expr . LT Expr
+   65     | Expr . NEQ Expr
+   66     | Expr . PLUS Expr
+   67     | Expr . MINUS Expr
+   68     | Expr . STAR Expr
+   69     | Expr . DIV Expr
+   70     | Expr . MOD Expr
 
     AND    shift, and go to state 98
     OR     shift, and go to state 99
@@ -2437,7 +2441,7 @@ State 157
 
 State 158
 
-   52 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE . CCURV
+   53 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE . CCURV
 
     CCURV  shift, and go to state 162
 
@@ -2465,6 +2469,6 @@ State 161
 
 State 162
 
-   52 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV .
+   53 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV .
 
-    $default  reduce using rule 52 (ParseArgs)
+    $default  reduce using rule 53 (ParseArgs)

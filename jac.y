@@ -13,7 +13,7 @@
   extern int n_column;
   extern char* yytext;
 
-  int flagTreeErros = 1;
+  int flagTreeErros;
 
   node* root;
   node* main_node;
@@ -45,6 +45,7 @@
 %left OBRACE CBRACE CCURV OCURV
 %right ELSE
 
+
 %type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr
 %type <node> auxProgram auxFieldDecl AuxMethodBody auxFormalParams auxVarDecl auxStatement1 auxStatement2 auxStatement4 auxStatement5 AuxMethodInvocation1
 %%
@@ -53,24 +54,25 @@ Program: auxProgram CBRACE {if(flagTreeErros ==1){($$)=root=new_node("Program","
 ;
 auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){$$ = new_node("Id",$2);};}
   | auxProgram FieldDecl {if(flagTreeErros ==1){$1->brother = $2;} ;}
-  | auxProgram MethodDecl  {if(flagTreeErros ==1){};}
+  | auxProgram MethodDecl  {if(flagTreeErros ==1){$1->brother = $2;};}
   | auxProgram SEMI {if(flagTreeErros ==1){};}
 ;
 
 FieldDecl: PUBLIC STATIC auxFieldDecl SEMI     {if(flagTreeErros ==1){$$ = $3;};}
   | error SEMI                                 {flagTreeErros = 0;}
 ;
-auxFieldDecl: Type ID                           {if(flagTreeErros ==1){$$ = aux_node = new_node("FieldDecl","FieldDecl");$$->son=$1;
-                                                                      $$->son->brother=new_node("Id",$2);};}
-  | auxFieldDecl COMMA ID                      {if(flagTreeErros ==1){ $1= new_node("FieldDecl","FieldDecl");$1->son=$$;main_node=append_brother($1->son);main_node=new_node("Id",$3);
-                                                                        printf("%s and %s and %s\n",$$->son->type,$$->son->value,$3);};}
+auxFieldDecl: Type ID                           {if(flagTreeErros ==1){$$  = new_node("FieldDecl","FieldDecl");$$->son=$1;
+                                                                      $$->son->brother=new_node("Id",$2);;};}
+  | auxFieldDecl COMMA ID                      {if(flagTreeErros ==1){};}
 ;
 
-MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {if(flagTreeErros ==1){};}
+MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {if(flagTreeErros ==1){$$ = new_node("MethodDecl","MethodDecl");($$)->son= $3;$3->brother=$4;};}
 ;
 
-MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){};}
-  | VOID ID OCURV FormalParams CCURV {if(flagTreeErros ==1){};}
+MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){$$->son = $1; 
+                                                                        ($1)->brother = new_node("Id",$2);$1->brother= $4;};}
+  | VOID ID OCURV FormalParams CCURV {if(flagTreeErros ==1){aux_node= new_node("Void", "Void"); 
+                                                                        aux_node->brother = new_node("Id",$2);aux_node->brother= $4;$$->son = aux_node;};}
 ;
 
 MethodBody: AuxMethodBody CBRACE {if(flagTreeErros ==1){};}
@@ -98,43 +100,44 @@ Type: BOOL  {if(flagTreeErros ==1){$$=new_node("Boolean","Boolean");};}
   | INT     {if(flagTreeErros ==1){$$=new_node("Int","Int");};}
   | DOUBLE  {if(flagTreeErros ==1){$$=new_node("Double","Double");};}
 ;
-Statement: OBRACE auxStatement4 CBRACE    {if(flagTreeErros ==1){};}
-  | IF OCURV Expr CCURV Statement ELSE Statement {if(flagTreeErros ==1){};}
-  | IF OCURV Expr CCURV Statement %prec ELSE {if(flagTreeErros ==1){};}
-  | WHILE OCURV Expr CCURV Statement {if(flagTreeErros ==1){};}
-  | DO Statement WHILE OCURV Expr CCURV SEMI  {if(flagTreeErros ==1){};}
-  | PRINT OCURV auxStatement2 CCURV SEMI  {if(flagTreeErros ==1){};}
-  | auxStatement1 SEMI  {if(flagTreeErros ==1){};}
-  | RETURN auxStatement5 SEMI   {if(flagTreeErros ==1){};}
-  | error SEMI {flagTreeErros = 0;}
+Statement: OBRACE auxStatement4 CBRACE                  {if(flagTreeErros ==1){};}
+  | IF OCURV Expr CCURV Statement ELSE Statement        {if(flagTreeErros ==1){};}
+  | IF OCURV Expr CCURV Statement %prec ELSE            {if(flagTreeErros ==1){};}
+  | WHILE OCURV Expr CCURV Statement                    {if(flagTreeErros ==1){};}
+  | DO Statement WHILE OCURV Expr CCURV SEMI            {if(flagTreeErros ==1){};}
+  | PRINT OCURV auxStatement2 CCURV SEMI                {if(flagTreeErros ==1){};}
+  | auxStatement1 SEMI                                  {if(flagTreeErros ==1){};}
+  | RETURN auxStatement5 SEMI                           {if(flagTreeErros ==1){};}
+  | error SEMI                                          {flagTreeErros = 0;}
 ;
 auxStatement1: Assignment               {if(flagTreeErros ==1){};}
   | MethodInvocation                    {if(flagTreeErros ==1){};}
   | ParseArgs                           {if(flagTreeErros ==1){};}
   | %empty                              {$$=NULL;}
 ;
-auxStatement2: Expr {if(flagTreeErros ==1){};}
-  | STRLIT {if(flagTreeErros ==1){};}
+auxStatement2: Expr                     {if(flagTreeErros ==1){};}
+  | STRLIT                              {if(flagTreeErros ==1){};}
 ;
 auxStatement4: Statement auxStatement4      {if(flagTreeErros ==1){};}
-  | %empty {$$=NULL;}
+  | %empty                                  {$$=NULL;}
 ;
-auxStatement5: Expr {if(flagTreeErros ==1){};}
-  | %empty{$$=NULL;}
+auxStatement5: Expr                      {if(flagTreeErros ==1){};}
+  |%empty                                {$$=NULL;}
 ;
 
 Assignment: ID ASSIGN Expr  {if(flagTreeErros ==1){};}
 ;
 MethodInvocation: ID OCURV AuxMethodInvocation1 CCURV   {if(flagTreeErros ==1){};}
-  | ID OCURV error CCURV {flagTreeErros = 0;}
+  | ID OCURV error CCURV                                {flagTreeErros = 0;}
 ;
-AuxMethodInvocation1: Expr  {if(flagTreeErros ==1){};}
-  | AuxMethodInvocation1 COMMA Expr{if(flagTreeErros ==1){};}
+AuxMethodInvocation1: Expr            {if(flagTreeErros ==1){};}
+  | AuxMethodInvocation1 COMMA Expr   {if(flagTreeErros ==1){};}
+  | %empty                            {$$=NULL;}
 ;
 
 
 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV   {if(flagTreeErros ==1){};}
-  | PARSEINT OCURV error CCURV {flagTreeErros = 0;}
+  | PARSEINT OCURV error CCURV                            {flagTreeErros = 0;}
 ;
 
 Expr: Assignment                    {if(flagTreeErros ==1){};}
@@ -145,24 +148,24 @@ Expr: Assignment                    {if(flagTreeErros ==1){};}
   | Expr EQ Expr                    {if(flagTreeErros ==1){};}
   | Expr GEQ Expr                   {if(flagTreeErros ==1){};}
   | Expr GT Expr                    {if(flagTreeErros ==1){};}
-  | Expr LEQ Expr  {if(flagTreeErros ==1){};}
-  | Expr LT Expr  {if(flagTreeErros ==1){};}
-  | Expr NEQ Expr  {if(flagTreeErros ==1){};}
-  | Expr PLUS Expr {if(flagTreeErros ==1){};}
-  | Expr MINUS Expr {if(flagTreeErros ==1){};}
-  | Expr STAR Expr {if(flagTreeErros ==1){};}
-  | Expr DIV Expr {if(flagTreeErros ==1){};}
-  | Expr MOD Expr {if(flagTreeErros ==1){};}
-  | PLUS  Expr{if(flagTreeErros ==1){};}
-  | MINUS Expr  {if(flagTreeErros ==1){};}
-  | NOT  Expr{if(flagTreeErros ==1){};}
-  | ID DOTLENGTH  {if(flagTreeErros ==1){};}
-  | ID {if(flagTreeErros ==1){};}
-  | OCURV Expr CCURV  {if(flagTreeErros ==1){};}
-  | BOOLLIT  {if(flagTreeErros ==1){};}
-  | DECLIT   {if(flagTreeErros ==1){};}
-  | REALLIT  {if(flagTreeErros ==1){};}
-  | OCURV error CCURV {flagTreeErros = 0;}
+  | Expr LEQ Expr                   {if(flagTreeErros ==1){};}
+  | Expr LT Expr                    {if(flagTreeErros ==1){};}
+  | Expr NEQ Expr                   {if(flagTreeErros ==1){};}
+  | Expr PLUS Expr                  {if(flagTreeErros ==1){};}
+  | Expr MINUS Expr                 {if(flagTreeErros ==1){};}
+  | Expr STAR Expr                  {if(flagTreeErros ==1){};}
+  | Expr DIV Expr                   {if(flagTreeErros ==1){};}
+  | Expr MOD Expr                   {if(flagTreeErros ==1){};}
+  | PLUS  Expr                      {if(flagTreeErros ==1){};}
+  | MINUS Expr                      {if(flagTreeErros ==1){};}
+  | NOT  Expr                       {if(flagTreeErros ==1){};}
+  | ID DOTLENGTH                    {if(flagTreeErros ==1){};}
+  | ID                              {if(flagTreeErros ==1){};}
+  | OCURV Expr CCURV                {if(flagTreeErros ==1){};}
+  | BOOLLIT                         {if(flagTreeErros ==1){};}
+  | DECLIT                          {if(flagTreeErros ==1){};}
+  | REALLIT                         {if(flagTreeErros ==1){};}
+  | OCURV error CCURV               {flagTreeErros = 0;}
 ;
 
 
@@ -182,7 +185,9 @@ int main(int argv, char **argc){
     }
     else if(strcmp(argc[1], "-t")==0){
       flag=2;
+      flagTreeErros = 1;
       yyparse();
+      
       if(flagTreeErros == 1 && root!=NULL ){
         print_tree(root,0);
       }

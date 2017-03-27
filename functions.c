@@ -9,7 +9,7 @@
 
 //arvore
 node* new_node(char* type, char* value) {
-	printf("NEW NODE %s AND %s\n",type,value);
+	//printf("NEW NODE %s AND %s\n",type,value);
 	node* n = (node*)malloc(sizeof(node));
 	n->type = (char*)malloc(sizeof(char)*strlen(type) +1);
 	n->value = (char*)malloc(sizeof(char)*strlen(value) +1);
@@ -22,8 +22,15 @@ node* new_node(char* type, char* value) {
 	return n;
 }
 
-
-//adiciona um irmao
+node* add_brother(node* parent, node* child){
+	if (parent == NULL){
+		return parent;
+	}
+	node* aux = parent;
+	for(;aux->brother!=NULL;aux=aux->brother){}
+	return aux;
+}
+//
 node* append_brother(node* first){
 	if (first == NULL){
 		return first;
