@@ -22,12 +22,23 @@ node* new_node(char* type, char* value) {
 	return n;
 }
 
-node* add_brother(node* parent, node* child){
+node* add_son(node* parent, node* new_son){
 	if (parent == NULL){
 		return parent;
 	}
 	node* aux = parent;
+	for(;aux->son!=NULL;aux=aux->son){}
+	aux->son = new_son;
+	return aux;
+}
+
+node* add_brother(node* brother, node* new_brother){
+	if (brother == NULL){
+		return brother;
+	}
+	node* aux = brother;
 	for(;aux->brother!=NULL;aux=aux->brother){}
+		aux->brother = new_brother;
 	return aux;
 }
 //

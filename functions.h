@@ -15,5 +15,7 @@
 node* new_node(char* type, char* value);
 void print_tree(node* aux, int tabs);
 node* append_brother(node* first);
+node* add_son(node* parent, node* new_son);
+node* add_brother(node* brother, node* new_brother);
 
 #endif

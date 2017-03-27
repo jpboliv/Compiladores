@@ -61,9 +61,11 @@ auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){$$ = new_node("Id",$2);};}
 FieldDecl: PUBLIC STATIC auxFieldDecl SEMI     {if(flagTreeErros ==1){$$ = $3;};}
   | error SEMI                                 {flagTreeErros = 0;}
 ;
-auxFieldDecl: Type ID                           {if(flagTreeErros ==1){$$  = new_node("FieldDecl","FieldDecl");$$->son=$1;
-                                                                      $$->son->brother=new_node("Id",$2);;};}
-  | auxFieldDecl COMMA ID                      {if(flagTreeErros ==1){};}
+auxFieldDecl: Type ID                           {if(flagTreeErros ==1){$$  = new_node("FieldDecl","FieldDecl");add_son($$,$1);
+                                                                      add_brother($$->son, new_node("Id",$2));};}
+  | auxFieldDecl COMMA ID                      {if(flagTreeErros ==1){$1= new_node("FieldDecl","FieldDecl");
+                                                                        add_son($1,new_node($$->son->type,$$->son->type));
+                                                                        add_brother($1->son,new_node("Id",$3)); add_brother($$,$1);};}
 ;
 
 MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {if(flagTreeErros ==1){$$ = new_node("MethodDecl","MethodDecl");($$)->son= $3;$3->brother=$4;};}
