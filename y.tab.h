@@ -84,12 +84,12 @@ extern int yydebug;
     ASSIGN = 294,
     SEMI = 295,
     COMMA = 296,
-    RESERVED = 297,
-    REALLIT = 298,
-    DECLIT = 299,
-    BOOLLIT = 300,
-    ID = 301,
-    STRLIT = 302
+    REALLIT = 297,
+    DECLIT = 298,
+    BOOLLIT = 299,
+    ID = 300,
+    STRLIT = 301,
+    RESERVED = 302
   };
 #endif
 /* Tokens.  */
@@ -132,12 +132,12 @@ extern int yydebug;
 #define ASSIGN 294
 #define SEMI 295
 #define COMMA 296
-#define RESERVED 297
-#define REALLIT 298
-#define DECLIT 299
-#define BOOLLIT 300
-#define ID 301
-#define STRLIT 302
+#define REALLIT 297
+#define DECLIT 298
+#define BOOLLIT 299
+#define ID 300
+#define STRLIT 301
+#define RESERVED 302
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
