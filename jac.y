@@ -43,13 +43,14 @@
 %left STAR DIV MOD
 %right NOT
 %left OBRACE CBRACE CCURV OCURV OSQUARE CSQUARE
+
 %right ELSE
 
 
 
 
 %type <node> Program FieldDecl MethodDecl MethodHeader MethodBody FormalParams VarDecl Type Statement Assignment MethodInvocation ParseArgs Expr
-%type <node> auxProgram auxFieldDecl AuxMethodBody auxFormalParams auxVarDecl auxStatement1 auxStatement2 auxStatement4 auxStatement5 AuxMethodInvocation1
+%type <node> auxProgram auxFieldDecl AuxMethodBody auxFormalParams auxVarDecl auxStatement1 auxStatement2 auxStatement4 auxStatement5 AuxMethodInvocation1 auxExpr
 %%
 
 Program: auxProgram CBRACE {if(flagTreeErros ==1){($$)=root=new_node("Program","Program");add_son(root,$1);};}
@@ -144,15 +145,18 @@ auxStatement1: Assignment               {if(flagTreeErros ==1){$$=NULL;};}
 auxStatement2: Expr                     {if(flagTreeErros ==1){$$=NULL;};}
   | STRLIT                              {if(flagTreeErros ==1){$$=NULL;};}
 ;
-auxStatement4: Statement auxStatement4      {if(flagTreeErros ==1){$$=NULL;};}
+auxStatement4: Statement auxStatement4      {if(flagTreeErros ==1){add_brother($$,$2);};}
   | %empty                                  {$$=NULL;}
 ;
 auxStatement5: Expr                      {if(flagTreeErros ==1){$$=NULL;};}
   |%empty                                {$$=NULL;}
 ;
 
-Assignment: ID ASSIGN Expr  {if(flagTreeErros ==1){$$=NULL;};}
-;
+Assignment: ID ASSIGN Expr  {if(flagTreeErros ==1){$$=new_node("Assign","Assign");
+                                                      aux_node= new_node("Id",$1);
+                                                      add_brother(aux_node,$3);
+                                                      add_son($$,aux_node);};}
+
 
 MethodInvocation: ID OCURV AuxMethodInvocation1 CCURV   {;}
   | ID OCURV error CCURV {;}
@@ -170,24 +174,26 @@ ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV   {if(flagTreeErros ==1)
 ;
 
 Expr: Assignment                    {if(flagTreeErros ==1){$$=NULL;};}
-  | MethodInvocation                {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr {;}
+;
+ auxExpr: MethodInvocation                {if(flagTreeErros ==1){$$=NULL;};}
   | ParseArgs                       {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr AND Expr                   {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr OR Expr                    {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr EQ Expr                    {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr GEQ Expr                   {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr GT Expr                    {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr LEQ Expr                   {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr LT Expr                    {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr NEQ Expr                   {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr PLUS Expr                  {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr MINUS Expr                 {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr STAR Expr                  {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr DIV Expr                   {if(flagTreeErros ==1){$$=NULL;};}
-  | Expr MOD Expr                   {if(flagTreeErros ==1){$$=NULL;};}
-  | PLUS  Expr %prec NOT            {if(flagTreeErros ==1){$$=NULL;};}
-  | MINUS Expr %prec NOT            {if(flagTreeErros ==1){$$=NULL;};}
-  | NOT  Expr %prec NOT             {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr AND auxExpr                   {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr OR auxExpr                    {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr EQ auxExpr                    {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr GEQ auxExpr                   {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr GT auxExpr                    {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr LEQ auxExpr                   {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr LT auxExpr                    {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr NEQ auxExpr                   {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr PLUS auxExpr                  {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr MINUS auxExpr                  {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr STAR auxExpr                  {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr DIV auxExpr                   {if(flagTreeErros ==1){$$=NULL;};}
+  | auxExpr MOD auxExpr                   {if(flagTreeErros ==1){$$=NULL;};}
+  | PLUS  auxExpr             {if(flagTreeErros ==1){$$=NULL;};}
+  | MINUS auxExpr             {if(flagTreeErros ==1){$$=NULL;};}
+  | NOT  auxExpr              {if(flagTreeErros ==1){$$=NULL;};}
   | ID DOTLENGTH                    {if(flagTreeErros ==1){$$=NULL;};}
   | ID                              {if(flagTreeErros ==1){$$=NULL;};}
   | OCURV Expr CCURV                {if(flagTreeErros ==1){$$=NULL;};}
@@ -195,7 +201,6 @@ Expr: Assignment                    {if(flagTreeErros ==1){$$=NULL;};}
   | DECLIT                          {if(flagTreeErros ==1){$$=NULL;};}
   | REALLIT                         {if(flagTreeErros ==1){$$=NULL;};}
   | OCURV error CCURV               {flagTreeErros = 0;}
-;
 
 
 %%
