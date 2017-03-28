@@ -32,6 +32,17 @@ node* add_son(node* parent, node* new_son){
 	return aux;
 }
 
+int cntbrothers(node* root){
+	int cnt = 0;
+	node *aux;
+	aux=root;
+	while(aux!=NULL){
+		aux=aux->brother;
+		cnt++;
+	}
+	return cnt;
+}
+
 node* add_brother(node* brother, node* new_brother){
 	if (brother == NULL){
 		return brother;

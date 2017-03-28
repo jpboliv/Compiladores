@@ -127,8 +127,29 @@ Type: BOOL  {if(flagTreeErros ==1){$$=new_node("Bool","Bool");};}
   | INT     {if(flagTreeErros ==1){$$=new_node("Int","Int");};}
   | DOUBLE  {if(flagTreeErros ==1){$$=new_node("Double","Double");};}
 ;
-Statement: OBRACE auxStatement4 CBRACE                  {if(flagTreeErros ==1){$$=NULL;};}
-  | IF OCURV Expr CCURV Statement ELSE Statement        {if(flagTreeErros ==1){$$=NULL;};}
+Statement: OBRACE auxStatement4 CBRACE                  {if(flagTreeErros ==1){$$=$2;};}
+  | IF OCURV Expr CCURV Statement ELSE Statement        {if(flagTreeErros ==1){$$=NULL;
+                                                        aux_node = new_node("If","If");
+                                                        add_son(aux_node,$3);
+                                                        
+                                                          if((cntbrothers($5->son)+1)>1 || ($5->son)==NULL){
+                                                          aux2_node= new_node("Block","Block");
+                                                          add_brother($3,aux2_node);
+                                                        }
+                                                        else{
+                                                          add_brother($3,$5);
+                                                        }
+                                                        
+
+                                                        if((cntbrothers($7->son)+1)>1 || ($7->son)==NULL){
+                                                          aux2_node= new_node("Block","Block");
+                                                          add_brother($3,aux2_node);
+                                                        }
+                                                        else{
+                                                          add_brother($3,$7);
+                                                        }
+                                                        
+                                                        };}
   | IF OCURV Expr CCURV Statement %prec ELSE            {if(flagTreeErros ==1){$$=NULL;};}
   | WHILE OCURV Expr CCURV Statement                    {if(flagTreeErros ==1){$$=NULL;};}
   | DO Statement WHILE OCURV Expr CCURV SEMI            {if(flagTreeErros ==1){$$=NULL;};}
@@ -145,7 +166,7 @@ auxStatement1: Assignment               {if(flagTreeErros ==1){$$=NULL;};}
 auxStatement2: Expr                     {if(flagTreeErros ==1){$$=NULL;};}
   | STRLIT                              {if(flagTreeErros ==1){$$=NULL;};}
 ;
-auxStatement4: Statement auxStatement4      {if(flagTreeErros ==1){add_brother($$,$2);};}
+auxStatement4: Statement auxStatement4      {if(flagTreeErros ==1){$$=$1;add_brother($$,$2);};}
   | %empty                                  {$$=NULL;}
 ;
 auxStatement5: Expr                      {if(flagTreeErros ==1){$$=NULL;};}
