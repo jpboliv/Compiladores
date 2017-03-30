@@ -53,13 +53,21 @@
 %type <node> auxProgram auxFieldDecl AuxMethodBody auxFormalParams auxVarDecl auxStatement1 auxStatement2 auxStatement4 auxStatement5 AuxMethodInvocation1 AuxMethodInvocation2 auxExpr
 %%
 
-Program: auxProgram CBRACE {if(flagTreeErros ==1){($$)=root=new_node("Program","Program");add_son(root,$1);};}
+Program: CLASS ID OBRACE auxProgram CBRACE {if(flagTreeErros ==1){($$)=root=new_node("Program","Program");
+    aux_node=new_node("Id",$2);
+    add_brother(aux_node,$4);
+    add_son($$,aux_node);
+    
+};}
 ;
-auxProgram: CLASS ID OBRACE {if(flagTreeErros ==1){$$ = new_node("Id",$2);};}
-  | auxProgram FieldDecl {if(flagTreeErros ==1){add_brother($1,$2);} ;}
-  | auxProgram MethodDecl  {if(flagTreeErros ==1){add_brother($1, $2);};}
-  | auxProgram SEMI {if(flagTreeErros ==1){};}
+auxProgram: %empty      {if(flagTreeErros ==1){$$ = NULL;};}
+| FieldDecl auxProgram {if(flagTreeErros ==1){add_brother($1,$2);
+    $$=$1;};}
+| MethodDecl auxProgram  {if(flagTreeErros ==1){add_brother($1, $2);
+    $$=$1;};}
+| SEMI auxProgram {if(flagTreeErros ==1){$$=$2;};}
 ;
+
 
 FieldDecl: PUBLIC STATIC auxFieldDecl SEMI     {if(flagTreeErros ==1){$$ = $3;};}
   | error SEMI                                 {flagTreeErros = 0;}
@@ -133,11 +141,19 @@ Type: BOOL  {if(flagTreeErros ==1){$$=new_node("Bool","Bool");};}
   | DOUBLE  {if(flagTreeErros ==1){$$=new_node("Double","Double");};}
 ;
 Statement: OBRACE auxStatement4 CBRACE                  {if(flagTreeErros ==1){ 
-                                                          if((cntbrothers($2))==1){
-                                                                $$ = $2;                                                            
-                                                          }else{
-                                                            $$ = new_node("Block","Block"); 
-                                                            add_son($$,$2);}
+                                                            if($2!=NULL){
+                                                            if((cntbrothers($2))==1){
+                                                                $$ = $2;
+                                                            }
+                                                            else{
+                                                                $$ = new_node("Block","Block");
+                                                                add_son($$,$2);}
+                                                            }
+                                                            else{
+                                                                $$=new_node("Block","Block");
+                                                            }
+                                                          
+                                                          
                                                             };}
   | IF OCURV Expr CCURV Statement ELSE Statement        {if(flagTreeErros ==1){$$=new_node("If","If");
                                                           add_son($$,$3);
@@ -153,6 +169,9 @@ Statement: OBRACE auxStatement4 CBRACE                  {if(flagTreeErros ==1){
   | WHILE OCURV Expr CCURV Statement                    {if(flagTreeErros ==1){$$=new_node("While","While");
                                                             add_son($$,$3);
                                                             add_brother($3,$5);
+                                                            if($5==NULL){
+                                                                add_brother ($3,new_node("Block","Block"));
+                                                            }
 
                                                         };}
   | DO Statement WHILE OCURV Expr CCURV SEMI            {if(flagTreeErros ==1){$$=new_node("DoWhile","DoWhile");

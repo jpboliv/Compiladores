@@ -7,12 +7,12 @@ Grammar
 
     0 $accept: Program $end
 
-    1 Program: auxProgram CBRACE
+    1 Program: CLASS ID OBRACE auxProgram CBRACE
 
-    2 auxProgram: CLASS ID OBRACE
-    3           | auxProgram FieldDecl
-    4           | auxProgram MethodDecl
-    5           | auxProgram SEMI
+    2 auxProgram: %empty
+    3           | FieldDecl auxProgram
+    4           | MethodDecl auxProgram
+    5           | SEMI auxProgram
 
     6 FieldDecl: PUBLIC STATIC auxFieldDecl SEMI
     7          | error SEMI
@@ -120,7 +120,7 @@ Terminals, with rules where they appear
 $end (0) 0
 error (256) 7 36 49 55 82
 BOOL (258) 25
-CLASS (259) 2
+CLASS (259) 1
 DO (260) 32
 DOTLENGTH (261) 76
 DOUBLE (262) 27
@@ -137,7 +137,7 @@ VOID (272) 12
 WHILE (273) 31 32
 OCURV (274) 11 12 29 30 31 32 33 48 49 54 55 78 82
 CCURV (275) 11 12 29 30 31 32 33 48 49 54 55 78 82
-OBRACE (276) 2 13 28
+OBRACE (276) 1 13 28
 CBRACE (277) 1 13 28
 OSQUARE (278) 18 54
 CSQUARE (279) 18 54
@@ -161,7 +161,7 @@ COMMA (296) 9 20 24 52
 REALLIT (297) 81
 DECLIT (298) 80
 BOOLLIT (299) 79
-ID (300) 2 8 9 11 12 17 18 20 23 24 47 48 49 54 76 77
+ID (300) 1 8 9 11 12 17 18 20 23 24 47 48 49 54 76 77
 STRLIT (301) 42
 RESERVED (302)
 
@@ -230,59 +230,57 @@ State 0
 
     CLASS  shift, and go to state 1
 
-    Program     go to state 2
-    auxProgram  go to state 3
+    Program  go to state 2
 
 
 State 1
 
-    2 auxProgram: CLASS . ID OBRACE
+    1 Program: CLASS . ID OBRACE auxProgram CBRACE
 
-    ID  shift, and go to state 4
+    ID  shift, and go to state 3
 
 
 State 2
 
     0 $accept: Program . $end
 
-    $end  shift, and go to state 5
+    $end  shift, and go to state 4
 
 
 State 3
 
-    1 Program: auxProgram . CBRACE
-    3 auxProgram: auxProgram . FieldDecl
-    4           | auxProgram . MethodDecl
-    5           | auxProgram . SEMI
+    1 Program: CLASS ID . OBRACE auxProgram CBRACE
 
-    error   shift, and go to state 6
-    PUBLIC  shift, and go to state 7
-    CBRACE  shift, and go to state 8
-    SEMI    shift, and go to state 9
-
-    FieldDecl   go to state 10
-    MethodDecl  go to state 11
+    OBRACE  shift, and go to state 5
 
 
 State 4
-
-    2 auxProgram: CLASS ID . OBRACE
-
-    OBRACE  shift, and go to state 12
-
-
-State 5
 
     0 $accept: Program $end .
 
     $default  accept
 
 
+State 5
+
+    1 Program: CLASS ID OBRACE . auxProgram CBRACE
+
+    error   shift, and go to state 6
+    PUBLIC  shift, and go to state 7
+    SEMI    shift, and go to state 8
+
+    CBRACE  reduce using rule 2 (auxProgram)
+
+    auxProgram  go to state 9
+    FieldDecl   go to state 10
+    MethodDecl  go to state 11
+
+
 State 6
 
     7 FieldDecl: error . SEMI
 
-    SEMI  shift, and go to state 13
+    SEMI  shift, and go to state 12
 
 
 State 7
@@ -290,649 +288,694 @@ State 7
     6 FieldDecl: PUBLIC . STATIC auxFieldDecl SEMI
    10 MethodDecl: PUBLIC . STATIC MethodHeader MethodBody
 
-    STATIC  shift, and go to state 14
+    STATIC  shift, and go to state 13
 
 
 State 8
 
-    1 Program: auxProgram CBRACE .
+    5 auxProgram: SEMI . auxProgram
 
-    $default  reduce using rule 1 (Program)
+    error   shift, and go to state 6
+    PUBLIC  shift, and go to state 7
+    SEMI    shift, and go to state 8
+
+    CBRACE  reduce using rule 2 (auxProgram)
+
+    auxProgram  go to state 14
+    FieldDecl   go to state 10
+    MethodDecl  go to state 11
 
 
 State 9
 
-    5 auxProgram: auxProgram SEMI .
+    1 Program: CLASS ID OBRACE auxProgram . CBRACE
 
-    $default  reduce using rule 5 (auxProgram)
+    CBRACE  shift, and go to state 15
 
 
 State 10
 
-    3 auxProgram: auxProgram FieldDecl .
+    3 auxProgram: FieldDecl . auxProgram
 
-    $default  reduce using rule 3 (auxProgram)
+    error   shift, and go to state 6
+    PUBLIC  shift, and go to state 7
+    SEMI    shift, and go to state 8
+
+    CBRACE  reduce using rule 2 (auxProgram)
+
+    auxProgram  go to state 16
+    FieldDecl   go to state 10
+    MethodDecl  go to state 11
 
 
 State 11
 
-    4 auxProgram: auxProgram MethodDecl .
+    4 auxProgram: MethodDecl . auxProgram
 
-    $default  reduce using rule 4 (auxProgram)
+    error   shift, and go to state 6
+    PUBLIC  shift, and go to state 7
+    SEMI    shift, and go to state 8
+
+    CBRACE  reduce using rule 2 (auxProgram)
+
+    auxProgram  go to state 17
+    FieldDecl   go to state 10
+    MethodDecl  go to state 11
 
 
 State 12
-
-    2 auxProgram: CLASS ID OBRACE .
-
-    $default  reduce using rule 2 (auxProgram)
-
-
-State 13
 
     7 FieldDecl: error SEMI .
 
     $default  reduce using rule 7 (FieldDecl)
 
 
-State 14
+State 13
 
     6 FieldDecl: PUBLIC STATIC . auxFieldDecl SEMI
    10 MethodDecl: PUBLIC STATIC . MethodHeader MethodBody
 
-    BOOL    shift, and go to state 15
-    DOUBLE  shift, and go to state 16
-    INT     shift, and go to state 17
-    VOID    shift, and go to state 18
+    BOOL    shift, and go to state 18
+    DOUBLE  shift, and go to state 19
+    INT     shift, and go to state 20
+    VOID    shift, and go to state 21
 
-    auxFieldDecl  go to state 19
-    MethodHeader  go to state 20
-    Type          go to state 21
+    auxFieldDecl  go to state 22
+    MethodHeader  go to state 23
+    Type          go to state 24
+
+
+State 14
+
+    5 auxProgram: SEMI auxProgram .
+
+    $default  reduce using rule 5 (auxProgram)
 
 
 State 15
+
+    1 Program: CLASS ID OBRACE auxProgram CBRACE .
+
+    $default  reduce using rule 1 (Program)
+
+
+State 16
+
+    3 auxProgram: FieldDecl auxProgram .
+
+    $default  reduce using rule 3 (auxProgram)
+
+
+State 17
+
+    4 auxProgram: MethodDecl auxProgram .
+
+    $default  reduce using rule 4 (auxProgram)
+
+
+State 18
 
    25 Type: BOOL .
 
     $default  reduce using rule 25 (Type)
 
 
-State 16
+State 19
 
    27 Type: DOUBLE .
 
     $default  reduce using rule 27 (Type)
 
 
-State 17
+State 20
 
    26 Type: INT .
 
     $default  reduce using rule 26 (Type)
 
 
-State 18
+State 21
 
    12 MethodHeader: VOID . ID OCURV FormalParams CCURV
 
-    ID  shift, and go to state 22
-
-
-State 19
-
-    6 FieldDecl: PUBLIC STATIC auxFieldDecl . SEMI
-    9 auxFieldDecl: auxFieldDecl . COMMA ID
-
-    SEMI   shift, and go to state 23
-    COMMA  shift, and go to state 24
-
-
-State 20
-
-   10 MethodDecl: PUBLIC STATIC MethodHeader . MethodBody
-
-    OBRACE  shift, and go to state 25
-
-    MethodBody  go to state 26
-
-
-State 21
-
-    8 auxFieldDecl: Type . ID
-   11 MethodHeader: Type . ID OCURV FormalParams CCURV
-
-    ID  shift, and go to state 27
+    ID  shift, and go to state 25
 
 
 State 22
 
-   12 MethodHeader: VOID ID . OCURV FormalParams CCURV
+    6 FieldDecl: PUBLIC STATIC auxFieldDecl . SEMI
+    9 auxFieldDecl: auxFieldDecl . COMMA ID
 
-    OCURV  shift, and go to state 28
+    SEMI   shift, and go to state 26
+    COMMA  shift, and go to state 27
 
 
 State 23
+
+   10 MethodDecl: PUBLIC STATIC MethodHeader . MethodBody
+
+    OBRACE  shift, and go to state 28
+
+    MethodBody  go to state 29
+
+
+State 24
+
+    8 auxFieldDecl: Type . ID
+   11 MethodHeader: Type . ID OCURV FormalParams CCURV
+
+    ID  shift, and go to state 30
+
+
+State 25
+
+   12 MethodHeader: VOID ID . OCURV FormalParams CCURV
+
+    OCURV  shift, and go to state 31
+
+
+State 26
 
     6 FieldDecl: PUBLIC STATIC auxFieldDecl SEMI .
 
     $default  reduce using rule 6 (FieldDecl)
 
 
-State 24
+State 27
 
     9 auxFieldDecl: auxFieldDecl COMMA . ID
 
-    ID  shift, and go to state 29
+    ID  shift, and go to state 32
 
 
-State 25
+State 28
 
    13 MethodBody: OBRACE . AuxMethodBody CBRACE
 
-    error     shift, and go to state 30
-    BOOL      shift, and go to state 15
-    DO        shift, and go to state 31
-    DOUBLE    shift, and go to state 16
-    IF        shift, and go to state 32
-    INT       shift, and go to state 17
-    PARSEINT  shift, and go to state 33
-    PRINT     shift, and go to state 34
-    RETURN    shift, and go to state 35
-    WHILE     shift, and go to state 36
-    OBRACE    shift, and go to state 37
-    ID        shift, and go to state 38
+    error     shift, and go to state 33
+    BOOL      shift, and go to state 18
+    DO        shift, and go to state 34
+    DOUBLE    shift, and go to state 19
+    IF        shift, and go to state 35
+    INT       shift, and go to state 20
+    PARSEINT  shift, and go to state 36
+    PRINT     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    WHILE     shift, and go to state 39
+    OBRACE    shift, and go to state 40
+    ID        shift, and go to state 41
 
     CBRACE  reduce using rule 14 (AuxMethodBody)
     SEMI    reduce using rule 40 (auxStatement1)
 
-    AuxMethodBody     go to state 39
-    VarDecl           go to state 40
-    auxVarDecl        go to state 41
-    Type              go to state 42
-    Statement         go to state 43
-    auxStatement1     go to state 44
-    Assignment        go to state 45
-    MethodInvocation  go to state 46
-    ParseArgs         go to state 47
+    AuxMethodBody     go to state 42
+    VarDecl           go to state 43
+    auxVarDecl        go to state 44
+    Type              go to state 45
+    Statement         go to state 46
+    auxStatement1     go to state 47
+    Assignment        go to state 48
+    MethodInvocation  go to state 49
+    ParseArgs         go to state 50
 
 
-State 26
+State 29
 
    10 MethodDecl: PUBLIC STATIC MethodHeader MethodBody .
 
     $default  reduce using rule 10 (MethodDecl)
 
 
-State 27
+State 30
 
     8 auxFieldDecl: Type ID .
    11 MethodHeader: Type ID . OCURV FormalParams CCURV
 
-    OCURV  shift, and go to state 48
+    OCURV  shift, and go to state 51
 
     $default  reduce using rule 8 (auxFieldDecl)
 
 
-State 28
+State 31
 
    12 MethodHeader: VOID ID OCURV . FormalParams CCURV
 
-    BOOL    shift, and go to state 15
-    DOUBLE  shift, and go to state 16
-    INT     shift, and go to state 17
-    STRING  shift, and go to state 49
+    BOOL    shift, and go to state 18
+    DOUBLE  shift, and go to state 19
+    INT     shift, and go to state 20
+    STRING  shift, and go to state 52
 
     $default  reduce using rule 19 (FormalParams)
 
-    FormalParams  go to state 50
-    Type          go to state 51
+    FormalParams  go to state 53
+    Type          go to state 54
 
 
-State 29
+State 32
 
     9 auxFieldDecl: auxFieldDecl COMMA ID .
 
     $default  reduce using rule 9 (auxFieldDecl)
 
 
-State 30
+State 33
 
    36 Statement: error . SEMI
 
-    SEMI  shift, and go to state 52
-
-
-State 31
-
-   32 Statement: DO . Statement WHILE OCURV Expr CCURV SEMI
-
-    error     shift, and go to state 30
-    DO        shift, and go to state 31
-    IF        shift, and go to state 32
-    PARSEINT  shift, and go to state 33
-    PRINT     shift, and go to state 34
-    RETURN    shift, and go to state 35
-    WHILE     shift, and go to state 36
-    OBRACE    shift, and go to state 37
-    ID        shift, and go to state 38
-
-    SEMI  reduce using rule 40 (auxStatement1)
-
-    Statement         go to state 53
-    auxStatement1     go to state 44
-    Assignment        go to state 45
-    MethodInvocation  go to state 46
-    ParseArgs         go to state 47
-
-
-State 32
-
-   29 Statement: IF . OCURV Expr CCURV Statement ELSE Statement
-   30          | IF . OCURV Expr CCURV Statement
-
-    OCURV  shift, and go to state 54
-
-
-State 33
-
-   54 ParseArgs: PARSEINT . OCURV ID OSQUARE Expr CSQUARE CCURV
-   55          | PARSEINT . OCURV error CCURV
-
-    OCURV  shift, and go to state 55
+    SEMI  shift, and go to state 55
 
 
 State 34
 
-   33 Statement: PRINT . OCURV auxStatement2 CCURV SEMI
+   32 Statement: DO . Statement WHILE OCURV Expr CCURV SEMI
 
-    OCURV  shift, and go to state 56
+    error     shift, and go to state 33
+    DO        shift, and go to state 34
+    IF        shift, and go to state 35
+    PARSEINT  shift, and go to state 36
+    PRINT     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    WHILE     shift, and go to state 39
+    OBRACE    shift, and go to state 40
+    ID        shift, and go to state 41
+
+    SEMI  reduce using rule 40 (auxStatement1)
+
+    Statement         go to state 56
+    auxStatement1     go to state 47
+    Assignment        go to state 48
+    MethodInvocation  go to state 49
+    ParseArgs         go to state 50
 
 
 State 35
 
-   35 Statement: RETURN . auxStatement5 SEMI
+   29 Statement: IF . OCURV Expr CCURV Statement ELSE Statement
+   30          | IF . OCURV Expr CCURV Statement
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 64
-
-    $default  reduce using rule 46 (auxStatement5)
-
-    auxStatement5     go to state 65
-    Assignment        go to state 66
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    Expr              go to state 69
-    auxExpr           go to state 70
+    OCURV  shift, and go to state 57
 
 
 State 36
 
-   31 Statement: WHILE . OCURV Expr CCURV Statement
+   54 ParseArgs: PARSEINT . OCURV ID OSQUARE Expr CSQUARE CCURV
+   55          | PARSEINT . OCURV error CCURV
 
-    OCURV  shift, and go to state 71
+    OCURV  shift, and go to state 58
 
 
 State 37
 
+   33 Statement: PRINT . OCURV auxStatement2 CCURV SEMI
+
+    OCURV  shift, and go to state 59
+
+
+State 38
+
+   35 Statement: RETURN . auxStatement5 SEMI
+
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 67
+
+    $default  reduce using rule 46 (auxStatement5)
+
+    auxStatement5     go to state 68
+    Assignment        go to state 69
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    Expr              go to state 72
+    auxExpr           go to state 73
+
+
+State 39
+
+   31 Statement: WHILE . OCURV Expr CCURV Statement
+
+    OCURV  shift, and go to state 74
+
+
+State 40
+
    28 Statement: OBRACE . auxStatement4 CBRACE
 
-    error     shift, and go to state 30
-    DO        shift, and go to state 31
-    IF        shift, and go to state 32
-    PARSEINT  shift, and go to state 33
-    PRINT     shift, and go to state 34
-    RETURN    shift, and go to state 35
-    WHILE     shift, and go to state 36
-    OBRACE    shift, and go to state 37
-    ID        shift, and go to state 38
+    error     shift, and go to state 33
+    DO        shift, and go to state 34
+    IF        shift, and go to state 35
+    PARSEINT  shift, and go to state 36
+    PRINT     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    WHILE     shift, and go to state 39
+    OBRACE    shift, and go to state 40
+    ID        shift, and go to state 41
 
     CBRACE  reduce using rule 44 (auxStatement4)
     SEMI    reduce using rule 40 (auxStatement1)
 
-    Statement         go to state 72
-    auxStatement1     go to state 44
-    auxStatement4     go to state 73
-    Assignment        go to state 45
-    MethodInvocation  go to state 46
-    ParseArgs         go to state 47
+    Statement         go to state 75
+    auxStatement1     go to state 47
+    auxStatement4     go to state 76
+    Assignment        go to state 48
+    MethodInvocation  go to state 49
+    ParseArgs         go to state 50
 
 
-State 38
+State 41
 
    47 Assignment: ID . ASSIGN Expr
    48 MethodInvocation: ID . OCURV AuxMethodInvocation1 CCURV
    49                 | ID . OCURV error CCURV
 
-    OCURV   shift, and go to state 74
-    ASSIGN  shift, and go to state 75
-
-
-State 39
-
-   13 MethodBody: OBRACE AuxMethodBody . CBRACE
-
-    CBRACE  shift, and go to state 76
-
-
-State 40
-
-   15 AuxMethodBody: VarDecl . AuxMethodBody
-
-    error     shift, and go to state 30
-    BOOL      shift, and go to state 15
-    DO        shift, and go to state 31
-    DOUBLE    shift, and go to state 16
-    IF        shift, and go to state 32
-    INT       shift, and go to state 17
-    PARSEINT  shift, and go to state 33
-    PRINT     shift, and go to state 34
-    RETURN    shift, and go to state 35
-    WHILE     shift, and go to state 36
-    OBRACE    shift, and go to state 37
-    ID        shift, and go to state 38
-
-    CBRACE  reduce using rule 14 (AuxMethodBody)
-    SEMI    reduce using rule 40 (auxStatement1)
-
-    AuxMethodBody     go to state 77
-    VarDecl           go to state 40
-    auxVarDecl        go to state 41
-    Type              go to state 42
-    Statement         go to state 43
-    auxStatement1     go to state 44
-    Assignment        go to state 45
-    MethodInvocation  go to state 46
-    ParseArgs         go to state 47
-
-
-State 41
-
-   22 VarDecl: auxVarDecl . SEMI
-   24 auxVarDecl: auxVarDecl . COMMA ID
-
-    SEMI   shift, and go to state 78
-    COMMA  shift, and go to state 79
+    OCURV   shift, and go to state 77
+    ASSIGN  shift, and go to state 78
 
 
 State 42
 
-   23 auxVarDecl: Type . ID
+   13 MethodBody: OBRACE AuxMethodBody . CBRACE
 
-    ID  shift, and go to state 80
+    CBRACE  shift, and go to state 79
 
 
 State 43
 
-   16 AuxMethodBody: Statement . AuxMethodBody
+   15 AuxMethodBody: VarDecl . AuxMethodBody
 
-    error     shift, and go to state 30
-    BOOL      shift, and go to state 15
-    DO        shift, and go to state 31
-    DOUBLE    shift, and go to state 16
-    IF        shift, and go to state 32
-    INT       shift, and go to state 17
-    PARSEINT  shift, and go to state 33
-    PRINT     shift, and go to state 34
-    RETURN    shift, and go to state 35
-    WHILE     shift, and go to state 36
-    OBRACE    shift, and go to state 37
-    ID        shift, and go to state 38
+    error     shift, and go to state 33
+    BOOL      shift, and go to state 18
+    DO        shift, and go to state 34
+    DOUBLE    shift, and go to state 19
+    IF        shift, and go to state 35
+    INT       shift, and go to state 20
+    PARSEINT  shift, and go to state 36
+    PRINT     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    WHILE     shift, and go to state 39
+    OBRACE    shift, and go to state 40
+    ID        shift, and go to state 41
 
     CBRACE  reduce using rule 14 (AuxMethodBody)
     SEMI    reduce using rule 40 (auxStatement1)
 
-    AuxMethodBody     go to state 81
-    VarDecl           go to state 40
-    auxVarDecl        go to state 41
-    Type              go to state 42
-    Statement         go to state 43
-    auxStatement1     go to state 44
-    Assignment        go to state 45
-    MethodInvocation  go to state 46
-    ParseArgs         go to state 47
+    AuxMethodBody     go to state 80
+    VarDecl           go to state 43
+    auxVarDecl        go to state 44
+    Type              go to state 45
+    Statement         go to state 46
+    auxStatement1     go to state 47
+    Assignment        go to state 48
+    MethodInvocation  go to state 49
+    ParseArgs         go to state 50
 
 
 State 44
 
-   34 Statement: auxStatement1 . SEMI
+   22 VarDecl: auxVarDecl . SEMI
+   24 auxVarDecl: auxVarDecl . COMMA ID
 
-    SEMI  shift, and go to state 82
+    SEMI   shift, and go to state 81
+    COMMA  shift, and go to state 82
 
 
 State 45
+
+   23 auxVarDecl: Type . ID
+
+    ID  shift, and go to state 83
+
+
+State 46
+
+   16 AuxMethodBody: Statement . AuxMethodBody
+
+    error     shift, and go to state 33
+    BOOL      shift, and go to state 18
+    DO        shift, and go to state 34
+    DOUBLE    shift, and go to state 19
+    IF        shift, and go to state 35
+    INT       shift, and go to state 20
+    PARSEINT  shift, and go to state 36
+    PRINT     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    WHILE     shift, and go to state 39
+    OBRACE    shift, and go to state 40
+    ID        shift, and go to state 41
+
+    CBRACE  reduce using rule 14 (AuxMethodBody)
+    SEMI    reduce using rule 40 (auxStatement1)
+
+    AuxMethodBody     go to state 84
+    VarDecl           go to state 43
+    auxVarDecl        go to state 44
+    Type              go to state 45
+    Statement         go to state 46
+    auxStatement1     go to state 47
+    Assignment        go to state 48
+    MethodInvocation  go to state 49
+    ParseArgs         go to state 50
+
+
+State 47
+
+   34 Statement: auxStatement1 . SEMI
+
+    SEMI  shift, and go to state 85
+
+
+State 48
 
    37 auxStatement1: Assignment .
 
     $default  reduce using rule 37 (auxStatement1)
 
 
-State 46
+State 49
 
    38 auxStatement1: MethodInvocation .
 
     $default  reduce using rule 38 (auxStatement1)
 
 
-State 47
+State 50
 
    39 auxStatement1: ParseArgs .
 
     $default  reduce using rule 39 (auxStatement1)
 
 
-State 48
+State 51
 
    11 MethodHeader: Type ID OCURV . FormalParams CCURV
 
-    BOOL    shift, and go to state 15
-    DOUBLE  shift, and go to state 16
-    INT     shift, and go to state 17
-    STRING  shift, and go to state 49
+    BOOL    shift, and go to state 18
+    DOUBLE  shift, and go to state 19
+    INT     shift, and go to state 20
+    STRING  shift, and go to state 52
 
     $default  reduce using rule 19 (FormalParams)
 
-    FormalParams  go to state 83
-    Type          go to state 51
-
-
-State 49
-
-   18 FormalParams: STRING . OSQUARE CSQUARE ID
-
-    OSQUARE  shift, and go to state 84
-
-
-State 50
-
-   12 MethodHeader: VOID ID OCURV FormalParams . CCURV
-
-    CCURV  shift, and go to state 85
-
-
-State 51
-
-   17 FormalParams: Type . ID auxFormalParams
-
-    ID  shift, and go to state 86
+    FormalParams  go to state 86
+    Type          go to state 54
 
 
 State 52
+
+   18 FormalParams: STRING . OSQUARE CSQUARE ID
+
+    OSQUARE  shift, and go to state 87
+
+
+State 53
+
+   12 MethodHeader: VOID ID OCURV FormalParams . CCURV
+
+    CCURV  shift, and go to state 88
+
+
+State 54
+
+   17 FormalParams: Type . ID auxFormalParams
+
+    ID  shift, and go to state 89
+
+
+State 55
 
    36 Statement: error SEMI .
 
     $default  reduce using rule 36 (Statement)
 
 
-State 53
+State 56
 
    32 Statement: DO Statement . WHILE OCURV Expr CCURV SEMI
 
-    WHILE  shift, and go to state 87
-
-
-State 54
-
-   29 Statement: IF OCURV . Expr CCURV Statement ELSE Statement
-   30          | IF OCURV . Expr CCURV Statement
-
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 64
-
-    Assignment        go to state 66
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    Expr              go to state 88
-    auxExpr           go to state 70
-
-
-State 55
-
-   54 ParseArgs: PARSEINT OCURV . ID OSQUARE Expr CSQUARE CCURV
-   55          | PARSEINT OCURV . error CCURV
-
-    error  shift, and go to state 89
-    ID     shift, and go to state 90
-
-
-State 56
-
-   33 Statement: PRINT OCURV . auxStatement2 CCURV SEMI
-
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 64
-    STRLIT    shift, and go to state 91
-
-    auxStatement2     go to state 92
-    Assignment        go to state 66
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    Expr              go to state 93
-    auxExpr           go to state 70
+    WHILE  shift, and go to state 90
 
 
 State 57
 
-   78 auxExpr: OCURV . Expr CCURV
-   82        | OCURV . error CCURV
+   29 Statement: IF OCURV . Expr CCURV Statement ELSE Statement
+   30          | IF OCURV . Expr CCURV Statement
 
-    error     shift, and go to state 94
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 64
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 67
 
-    Assignment        go to state 66
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    Expr              go to state 95
-    auxExpr           go to state 70
+    Assignment        go to state 69
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    Expr              go to state 91
+    auxExpr           go to state 73
 
 
 State 58
 
-   73 auxExpr: PLUS . auxExpr
+   54 ParseArgs: PARSEINT OCURV . ID OSQUARE Expr CSQUARE CCURV
+   55          | PARSEINT OCURV . error CCURV
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
-
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    auxExpr           go to state 97
+    error  shift, and go to state 92
+    ID     shift, and go to state 93
 
 
 State 59
 
-   74 auxExpr: MINUS . auxExpr
+   33 Statement: PRINT OCURV . auxStatement2 CCURV SEMI
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 67
+    STRLIT    shift, and go to state 94
 
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    auxExpr           go to state 98
+    auxStatement2     go to state 95
+    Assignment        go to state 69
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    Expr              go to state 96
+    auxExpr           go to state 73
 
 
 State 60
 
-   75 auxExpr: NOT . auxExpr
+   78 auxExpr: OCURV . Expr CCURV
+   82        | OCURV . error CCURV
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
+    error     shift, and go to state 97
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 67
 
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    auxExpr           go to state 99
+    Assignment        go to state 69
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    Expr              go to state 98
+    auxExpr           go to state 73
 
 
 State 61
+
+   73 auxExpr: PLUS . auxExpr
+
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
+
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    auxExpr           go to state 100
+
+
+State 62
+
+   74 auxExpr: MINUS . auxExpr
+
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
+
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    auxExpr           go to state 101
+
+
+State 63
+
+   75 auxExpr: NOT . auxExpr
+
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
+
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    auxExpr           go to state 102
+
+
+State 64
 
    81 auxExpr: REALLIT .
 
     $default  reduce using rule 81 (auxExpr)
 
 
-State 62
+State 65
 
    80 auxExpr: DECLIT .
 
     $default  reduce using rule 80 (auxExpr)
 
 
-State 63
+State 66
 
    79 auxExpr: BOOLLIT .
 
     $default  reduce using rule 79 (auxExpr)
 
 
-State 64
+State 67
 
    47 Assignment: ID . ASSIGN Expr
    48 MethodInvocation: ID . OCURV AuxMethodInvocation1 CCURV
@@ -940,49 +983,49 @@ State 64
    76 auxExpr: ID . DOTLENGTH
    77        | ID .
 
-    DOTLENGTH  shift, and go to state 100
-    OCURV      shift, and go to state 74
-    ASSIGN     shift, and go to state 75
+    DOTLENGTH  shift, and go to state 103
+    OCURV      shift, and go to state 77
+    ASSIGN     shift, and go to state 78
 
     $default  reduce using rule 77 (auxExpr)
 
 
-State 65
+State 68
 
    35 Statement: RETURN auxStatement5 . SEMI
 
-    SEMI  shift, and go to state 101
+    SEMI  shift, and go to state 104
 
 
-State 66
+State 69
 
    56 Expr: Assignment .
 
     $default  reduce using rule 56 (Expr)
 
 
-State 67
+State 70
 
    58 auxExpr: MethodInvocation .
 
     $default  reduce using rule 58 (auxExpr)
 
 
-State 68
+State 71
 
    59 auxExpr: ParseArgs .
 
     $default  reduce using rule 59 (auxExpr)
 
 
-State 69
+State 72
 
    45 auxStatement5: Expr .
 
     $default  reduce using rule 45 (auxStatement5)
 
 
-State 70
+State 73
 
    57 Expr: auxExpr .
    60 auxExpr: auxExpr . AND auxExpr
@@ -999,282 +1042,282 @@ State 70
    71        | auxExpr . DIV auxExpr
    72        | auxExpr . MOD auxExpr
 
-    AND    shift, and go to state 102
-    OR     shift, and go to state 103
-    LT     shift, and go to state 104
-    GT     shift, and go to state 105
-    EQ     shift, and go to state 106
-    NEQ    shift, and go to state 107
-    GEQ    shift, and go to state 108
-    LEQ    shift, and go to state 109
-    PLUS   shift, and go to state 110
-    MINUS  shift, and go to state 111
-    STAR   shift, and go to state 112
-    DIV    shift, and go to state 113
-    MOD    shift, and go to state 114
+    AND    shift, and go to state 105
+    OR     shift, and go to state 106
+    LT     shift, and go to state 107
+    GT     shift, and go to state 108
+    EQ     shift, and go to state 109
+    NEQ    shift, and go to state 110
+    GEQ    shift, and go to state 111
+    LEQ    shift, and go to state 112
+    PLUS   shift, and go to state 113
+    MINUS  shift, and go to state 114
+    STAR   shift, and go to state 115
+    DIV    shift, and go to state 116
+    MOD    shift, and go to state 117
 
     $default  reduce using rule 57 (Expr)
 
 
-State 71
+State 74
 
    31 Statement: WHILE OCURV . Expr CCURV Statement
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 64
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 67
 
-    Assignment        go to state 66
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    Expr              go to state 115
-    auxExpr           go to state 70
-
-
-State 72
-
-   43 auxStatement4: Statement . auxStatement4
-
-    error     shift, and go to state 30
-    DO        shift, and go to state 31
-    IF        shift, and go to state 32
-    PARSEINT  shift, and go to state 33
-    PRINT     shift, and go to state 34
-    RETURN    shift, and go to state 35
-    WHILE     shift, and go to state 36
-    OBRACE    shift, and go to state 37
-    ID        shift, and go to state 38
-
-    CBRACE  reduce using rule 44 (auxStatement4)
-    SEMI    reduce using rule 40 (auxStatement1)
-
-    Statement         go to state 72
-    auxStatement1     go to state 44
-    auxStatement4     go to state 116
-    Assignment        go to state 45
-    MethodInvocation  go to state 46
-    ParseArgs         go to state 47
-
-
-State 73
-
-   28 Statement: OBRACE auxStatement4 . CBRACE
-
-    CBRACE  shift, and go to state 117
-
-
-State 74
-
-   48 MethodInvocation: ID OCURV . AuxMethodInvocation1 CCURV
-   49                 | ID OCURV . error CCURV
-
-    error     shift, and go to state 118
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 64
-
-    CCURV  reduce using rule 51 (AuxMethodInvocation1)
-
-    Assignment            go to state 66
-    MethodInvocation      go to state 67
-    AuxMethodInvocation1  go to state 119
-    ParseArgs             go to state 68
-    Expr                  go to state 120
-    auxExpr               go to state 70
+    Assignment        go to state 69
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    Expr              go to state 118
+    auxExpr           go to state 73
 
 
 State 75
 
-   47 Assignment: ID ASSIGN . Expr
+   43 auxStatement4: Statement . auxStatement4
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 64
+    error     shift, and go to state 33
+    DO        shift, and go to state 34
+    IF        shift, and go to state 35
+    PARSEINT  shift, and go to state 36
+    PRINT     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    WHILE     shift, and go to state 39
+    OBRACE    shift, and go to state 40
+    ID        shift, and go to state 41
 
-    Assignment        go to state 66
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    Expr              go to state 121
-    auxExpr           go to state 70
+    CBRACE  reduce using rule 44 (auxStatement4)
+    SEMI    reduce using rule 40 (auxStatement1)
+
+    Statement         go to state 75
+    auxStatement1     go to state 47
+    auxStatement4     go to state 119
+    Assignment        go to state 48
+    MethodInvocation  go to state 49
+    ParseArgs         go to state 50
 
 
 State 76
+
+   28 Statement: OBRACE auxStatement4 . CBRACE
+
+    CBRACE  shift, and go to state 120
+
+
+State 77
+
+   48 MethodInvocation: ID OCURV . AuxMethodInvocation1 CCURV
+   49                 | ID OCURV . error CCURV
+
+    error     shift, and go to state 121
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 67
+
+    CCURV  reduce using rule 51 (AuxMethodInvocation1)
+
+    Assignment            go to state 69
+    MethodInvocation      go to state 70
+    AuxMethodInvocation1  go to state 122
+    ParseArgs             go to state 71
+    Expr                  go to state 123
+    auxExpr               go to state 73
+
+
+State 78
+
+   47 Assignment: ID ASSIGN . Expr
+
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 67
+
+    Assignment        go to state 69
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    Expr              go to state 124
+    auxExpr           go to state 73
+
+
+State 79
 
    13 MethodBody: OBRACE AuxMethodBody CBRACE .
 
     $default  reduce using rule 13 (MethodBody)
 
 
-State 77
+State 80
 
    15 AuxMethodBody: VarDecl AuxMethodBody .
 
     $default  reduce using rule 15 (AuxMethodBody)
 
 
-State 78
+State 81
 
    22 VarDecl: auxVarDecl SEMI .
 
     $default  reduce using rule 22 (VarDecl)
 
 
-State 79
+State 82
 
    24 auxVarDecl: auxVarDecl COMMA . ID
 
-    ID  shift, and go to state 122
+    ID  shift, and go to state 125
 
 
-State 80
+State 83
 
    23 auxVarDecl: Type ID .
 
     $default  reduce using rule 23 (auxVarDecl)
 
 
-State 81
+State 84
 
    16 AuxMethodBody: Statement AuxMethodBody .
 
     $default  reduce using rule 16 (AuxMethodBody)
 
 
-State 82
+State 85
 
    34 Statement: auxStatement1 SEMI .
 
     $default  reduce using rule 34 (Statement)
 
 
-State 83
+State 86
 
    11 MethodHeader: Type ID OCURV FormalParams . CCURV
 
-    CCURV  shift, and go to state 123
+    CCURV  shift, and go to state 126
 
 
-State 84
+State 87
 
    18 FormalParams: STRING OSQUARE . CSQUARE ID
 
-    CSQUARE  shift, and go to state 124
+    CSQUARE  shift, and go to state 127
 
 
-State 85
+State 88
 
    12 MethodHeader: VOID ID OCURV FormalParams CCURV .
 
     $default  reduce using rule 12 (MethodHeader)
 
 
-State 86
+State 89
 
    17 FormalParams: Type ID . auxFormalParams
 
-    COMMA  shift, and go to state 125
+    COMMA  shift, and go to state 128
 
     $default  reduce using rule 21 (auxFormalParams)
 
-    auxFormalParams  go to state 126
-
-
-State 87
-
-   32 Statement: DO Statement WHILE . OCURV Expr CCURV SEMI
-
-    OCURV  shift, and go to state 127
-
-
-State 88
-
-   29 Statement: IF OCURV Expr . CCURV Statement ELSE Statement
-   30          | IF OCURV Expr . CCURV Statement
-
-    CCURV  shift, and go to state 128
-
-
-State 89
-
-   55 ParseArgs: PARSEINT OCURV error . CCURV
-
-    CCURV  shift, and go to state 129
+    auxFormalParams  go to state 129
 
 
 State 90
 
-   54 ParseArgs: PARSEINT OCURV ID . OSQUARE Expr CSQUARE CCURV
+   32 Statement: DO Statement WHILE . OCURV Expr CCURV SEMI
 
-    OSQUARE  shift, and go to state 130
+    OCURV  shift, and go to state 130
 
 
 State 91
+
+   29 Statement: IF OCURV Expr . CCURV Statement ELSE Statement
+   30          | IF OCURV Expr . CCURV Statement
+
+    CCURV  shift, and go to state 131
+
+
+State 92
+
+   55 ParseArgs: PARSEINT OCURV error . CCURV
+
+    CCURV  shift, and go to state 132
+
+
+State 93
+
+   54 ParseArgs: PARSEINT OCURV ID . OSQUARE Expr CSQUARE CCURV
+
+    OSQUARE  shift, and go to state 133
+
+
+State 94
 
    42 auxStatement2: STRLIT .
 
     $default  reduce using rule 42 (auxStatement2)
 
 
-State 92
+State 95
 
    33 Statement: PRINT OCURV auxStatement2 . CCURV SEMI
 
-    CCURV  shift, and go to state 131
+    CCURV  shift, and go to state 134
 
 
-State 93
+State 96
 
    41 auxStatement2: Expr .
 
     $default  reduce using rule 41 (auxStatement2)
 
 
-State 94
+State 97
 
    82 auxExpr: OCURV error . CCURV
 
-    CCURV  shift, and go to state 132
+    CCURV  shift, and go to state 135
 
 
-State 95
+State 98
 
    78 auxExpr: OCURV Expr . CCURV
 
-    CCURV  shift, and go to state 133
+    CCURV  shift, and go to state 136
 
 
-State 96
+State 99
 
    48 MethodInvocation: ID . OCURV AuxMethodInvocation1 CCURV
    49                 | ID . OCURV error CCURV
    76 auxExpr: ID . DOTLENGTH
    77        | ID .
 
-    DOTLENGTH  shift, and go to state 100
-    OCURV      shift, and go to state 74
+    DOTLENGTH  shift, and go to state 103
+    OCURV      shift, and go to state 77
 
     $default  reduce using rule 77 (auxExpr)
 
 
-State 97
+State 100
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -1291,14 +1334,14 @@ State 97
    72        | auxExpr . MOD auxExpr
    73        | PLUS auxExpr .
 
-    STAR  shift, and go to state 112
-    DIV   shift, and go to state 113
-    MOD   shift, and go to state 114
+    STAR  shift, and go to state 115
+    DIV   shift, and go to state 116
+    MOD   shift, and go to state 117
 
     $default  reduce using rule 73 (auxExpr)
 
 
-State 98
+State 101
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -1315,14 +1358,14 @@ State 98
    72        | auxExpr . MOD auxExpr
    74        | MINUS auxExpr .
 
-    STAR  shift, and go to state 112
-    DIV   shift, and go to state 113
-    MOD   shift, and go to state 114
+    STAR  shift, and go to state 115
+    DIV   shift, and go to state 116
+    MOD   shift, and go to state 117
 
     $default  reduce using rule 74 (auxExpr)
 
 
-State 99
+State 102
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -1342,454 +1385,454 @@ State 99
     $default  reduce using rule 75 (auxExpr)
 
 
-State 100
+State 103
 
    76 auxExpr: ID DOTLENGTH .
 
     $default  reduce using rule 76 (auxExpr)
 
 
-State 101
+State 104
 
    35 Statement: RETURN auxStatement5 SEMI .
 
     $default  reduce using rule 35 (Statement)
 
 
-State 102
+State 105
 
    60 auxExpr: auxExpr AND . auxExpr
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
 
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    auxExpr           go to state 134
-
-
-State 103
-
-   61 auxExpr: auxExpr OR . auxExpr
-
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
-
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    auxExpr           go to state 135
-
-
-State 104
-
-   66 auxExpr: auxExpr LT . auxExpr
-
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
-
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    auxExpr           go to state 136
-
-
-State 105
-
-   64 auxExpr: auxExpr GT . auxExpr
-
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
-
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
     auxExpr           go to state 137
 
 
 State 106
 
-   62 auxExpr: auxExpr EQ . auxExpr
+   61 auxExpr: auxExpr OR . auxExpr
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
 
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
     auxExpr           go to state 138
 
 
 State 107
 
-   67 auxExpr: auxExpr NEQ . auxExpr
+   66 auxExpr: auxExpr LT . auxExpr
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
 
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
     auxExpr           go to state 139
 
 
 State 108
 
-   63 auxExpr: auxExpr GEQ . auxExpr
+   64 auxExpr: auxExpr GT . auxExpr
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
 
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
     auxExpr           go to state 140
 
 
 State 109
 
-   65 auxExpr: auxExpr LEQ . auxExpr
+   62 auxExpr: auxExpr EQ . auxExpr
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
 
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
     auxExpr           go to state 141
 
 
 State 110
 
-   68 auxExpr: auxExpr PLUS . auxExpr
+   67 auxExpr: auxExpr NEQ . auxExpr
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
 
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
     auxExpr           go to state 142
 
 
 State 111
 
-   69 auxExpr: auxExpr MINUS . auxExpr
+   63 auxExpr: auxExpr GEQ . auxExpr
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
 
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
     auxExpr           go to state 143
 
 
 State 112
 
-   70 auxExpr: auxExpr STAR . auxExpr
+   65 auxExpr: auxExpr LEQ . auxExpr
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
 
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
     auxExpr           go to state 144
 
 
 State 113
 
-   71 auxExpr: auxExpr DIV . auxExpr
+   68 auxExpr: auxExpr PLUS . auxExpr
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
 
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
     auxExpr           go to state 145
 
 
 State 114
 
-   72 auxExpr: auxExpr MOD . auxExpr
+   69 auxExpr: auxExpr MINUS . auxExpr
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 96
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
 
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
     auxExpr           go to state 146
 
 
 State 115
 
-   31 Statement: WHILE OCURV Expr . CCURV Statement
+   70 auxExpr: auxExpr STAR . auxExpr
 
-    CCURV  shift, and go to state 147
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
+
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    auxExpr           go to state 147
 
 
 State 116
+
+   71 auxExpr: auxExpr DIV . auxExpr
+
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
+
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    auxExpr           go to state 148
+
+
+State 117
+
+   72 auxExpr: auxExpr MOD . auxExpr
+
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 99
+
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    auxExpr           go to state 149
+
+
+State 118
+
+   31 Statement: WHILE OCURV Expr . CCURV Statement
+
+    CCURV  shift, and go to state 150
+
+
+State 119
 
    43 auxStatement4: Statement auxStatement4 .
 
     $default  reduce using rule 43 (auxStatement4)
 
 
-State 117
+State 120
 
    28 Statement: OBRACE auxStatement4 CBRACE .
 
     $default  reduce using rule 28 (Statement)
 
 
-State 118
+State 121
 
    49 MethodInvocation: ID OCURV error . CCURV
 
-    CCURV  shift, and go to state 148
+    CCURV  shift, and go to state 151
 
 
-State 119
+State 122
 
    48 MethodInvocation: ID OCURV AuxMethodInvocation1 . CCURV
 
-    CCURV  shift, and go to state 149
+    CCURV  shift, and go to state 152
 
 
-State 120
+State 123
 
    50 AuxMethodInvocation1: Expr . AuxMethodInvocation2
 
-    COMMA  shift, and go to state 150
+    COMMA  shift, and go to state 153
 
     $default  reduce using rule 53 (AuxMethodInvocation2)
 
-    AuxMethodInvocation2  go to state 151
+    AuxMethodInvocation2  go to state 154
 
 
-State 121
+State 124
 
    47 Assignment: ID ASSIGN Expr .
 
     $default  reduce using rule 47 (Assignment)
 
 
-State 122
+State 125
 
    24 auxVarDecl: auxVarDecl COMMA ID .
 
     $default  reduce using rule 24 (auxVarDecl)
 
 
-State 123
+State 126
 
    11 MethodHeader: Type ID OCURV FormalParams CCURV .
 
     $default  reduce using rule 11 (MethodHeader)
 
 
-State 124
+State 127
 
    18 FormalParams: STRING OSQUARE CSQUARE . ID
 
-    ID  shift, and go to state 152
+    ID  shift, and go to state 155
 
 
-State 125
+State 128
 
    20 auxFormalParams: COMMA . Type ID auxFormalParams
 
-    BOOL    shift, and go to state 15
-    DOUBLE  shift, and go to state 16
-    INT     shift, and go to state 17
+    BOOL    shift, and go to state 18
+    DOUBLE  shift, and go to state 19
+    INT     shift, and go to state 20
 
-    Type  go to state 153
+    Type  go to state 156
 
 
-State 126
+State 129
 
    17 FormalParams: Type ID auxFormalParams .
 
     $default  reduce using rule 17 (FormalParams)
 
 
-State 127
+State 130
 
    32 Statement: DO Statement WHILE OCURV . Expr CCURV SEMI
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 64
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 67
 
-    Assignment        go to state 66
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    Expr              go to state 154
-    auxExpr           go to state 70
+    Assignment        go to state 69
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    Expr              go to state 157
+    auxExpr           go to state 73
 
 
-State 128
+State 131
 
    29 Statement: IF OCURV Expr CCURV . Statement ELSE Statement
    30          | IF OCURV Expr CCURV . Statement
 
-    error     shift, and go to state 30
-    DO        shift, and go to state 31
-    IF        shift, and go to state 32
-    PARSEINT  shift, and go to state 33
-    PRINT     shift, and go to state 34
-    RETURN    shift, and go to state 35
-    WHILE     shift, and go to state 36
-    OBRACE    shift, and go to state 37
-    ID        shift, and go to state 38
+    error     shift, and go to state 33
+    DO        shift, and go to state 34
+    IF        shift, and go to state 35
+    PARSEINT  shift, and go to state 36
+    PRINT     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    WHILE     shift, and go to state 39
+    OBRACE    shift, and go to state 40
+    ID        shift, and go to state 41
 
     SEMI  reduce using rule 40 (auxStatement1)
 
-    Statement         go to state 155
-    auxStatement1     go to state 44
-    Assignment        go to state 45
-    MethodInvocation  go to state 46
-    ParseArgs         go to state 47
+    Statement         go to state 158
+    auxStatement1     go to state 47
+    Assignment        go to state 48
+    MethodInvocation  go to state 49
+    ParseArgs         go to state 50
 
 
-State 129
+State 132
 
    55 ParseArgs: PARSEINT OCURV error CCURV .
 
     $default  reduce using rule 55 (ParseArgs)
 
 
-State 130
+State 133
 
    54 ParseArgs: PARSEINT OCURV ID OSQUARE . Expr CSQUARE CCURV
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 64
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 67
 
-    Assignment        go to state 66
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    Expr              go to state 156
-    auxExpr           go to state 70
+    Assignment        go to state 69
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    Expr              go to state 159
+    auxExpr           go to state 73
 
 
-State 131
+State 134
 
    33 Statement: PRINT OCURV auxStatement2 CCURV . SEMI
 
-    SEMI  shift, and go to state 157
+    SEMI  shift, and go to state 160
 
 
-State 132
+State 135
 
    82 auxExpr: OCURV error CCURV .
 
     $default  reduce using rule 82 (auxExpr)
 
 
-State 133
+State 136
 
    78 auxExpr: OCURV Expr CCURV .
 
     $default  reduce using rule 78 (auxExpr)
 
 
-State 134
+State 137
 
    60 auxExpr: auxExpr . AND auxExpr
    60        | auxExpr AND auxExpr .
@@ -1806,22 +1849,22 @@ State 134
    71        | auxExpr . DIV auxExpr
    72        | auxExpr . MOD auxExpr
 
-    LT     shift, and go to state 104
-    GT     shift, and go to state 105
-    EQ     shift, and go to state 106
-    NEQ    shift, and go to state 107
-    GEQ    shift, and go to state 108
-    LEQ    shift, and go to state 109
-    PLUS   shift, and go to state 110
-    MINUS  shift, and go to state 111
-    STAR   shift, and go to state 112
-    DIV    shift, and go to state 113
-    MOD    shift, and go to state 114
+    LT     shift, and go to state 107
+    GT     shift, and go to state 108
+    EQ     shift, and go to state 109
+    NEQ    shift, and go to state 110
+    GEQ    shift, and go to state 111
+    LEQ    shift, and go to state 112
+    PLUS   shift, and go to state 113
+    MINUS  shift, and go to state 114
+    STAR   shift, and go to state 115
+    DIV    shift, and go to state 116
+    MOD    shift, and go to state 117
 
     $default  reduce using rule 60 (auxExpr)
 
 
-State 135
+State 138
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -1838,23 +1881,23 @@ State 135
    71        | auxExpr . DIV auxExpr
    72        | auxExpr . MOD auxExpr
 
-    AND    shift, and go to state 102
-    LT     shift, and go to state 104
-    GT     shift, and go to state 105
-    EQ     shift, and go to state 106
-    NEQ    shift, and go to state 107
-    GEQ    shift, and go to state 108
-    LEQ    shift, and go to state 109
-    PLUS   shift, and go to state 110
-    MINUS  shift, and go to state 111
-    STAR   shift, and go to state 112
-    DIV    shift, and go to state 113
-    MOD    shift, and go to state 114
+    AND    shift, and go to state 105
+    LT     shift, and go to state 107
+    GT     shift, and go to state 108
+    EQ     shift, and go to state 109
+    NEQ    shift, and go to state 110
+    GEQ    shift, and go to state 111
+    LEQ    shift, and go to state 112
+    PLUS   shift, and go to state 113
+    MINUS  shift, and go to state 114
+    STAR   shift, and go to state 115
+    DIV    shift, and go to state 116
+    MOD    shift, and go to state 117
 
     $default  reduce using rule 61 (auxExpr)
 
 
-State 136
+State 139
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -1871,16 +1914,16 @@ State 136
    71        | auxExpr . DIV auxExpr
    72        | auxExpr . MOD auxExpr
 
-    PLUS   shift, and go to state 110
-    MINUS  shift, and go to state 111
-    STAR   shift, and go to state 112
-    DIV    shift, and go to state 113
-    MOD    shift, and go to state 114
+    PLUS   shift, and go to state 113
+    MINUS  shift, and go to state 114
+    STAR   shift, and go to state 115
+    DIV    shift, and go to state 116
+    MOD    shift, and go to state 117
 
     $default  reduce using rule 66 (auxExpr)
 
 
-State 137
+State 140
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -1897,16 +1940,16 @@ State 137
    71        | auxExpr . DIV auxExpr
    72        | auxExpr . MOD auxExpr
 
-    PLUS   shift, and go to state 110
-    MINUS  shift, and go to state 111
-    STAR   shift, and go to state 112
-    DIV    shift, and go to state 113
-    MOD    shift, and go to state 114
+    PLUS   shift, and go to state 113
+    MINUS  shift, and go to state 114
+    STAR   shift, and go to state 115
+    DIV    shift, and go to state 116
+    MOD    shift, and go to state 117
 
     $default  reduce using rule 64 (auxExpr)
 
 
-State 138
+State 141
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -1923,20 +1966,20 @@ State 138
    71        | auxExpr . DIV auxExpr
    72        | auxExpr . MOD auxExpr
 
-    LT     shift, and go to state 104
-    GT     shift, and go to state 105
-    GEQ    shift, and go to state 108
-    LEQ    shift, and go to state 109
-    PLUS   shift, and go to state 110
-    MINUS  shift, and go to state 111
-    STAR   shift, and go to state 112
-    DIV    shift, and go to state 113
-    MOD    shift, and go to state 114
+    LT     shift, and go to state 107
+    GT     shift, and go to state 108
+    GEQ    shift, and go to state 111
+    LEQ    shift, and go to state 112
+    PLUS   shift, and go to state 113
+    MINUS  shift, and go to state 114
+    STAR   shift, and go to state 115
+    DIV    shift, and go to state 116
+    MOD    shift, and go to state 117
 
     $default  reduce using rule 62 (auxExpr)
 
 
-State 139
+State 142
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -1953,20 +1996,20 @@ State 139
    71        | auxExpr . DIV auxExpr
    72        | auxExpr . MOD auxExpr
 
-    LT     shift, and go to state 104
-    GT     shift, and go to state 105
-    GEQ    shift, and go to state 108
-    LEQ    shift, and go to state 109
-    PLUS   shift, and go to state 110
-    MINUS  shift, and go to state 111
-    STAR   shift, and go to state 112
-    DIV    shift, and go to state 113
-    MOD    shift, and go to state 114
+    LT     shift, and go to state 107
+    GT     shift, and go to state 108
+    GEQ    shift, and go to state 111
+    LEQ    shift, and go to state 112
+    PLUS   shift, and go to state 113
+    MINUS  shift, and go to state 114
+    STAR   shift, and go to state 115
+    DIV    shift, and go to state 116
+    MOD    shift, and go to state 117
 
     $default  reduce using rule 67 (auxExpr)
 
 
-State 140
+State 143
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -1983,16 +2026,16 @@ State 140
    71        | auxExpr . DIV auxExpr
    72        | auxExpr . MOD auxExpr
 
-    PLUS   shift, and go to state 110
-    MINUS  shift, and go to state 111
-    STAR   shift, and go to state 112
-    DIV    shift, and go to state 113
-    MOD    shift, and go to state 114
+    PLUS   shift, and go to state 113
+    MINUS  shift, and go to state 114
+    STAR   shift, and go to state 115
+    DIV    shift, and go to state 116
+    MOD    shift, and go to state 117
 
     $default  reduce using rule 63 (auxExpr)
 
 
-State 141
+State 144
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -2009,16 +2052,16 @@ State 141
    71        | auxExpr . DIV auxExpr
    72        | auxExpr . MOD auxExpr
 
-    PLUS   shift, and go to state 110
-    MINUS  shift, and go to state 111
-    STAR   shift, and go to state 112
-    DIV    shift, and go to state 113
-    MOD    shift, and go to state 114
+    PLUS   shift, and go to state 113
+    MINUS  shift, and go to state 114
+    STAR   shift, and go to state 115
+    DIV    shift, and go to state 116
+    MOD    shift, and go to state 117
 
     $default  reduce using rule 65 (auxExpr)
 
 
-State 142
+State 145
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -2035,14 +2078,14 @@ State 142
    71        | auxExpr . DIV auxExpr
    72        | auxExpr . MOD auxExpr
 
-    STAR  shift, and go to state 112
-    DIV   shift, and go to state 113
-    MOD   shift, and go to state 114
+    STAR  shift, and go to state 115
+    DIV   shift, and go to state 116
+    MOD   shift, and go to state 117
 
     $default  reduce using rule 68 (auxExpr)
 
 
-State 143
+State 146
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -2059,14 +2102,14 @@ State 143
    71        | auxExpr . DIV auxExpr
    72        | auxExpr . MOD auxExpr
 
-    STAR  shift, and go to state 112
-    DIV   shift, and go to state 113
-    MOD   shift, and go to state 114
+    STAR  shift, and go to state 115
+    DIV   shift, and go to state 116
+    MOD   shift, and go to state 117
 
     $default  reduce using rule 69 (auxExpr)
 
 
-State 144
+State 147
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -2086,7 +2129,7 @@ State 144
     $default  reduce using rule 70 (auxExpr)
 
 
-State 145
+State 148
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -2106,7 +2149,7 @@ State 145
     $default  reduce using rule 71 (auxExpr)
 
 
-State 146
+State 149
 
    60 auxExpr: auxExpr . AND auxExpr
    61        | auxExpr . OR auxExpr
@@ -2126,211 +2169,211 @@ State 146
     $default  reduce using rule 72 (auxExpr)
 
 
-State 147
+State 150
 
    31 Statement: WHILE OCURV Expr CCURV . Statement
 
-    error     shift, and go to state 30
-    DO        shift, and go to state 31
-    IF        shift, and go to state 32
-    PARSEINT  shift, and go to state 33
-    PRINT     shift, and go to state 34
-    RETURN    shift, and go to state 35
-    WHILE     shift, and go to state 36
-    OBRACE    shift, and go to state 37
-    ID        shift, and go to state 38
+    error     shift, and go to state 33
+    DO        shift, and go to state 34
+    IF        shift, and go to state 35
+    PARSEINT  shift, and go to state 36
+    PRINT     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    WHILE     shift, and go to state 39
+    OBRACE    shift, and go to state 40
+    ID        shift, and go to state 41
 
     SEMI  reduce using rule 40 (auxStatement1)
 
-    Statement         go to state 158
-    auxStatement1     go to state 44
-    Assignment        go to state 45
-    MethodInvocation  go to state 46
-    ParseArgs         go to state 47
+    Statement         go to state 161
+    auxStatement1     go to state 47
+    Assignment        go to state 48
+    MethodInvocation  go to state 49
+    ParseArgs         go to state 50
 
 
-State 148
+State 151
 
    49 MethodInvocation: ID OCURV error CCURV .
 
     $default  reduce using rule 49 (MethodInvocation)
 
 
-State 149
+State 152
 
    48 MethodInvocation: ID OCURV AuxMethodInvocation1 CCURV .
 
     $default  reduce using rule 48 (MethodInvocation)
 
 
-State 150
+State 153
 
    52 AuxMethodInvocation2: COMMA . Expr AuxMethodInvocation2
 
-    PARSEINT  shift, and go to state 33
-    OCURV     shift, and go to state 57
-    PLUS      shift, and go to state 58
-    MINUS     shift, and go to state 59
-    NOT       shift, and go to state 60
-    REALLIT   shift, and go to state 61
-    DECLIT    shift, and go to state 62
-    BOOLLIT   shift, and go to state 63
-    ID        shift, and go to state 64
+    PARSEINT  shift, and go to state 36
+    OCURV     shift, and go to state 60
+    PLUS      shift, and go to state 61
+    MINUS     shift, and go to state 62
+    NOT       shift, and go to state 63
+    REALLIT   shift, and go to state 64
+    DECLIT    shift, and go to state 65
+    BOOLLIT   shift, and go to state 66
+    ID        shift, and go to state 67
 
-    Assignment        go to state 66
-    MethodInvocation  go to state 67
-    ParseArgs         go to state 68
-    Expr              go to state 159
-    auxExpr           go to state 70
+    Assignment        go to state 69
+    MethodInvocation  go to state 70
+    ParseArgs         go to state 71
+    Expr              go to state 162
+    auxExpr           go to state 73
 
 
-State 151
+State 154
 
    50 AuxMethodInvocation1: Expr AuxMethodInvocation2 .
 
     $default  reduce using rule 50 (AuxMethodInvocation1)
 
 
-State 152
+State 155
 
    18 FormalParams: STRING OSQUARE CSQUARE ID .
 
     $default  reduce using rule 18 (FormalParams)
 
 
-State 153
+State 156
 
    20 auxFormalParams: COMMA Type . ID auxFormalParams
 
-    ID  shift, and go to state 160
+    ID  shift, and go to state 163
 
 
-State 154
+State 157
 
    32 Statement: DO Statement WHILE OCURV Expr . CCURV SEMI
 
-    CCURV  shift, and go to state 161
+    CCURV  shift, and go to state 164
 
 
-State 155
+State 158
 
    29 Statement: IF OCURV Expr CCURV Statement . ELSE Statement
    30          | IF OCURV Expr CCURV Statement .
 
-    ELSE  shift, and go to state 162
+    ELSE  shift, and go to state 165
 
     $default  reduce using rule 30 (Statement)
 
 
-State 156
+State 159
 
    54 ParseArgs: PARSEINT OCURV ID OSQUARE Expr . CSQUARE CCURV
 
-    CSQUARE  shift, and go to state 163
+    CSQUARE  shift, and go to state 166
 
 
-State 157
+State 160
 
    33 Statement: PRINT OCURV auxStatement2 CCURV SEMI .
 
     $default  reduce using rule 33 (Statement)
 
 
-State 158
+State 161
 
    31 Statement: WHILE OCURV Expr CCURV Statement .
 
     $default  reduce using rule 31 (Statement)
 
 
-State 159
+State 162
 
    52 AuxMethodInvocation2: COMMA Expr . AuxMethodInvocation2
 
-    COMMA  shift, and go to state 150
+    COMMA  shift, and go to state 153
 
     $default  reduce using rule 53 (AuxMethodInvocation2)
 
-    AuxMethodInvocation2  go to state 164
-
-
-State 160
-
-   20 auxFormalParams: COMMA Type ID . auxFormalParams
-
-    COMMA  shift, and go to state 125
-
-    $default  reduce using rule 21 (auxFormalParams)
-
-    auxFormalParams  go to state 165
-
-
-State 161
-
-   32 Statement: DO Statement WHILE OCURV Expr CCURV . SEMI
-
-    SEMI  shift, and go to state 166
-
-
-State 162
-
-   29 Statement: IF OCURV Expr CCURV Statement ELSE . Statement
-
-    error     shift, and go to state 30
-    DO        shift, and go to state 31
-    IF        shift, and go to state 32
-    PARSEINT  shift, and go to state 33
-    PRINT     shift, and go to state 34
-    RETURN    shift, and go to state 35
-    WHILE     shift, and go to state 36
-    OBRACE    shift, and go to state 37
-    ID        shift, and go to state 38
-
-    SEMI  reduce using rule 40 (auxStatement1)
-
-    Statement         go to state 167
-    auxStatement1     go to state 44
-    Assignment        go to state 45
-    MethodInvocation  go to state 46
-    ParseArgs         go to state 47
+    AuxMethodInvocation2  go to state 167
 
 
 State 163
 
-   54 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE . CCURV
+   20 auxFormalParams: COMMA Type ID . auxFormalParams
 
-    CCURV  shift, and go to state 168
+    COMMA  shift, and go to state 128
+
+    $default  reduce using rule 21 (auxFormalParams)
+
+    auxFormalParams  go to state 168
 
 
 State 164
+
+   32 Statement: DO Statement WHILE OCURV Expr CCURV . SEMI
+
+    SEMI  shift, and go to state 169
+
+
+State 165
+
+   29 Statement: IF OCURV Expr CCURV Statement ELSE . Statement
+
+    error     shift, and go to state 33
+    DO        shift, and go to state 34
+    IF        shift, and go to state 35
+    PARSEINT  shift, and go to state 36
+    PRINT     shift, and go to state 37
+    RETURN    shift, and go to state 38
+    WHILE     shift, and go to state 39
+    OBRACE    shift, and go to state 40
+    ID        shift, and go to state 41
+
+    SEMI  reduce using rule 40 (auxStatement1)
+
+    Statement         go to state 170
+    auxStatement1     go to state 47
+    Assignment        go to state 48
+    MethodInvocation  go to state 49
+    ParseArgs         go to state 50
+
+
+State 166
+
+   54 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE . CCURV
+
+    CCURV  shift, and go to state 171
+
+
+State 167
 
    52 AuxMethodInvocation2: COMMA Expr AuxMethodInvocation2 .
 
     $default  reduce using rule 52 (AuxMethodInvocation2)
 
 
-State 165
+State 168
 
    20 auxFormalParams: COMMA Type ID auxFormalParams .
 
     $default  reduce using rule 20 (auxFormalParams)
 
 
-State 166
+State 169
 
    32 Statement: DO Statement WHILE OCURV Expr CCURV SEMI .
 
     $default  reduce using rule 32 (Statement)
 
 
-State 167
+State 170
 
    29 Statement: IF OCURV Expr CCURV Statement ELSE Statement .
 
     $default  reduce using rule 29 (Statement)
 
 
-State 168
+State 171
 
    54 ParseArgs: PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV .
 

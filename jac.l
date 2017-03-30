@@ -84,7 +84,7 @@ REALLIT             {repeater}"."({repeater})?({exponential}{repeater})?|"."({re
 
 {REALLIT}           {if(flag==1)printf("REALLIT(%s)\n",yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return REALLIT;}}
 {DECLIT}            {if(flag==1)printf("DECLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return DECLIT;}}
-{boolit}            {if(flag==1)printf("BOOLLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2)return BOOLLIT;}
+{boolit}            {if(flag==1)printf("BOOLLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return BOOLLIT;}}
 {ID}                {if(flag==1)printf("ID(%s)\n", yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return ID;}}
 
 {STRLIT}            {if(flag==1)printf("STRLIT(%s)\n", yytext);n_column+=yyleng;if(flag==2){yylval.string=strdup(yytext);return STRLIT;}}
