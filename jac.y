@@ -95,12 +95,15 @@ MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){$$= new_
 MethodBody:OBRACE AuxMethodBody CBRACE {if(flagTreeErros ==1){$$= new_node("MethodBody","MethodBody");add_son($$,$2);};}
 ;
 AuxMethodBody:   %empty                               {if(flagTreeErros ==1){$$=NULL;};}
-  |  VarDecl    AuxMethodBody                           {if(flagTreeErros ==1){
-                                                                                  add_brother($1,$2);
-                                                                                  $$=$1;
+  |  VarDecl    AuxMethodBody                           {if(flagTreeErros ==1){   if($1==NULL){
+                                                                                      $$=$2;
+                                                                                    }
+                                                                                  else{add_brother($1,$2);
+                                                                                  $$=$1;}
                                                                                 };}
-  |  Statement AuxMethodBody                            {if(flagTreeErros ==1){ add_brother($1,$2);
-                                                                                $$=$1;
+  |  Statement AuxMethodBody                            {if(flagTreeErros ==1){ if($1==NULL){$$=$2;}
+                                                                                else{add_brother($1,$2);
+                                                                                $$=$1;}
                                                                                 };}
 ;
 
@@ -150,7 +153,7 @@ Statement: OBRACE auxStatement4 CBRACE                  {if(flagTreeErros ==1){
                                                                 add_son($$,$2);}
                                                               }
                                                             else{
-                                                                $$=new_node("Block","Block");
+                                                                $$=NULL;
                                                             }
                                                             };}
   | IF OCURV Expr CCURV Statement ELSE Statement        {if(flagTreeErros ==1){$$=new_node("If","If");
@@ -208,7 +211,11 @@ auxStatement1: Assignment               {if(flagTreeErros ==1){$$=$1;};}
 auxStatement2: Expr                     {if(flagTreeErros ==1){$$=$1;};}
   | STRLIT                              {if(flagTreeErros ==1){$$=new_node("StrLit",$1);};}
 ;
-auxStatement4: Statement auxStatement4      {if(flagTreeErros ==1){$$=$1;add_brother($1,$2);};}
+auxStatement4: Statement auxStatement4      {if(flagTreeErros ==1){
+                                            if($1==NULL){
+                                              $$=$2;
+                                            }
+                                            else{$$=$1;add_brother($1,$2);}};}
   | %empty                                  {$$=NULL;}
 ;
 auxStatement5: Expr                      {if(flagTreeErros ==1){$$=$1;};}
