@@ -544,15 +544,15 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    57,    57,    64,    65,    67,    69,    73,    74,    76,
-      78,    83,    86,    90,    96,    98,    99,   103,   108,   115,
-     122,   124,   128,   131,   133,   135,   140,   141,   142,   144,
-     159,   164,   170,   178,   185,   189,   190,   195,   197,   198,
-     199,   200,   202,   203,   205,   206,   208,   209,   212,   218,
-     224,   226,   228,   230,   231,   235,   239,   242,   243,   245,
-     246,   247,   250,   254,   258,   261,   264,   268,   271,   274,
-     277,   280,   283,   287,   291,   294,   297,   300,   303,   305,
-     306,   307,   308,   309
+       0,    56,    56,    63,    64,    66,    68,    72,    73,    75,
+      77,    82,    85,    89,    95,    97,    98,   102,   107,   114,
+     121,   123,   127,   130,   132,   134,   139,   140,   141,   143,
+     158,   163,   169,   177,   184,   188,   189,   194,   196,   197,
+     198,   199,   201,   202,   204,   205,   207,   208,   211,   217,
+     223,   225,   227,   229,   230,   234,   238,   241,   242,   244,
+     245,   246,   249,   253,   257,   260,   263,   267,   270,   273,
+     276,   279,   282,   286,   290,   293,   296,   299,   302,   304,
+     305,   306,   307,   308
 };
 #endif
 
@@ -606,21 +606,21 @@ static const yytype_int16 yypact[] =
 {
        0,   -10,    39,    43,   -33,    52,    11,    53,    52,    68,
       52,    52,   -33,    19,   -33,   -33,   -33,   -33,   -33,   -33,
-     -33,    48,    32,    88,    80,   112,   -33,    90,    49,   -33,
-     114,    92,   -33,   104,   185,   127,   128,   129,   205,   135,
-     131,    -9,   133,    49,    56,   105,    49,   116,   -33,   -33,
-     -33,    92,   134,   138,   117,   -33,   143,   205,    10,   189,
-     176,   218,   218,   218,   -33,   -33,   -33,    18,   123,   -33,
-     -33,   -33,   -33,   239,   205,   131,   142,   140,   205,   -33,
-     -33,   -33,   120,   -33,   -33,   -33,   146,   144,   -33,   126,
-     150,   152,   155,   147,   -33,   159,   -33,   160,   161,    15,
-     -33,   -33,   -33,   -33,   -33,   218,   218,   218,   218,   218,
-     218,   218,   218,   218,   218,   218,   218,   218,   168,   -33,
-     -33,   169,   171,   151,   -33,   -33,   -33,   148,    59,   -33,
-     205,   185,   -33,   205,   158,   -33,   -33,   263,   252,    93,
-      93,    79,    79,    93,    93,   -33,   -33,    84,    84,    84,
-     185,   -33,   -33,   205,   -33,   -33,   156,   182,   196,   181,
-     -33,   -33,   151,   126,   167,   185,   191,   -33,   -33,   -33,
+     -33,    48,    32,    88,    72,    99,   -33,    80,    49,   -33,
+     112,    92,   -33,    95,   185,   114,   125,   135,   205,   136,
+     131,    -9,   128,    49,    56,   113,    49,   116,   -33,   -33,
+     -33,    92,   134,   141,   117,   -33,   145,   205,    10,   189,
+     176,   218,   218,   218,   -33,   -33,   -33,    18,   124,   -33,
+     -33,   -33,   -33,   239,   205,   131,   143,   140,   205,   -33,
+     -33,   -33,   121,   -33,   -33,   -33,   147,   144,   -33,   129,
+     150,   152,   155,   156,   -33,   160,   -33,   161,   168,    15,
+     111,   111,   -33,   -33,   -33,   218,   218,   218,   218,   218,
+     218,   218,   218,   218,   218,   218,   218,   218,   169,   -33,
+     -33,   171,   172,   157,   -33,   -33,   -33,   148,    59,   -33,
+     205,   185,   -33,   205,   162,   -33,   -33,   263,   252,    93,
+      93,    79,    79,    93,    93,   111,   111,   -33,   -33,   -33,
+     185,   -33,   -33,   205,   -33,   -33,   159,   181,   197,   183,
+     -33,   -33,   157,   129,   173,   185,   191,   -33,   -33,   -33,
      -33,   -33
 };
 
@@ -652,7 +652,7 @@ static const yytype_uint8 yydefact[] =
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-     -33,   -33,    30,   -33,   -33,   -33,   -33,   -33,    45,   162,
+     -33,   -33,    30,   -33,   -33,   -33,   -33,   -33,    45,   164,
       54,   -33,   -33,    -8,   -31,   -33,   -33,   137,   -33,   -28,
      -27,   -33,    64,   -26,   -32,   -30
 };
@@ -681,17 +681,17 @@ static const yytype_int16 yytable[] =
      142,   143,   144,   145,   146,   147,   148,   149,    80,   -41,
       15,    84,     8,    25,    41,    18,    81,    82,   157,    19,
      158,   159,    20,    48,    49,    50,   107,   108,    52,    28,
-     111,   112,   113,   114,   115,   116,   117,   113,   114,   161,
-     156,   162,    48,    49,    50,    30,   113,   114,   115,   116,
-     117,    31,    33,    51,   170,    32,    34,    48,    49,    50,
-      35,   121,    36,    37,    55,    38,    57,    58,    59,    39,
-      83,    36,    40,   -45,    74,    79,    85,    87,    88,    60,
-     -52,    90,    89,   104,   120,   125,   126,   128,   127,   130,
-     133,   -41,   131,    61,    62,   132,    41,    97,    63,   134,
-     135,   136,    64,    65,    66,    67,    33,    36,   150,   151,
-      34,   152,   153,   155,    35,    60,    36,    37,   160,    38,
-      36,   163,   164,    39,   165,   166,    40,   169,    60,    61,
-      62,   171,   119,    86,    63,     0,    36,   168,    64,    65,
+     111,   112,   113,   114,   115,   116,   117,    30,    31,   161,
+     156,   162,    48,    49,    50,    32,   113,   114,   115,   116,
+     117,    51,    33,    57,   170,    55,    34,    48,    49,    50,
+      35,   121,    36,    37,    58,    38,   115,   116,   117,    39,
+      79,    36,    40,   -45,    59,    74,    85,    87,    83,    60,
+     -52,    88,    89,    90,   104,   120,   125,   126,   127,   130,
+     128,   -41,   131,    61,    62,   132,    41,    97,    63,   133,
+     134,   135,    64,    65,    66,    67,    33,    36,   136,   150,
+      34,   151,   152,   155,    35,    60,    36,    37,   153,    38,
+      36,   164,   160,    39,   163,   165,    40,   166,    60,    61,
+      62,   171,   119,   169,    63,    86,    36,   168,    64,    65,
       66,    67,    61,    62,    60,   -41,   167,    63,     0,    36,
       41,    64,    65,    66,    67,    94,     0,    60,    61,    62,
        0,     0,     0,    63,     0,     0,     0,    64,    65,    66,
@@ -716,17 +716,17 @@ static const yytype_int16 yycheck[] =
      110,   111,   112,   113,   114,   115,   116,   117,    43,    40,
       22,    46,    40,    45,    45,     3,    40,    41,   130,     7,
      131,   133,    10,   131,   131,   131,    27,    28,    16,    21,
-      31,    32,    33,    34,    35,    36,    37,    33,    34,   150,
+      31,    32,    33,    34,    35,    36,    37,    45,    19,   150,
      128,   153,   150,   150,   150,    45,    33,    34,    35,    36,
-      37,    19,     1,    19,   165,    45,     5,   165,   165,   165,
-       9,     1,    11,    12,    40,    14,    19,    19,    19,    18,
-      45,    11,    21,    22,    19,    22,    40,    23,    20,    19,
-      20,    18,    45,    40,    22,    45,    20,    41,    24,    19,
-      23,    40,    20,    33,    34,    20,    45,     1,    38,    20,
+      37,    19,     1,    19,   165,    40,     5,   165,   165,   165,
+       9,     1,    11,    12,    19,    14,    35,    36,    37,    18,
+      22,    11,    21,    22,    19,    19,    40,    23,    45,    19,
+      20,    20,    45,    18,    40,    22,    45,    20,    24,    19,
+      41,    40,    20,    33,    34,    20,    45,     1,    38,    23,
       20,    20,    42,    43,    44,    45,     1,    11,    20,    20,
-       5,    20,    41,    45,     9,    19,    11,    12,    40,    14,
-      11,    45,    20,    18,     8,    24,    21,    40,    19,    33,
-      34,    20,    75,    51,    38,    -1,    11,   163,    42,    43,
+       5,    20,    20,    45,     9,    19,    11,    12,    41,    14,
+      11,    20,    40,    18,    45,     8,    21,    24,    19,    33,
+      34,    20,    75,    40,    38,    51,    11,   163,    42,    43,
       44,    45,    33,    34,    19,    40,   162,    38,    -1,    11,
       45,    42,    43,    44,    45,    46,    -1,    19,    33,    34,
       -1,    -1,    -1,    38,    -1,    -1,    -1,    42,    43,    44,
@@ -1464,7 +1464,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 57 "jac.y" /* yacc.c:1646  */
+#line 56 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){((yyval.node))=root=new_node("Program","Program");
     aux_node=new_node("Id",(yyvsp[-3].string));
     add_brother(aux_node,(yyvsp[-1].node));
@@ -1475,52 +1475,52 @@ yyreduce:
     break;
 
   case 3:
-#line 64 "jac.y" /* yacc.c:1646  */
+#line 63 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node) = NULL;};}
 #line 1481 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 65 "jac.y" /* yacc.c:1646  */
+#line 64 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){add_brother((yyvsp[-1].node),(yyvsp[0].node));
     (yyval.node)=(yyvsp[-1].node);};}
 #line 1488 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 67 "jac.y" /* yacc.c:1646  */
+#line 66 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){add_brother((yyvsp[-1].node), (yyvsp[0].node));
     (yyval.node)=(yyvsp[-1].node);};}
 #line 1495 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 69 "jac.y" /* yacc.c:1646  */
+#line 68 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=(yyvsp[0].node);};}
 #line 1501 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 73 "jac.y" /* yacc.c:1646  */
+#line 72 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node) = (yyvsp[-1].node);};}
 #line 1507 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 74 "jac.y" /* yacc.c:1646  */
+#line 73 "jac.y" /* yacc.c:1646  */
     {flagTreeErros = 0;}
 #line 1513 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 76 "jac.y" /* yacc.c:1646  */
+#line 75 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)  = new_node("FieldDecl","FieldDecl");add_son((yyval.node),(yyvsp[-1].node));
                                                                       add_brother((yyval.node)->son, new_node("Id",(yyvsp[0].string)));};}
 #line 1520 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 78 "jac.y" /* yacc.c:1646  */
+#line 77 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyvsp[-2].node)= new_node("FieldDecl","FieldDecl");
                                                                         add_son((yyvsp[-2].node),new_node((yyval.node)->son->type,(yyval.node)->son->type));
                                                                         add_brother((yyvsp[-2].node)->son,new_node("Id",(yyvsp[0].string))); add_brother((yyval.node),(yyvsp[-2].node));};}
@@ -1528,13 +1528,13 @@ yyreduce:
     break;
 
   case 11:
-#line 83 "jac.y" /* yacc.c:1646  */
+#line 82 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node) = new_node("MethodDecl","MethodDecl");add_son((yyval.node),(yyvsp[-1].node));add_brother((yyvsp[-1].node),(yyvsp[0].node));};}
 #line 1534 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 86 "jac.y" /* yacc.c:1646  */
+#line 85 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)= new_node("MethodHeader","MethodHeader");
                                                                             add_son((yyval.node),(yyvsp[-4].node)); 
                                                                           add_brother((yyvsp[-4].node),new_node("Id",(yyvsp[-3].string)));  
@@ -1543,7 +1543,7 @@ yyreduce:
     break;
 
   case 13:
-#line 90 "jac.y" /* yacc.c:1646  */
+#line 89 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1)               {(yyval.node)= new_node("MethodHeader","MethodHeader");
                                                                             add_son((yyval.node),aux_node=new_node("Void","Void"));
                                                                             add_brother(aux_node,new_node("Id",(yyvsp[-3].string)));
@@ -1552,19 +1552,19 @@ yyreduce:
     break;
 
   case 14:
-#line 96 "jac.y" /* yacc.c:1646  */
+#line 95 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)= new_node("MethodBody","MethodBody");add_son((yyval.node),(yyvsp[-1].node));};}
 #line 1558 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 98 "jac.y" /* yacc.c:1646  */
+#line 97 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=NULL;};}
 #line 1564 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 99 "jac.y" /* yacc.c:1646  */
+#line 98 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){  
                                                                                   add_brother((yyvsp[-1].node),(yyvsp[0].node));
                                                                                   (yyval.node)=(yyvsp[-1].node);
@@ -1573,7 +1573,7 @@ yyreduce:
     break;
 
   case 17:
-#line 103 "jac.y" /* yacc.c:1646  */
+#line 102 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){ add_brother((yyvsp[-1].node),(yyvsp[0].node));
                                                                                 (yyval.node)=(yyvsp[-1].node);
                                                                                 };}
@@ -1581,7 +1581,7 @@ yyreduce:
     break;
 
   case 18:
-#line 108 "jac.y" /* yacc.c:1646  */
+#line 107 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)= new_node("MethodParams","MethodParams");
                                                                                   aux2_node=new_node("ParamDecl","ParamDecl");
                                                                                   add_son(aux2_node,(yyvsp[-2].node)); 
@@ -1593,7 +1593,7 @@ yyreduce:
     break;
 
   case 19:
-#line 115 "jac.y" /* yacc.c:1646  */
+#line 114 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){ (yyval.node)= new_node("MethodParams","MethodParams");
                                                                                 aux2_node = new_node("ParamDecl","ParamDecl");
                                                                                 main_node = new_node("StringArray","StringArray");
@@ -1605,13 +1605,13 @@ yyreduce:
     break;
 
   case 20:
-#line 122 "jac.y" /* yacc.c:1646  */
+#line 121 "jac.y" /* yacc.c:1646  */
     {(yyval.node)= new_node("MethodParams","MethodParams");}
 #line 1611 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 124 "jac.y" /* yacc.c:1646  */
+#line 123 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node) = new_node("ParamDecl","ParamDecl");
                                                                         add_son((yyval.node),(yyvsp[-2].node));
                                                                         add_brother((yyvsp[-2].node),new_node("Id",(yyvsp[-1].string))); 
@@ -1620,26 +1620,26 @@ yyreduce:
     break;
 
   case 22:
-#line 128 "jac.y" /* yacc.c:1646  */
+#line 127 "jac.y" /* yacc.c:1646  */
     {(yyval.node)=NULL;}
 #line 1626 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 131 "jac.y" /* yacc.c:1646  */
+#line 130 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node) = (yyvsp[-1].node);};}
 #line 1632 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 133 "jac.y" /* yacc.c:1646  */
+#line 132 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)  = new_node("VarDecl","VarDecl");add_son((yyval.node),(yyvsp[-1].node));
                                                                       add_brother((yyvsp[-1].node), new_node("Id",(yyvsp[0].string)));};}
 #line 1639 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 135 "jac.y" /* yacc.c:1646  */
+#line 134 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyvsp[-2].node)= new_node("VarDecl","VarDecl");
                                                                         add_son((yyvsp[-2].node),new_node((yyval.node)->son->type,(yyval.node)->son->type));
                                                                         add_brother((yyvsp[-2].node)->son,new_node("Id",(yyvsp[0].string))); add_brother((yyval.node),(yyvsp[-2].node));};}
@@ -1647,25 +1647,25 @@ yyreduce:
     break;
 
   case 26:
-#line 140 "jac.y" /* yacc.c:1646  */
+#line 139 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Bool","Bool");};}
 #line 1653 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 141 "jac.y" /* yacc.c:1646  */
+#line 140 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Int","Int");};}
 #line 1659 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 142 "jac.y" /* yacc.c:1646  */
+#line 141 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Double","Double");};}
 #line 1665 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 144 "jac.y" /* yacc.c:1646  */
+#line 143 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){ 
                                                             if((yyvsp[-1].node)!=NULL){
                                                             if((cntbrothers((yyvsp[-1].node)))==1){
@@ -1685,7 +1685,7 @@ yyreduce:
     break;
 
   case 30:
-#line 159 "jac.y" /* yacc.c:1646  */
+#line 158 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("If","If");
                                                           add_son((yyval.node),(yyvsp[-4].node));
                                                           add_brother((yyvsp[-4].node),(yyvsp[-2].node));
@@ -1695,7 +1695,7 @@ yyreduce:
     break;
 
   case 31:
-#line 164 "jac.y" /* yacc.c:1646  */
+#line 163 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){
                                                           (yyval.node) = new_node("If","If");
                                                           add_son((yyval.node),(yyvsp[-2].node));
@@ -1706,7 +1706,7 @@ yyreduce:
     break;
 
   case 32:
-#line 170 "jac.y" /* yacc.c:1646  */
+#line 169 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("While","While");
                                                             add_son((yyval.node),(yyvsp[-2].node));
                                                             add_brother((yyvsp[-2].node),(yyvsp[0].node));
@@ -1719,7 +1719,7 @@ yyreduce:
     break;
 
   case 33:
-#line 178 "jac.y" /* yacc.c:1646  */
+#line 177 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("DoWhile","DoWhile");
                                                               if((yyvsp[-5].node)==NULL){
                                                                 (yyvsp[-5].node) = new_node("Block","Block");
@@ -1731,7 +1731,7 @@ yyreduce:
     break;
 
   case 34:
-#line 185 "jac.y" /* yacc.c:1646  */
+#line 184 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Print","Print");
                                                           add_son((yyval.node),(yyvsp[-2].node));
 
@@ -1740,13 +1740,13 @@ yyreduce:
     break;
 
   case 35:
-#line 189 "jac.y" /* yacc.c:1646  */
+#line 188 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=(yyvsp[-1].node);};}
 #line 1746 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 190 "jac.y" /* yacc.c:1646  */
+#line 189 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node) = new_node("Return","Return");
                                                                               if((yyvsp[-1].node)!=NULL){
                                                                                   add_son((yyval.node),(yyvsp[-1].node));
@@ -1756,73 +1756,73 @@ yyreduce:
     break;
 
   case 37:
-#line 195 "jac.y" /* yacc.c:1646  */
+#line 194 "jac.y" /* yacc.c:1646  */
     {flagTreeErros = 0;}
 #line 1762 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 197 "jac.y" /* yacc.c:1646  */
+#line 196 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=(yyvsp[0].node);};}
 #line 1768 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 198 "jac.y" /* yacc.c:1646  */
+#line 197 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=(yyvsp[0].node);};}
 #line 1774 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 199 "jac.y" /* yacc.c:1646  */
+#line 198 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=(yyvsp[0].node);};}
 #line 1780 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 200 "jac.y" /* yacc.c:1646  */
+#line 199 "jac.y" /* yacc.c:1646  */
     {(yyval.node)=NULL;}
 #line 1786 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 202 "jac.y" /* yacc.c:1646  */
+#line 201 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=(yyvsp[0].node);};}
 #line 1792 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 203 "jac.y" /* yacc.c:1646  */
+#line 202 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("StrLit",(yyvsp[0].string));};}
 #line 1798 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 205 "jac.y" /* yacc.c:1646  */
+#line 204 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=(yyvsp[-1].node);add_brother((yyvsp[-1].node),(yyvsp[0].node));};}
 #line 1804 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 206 "jac.y" /* yacc.c:1646  */
+#line 205 "jac.y" /* yacc.c:1646  */
     {(yyval.node)=NULL;}
 #line 1810 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 208 "jac.y" /* yacc.c:1646  */
+#line 207 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=(yyvsp[0].node);};}
 #line 1816 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 209 "jac.y" /* yacc.c:1646  */
+#line 208 "jac.y" /* yacc.c:1646  */
     {(yyval.node)=NULL;}
 #line 1822 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 212 "jac.y" /* yacc.c:1646  */
+#line 211 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Assign","Assign");
                                                       aux_node= new_node("Id",(yyvsp[-2].string));
                                                       add_brother(aux_node,(yyvsp[0].node));
@@ -1831,7 +1831,7 @@ yyreduce:
     break;
 
   case 49:
-#line 218 "jac.y" /* yacc.c:1646  */
+#line 217 "jac.y" /* yacc.c:1646  */
     {(yyval.node)= new_node("Call","Call");
                                                           aux_node = new_node("Id",(yyvsp[-3].string));
                                                           add_son((yyval.node),aux_node);
@@ -1842,38 +1842,38 @@ yyreduce:
     break;
 
   case 50:
-#line 224 "jac.y" /* yacc.c:1646  */
+#line 223 "jac.y" /* yacc.c:1646  */
     {;}
 #line 1848 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 226 "jac.y" /* yacc.c:1646  */
+#line 225 "jac.y" /* yacc.c:1646  */
     {(yyval.node)=(yyvsp[-1].node);
                                                   add_brother((yyvsp[-1].node),(yyvsp[0].node));}
 #line 1855 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 228 "jac.y" /* yacc.c:1646  */
+#line 227 "jac.y" /* yacc.c:1646  */
     {(yyval.node)=NULL;}
 #line 1861 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 230 "jac.y" /* yacc.c:1646  */
+#line 229 "jac.y" /* yacc.c:1646  */
     {(yyval.node)=(yyvsp[-1].node);add_brother((yyvsp[-1].node),(yyvsp[0].node));}
 #line 1867 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 231 "jac.y" /* yacc.c:1646  */
+#line 230 "jac.y" /* yacc.c:1646  */
     {(yyval.node)=NULL;}
 #line 1873 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 235 "jac.y" /* yacc.c:1646  */
+#line 234 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)= new_node("ParseArgs","ParseArgs");
                                                               add_son((yyval.node),aux2_node=new_node("Id",(yyvsp[-4].string)));
                                                               add_brother(aux2_node,(yyvsp[-2].node));
@@ -1882,37 +1882,37 @@ yyreduce:
     break;
 
   case 56:
-#line 239 "jac.y" /* yacc.c:1646  */
+#line 238 "jac.y" /* yacc.c:1646  */
     {flagTreeErros = 0;}
 #line 1888 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 242 "jac.y" /* yacc.c:1646  */
+#line 241 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=(yyvsp[0].node);};}
 #line 1894 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 243 "jac.y" /* yacc.c:1646  */
+#line 242 "jac.y" /* yacc.c:1646  */
     {(yyval.node)=(yyvsp[0].node);}
 #line 1900 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 245 "jac.y" /* yacc.c:1646  */
+#line 244 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=(yyvsp[0].node);};}
 #line 1906 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 246 "jac.y" /* yacc.c:1646  */
+#line 245 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=(yyvsp[0].node);};}
 #line 1912 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 247 "jac.y" /* yacc.c:1646  */
+#line 246 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("And","And");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));};}
@@ -1920,7 +1920,7 @@ yyreduce:
     break;
 
   case 62:
-#line 250 "jac.y" /* yacc.c:1646  */
+#line 249 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){ (yyval.node)=new_node("Or","Or");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));
@@ -1929,7 +1929,7 @@ yyreduce:
     break;
 
   case 63:
-#line 254 "jac.y" /* yacc.c:1646  */
+#line 253 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node) =new_node("Eq","Eq");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));
@@ -1938,7 +1938,7 @@ yyreduce:
     break;
 
   case 64:
-#line 258 "jac.y" /* yacc.c:1646  */
+#line 257 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Geq","Geq");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));};}
@@ -1946,7 +1946,7 @@ yyreduce:
     break;
 
   case 65:
-#line 261 "jac.y" /* yacc.c:1646  */
+#line 260 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Gt","Gt");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));};}
@@ -1954,7 +1954,7 @@ yyreduce:
     break;
 
   case 66:
-#line 264 "jac.y" /* yacc.c:1646  */
+#line 263 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Leq","Leq");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));
@@ -1963,7 +1963,7 @@ yyreduce:
     break;
 
   case 67:
-#line 268 "jac.y" /* yacc.c:1646  */
+#line 267 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Lt","Lt");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));};}
@@ -1971,7 +1971,7 @@ yyreduce:
     break;
 
   case 68:
-#line 271 "jac.y" /* yacc.c:1646  */
+#line 270 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Neq","Neq");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));};}
@@ -1979,7 +1979,7 @@ yyreduce:
     break;
 
   case 69:
-#line 274 "jac.y" /* yacc.c:1646  */
+#line 273 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Add","Add");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));};}
@@ -1987,7 +1987,7 @@ yyreduce:
     break;
 
   case 70:
-#line 277 "jac.y" /* yacc.c:1646  */
+#line 276 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Sub","Sub");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));};}
@@ -1995,7 +1995,7 @@ yyreduce:
     break;
 
   case 71:
-#line 280 "jac.y" /* yacc.c:1646  */
+#line 279 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Mul","Mul");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));};}
@@ -2003,7 +2003,7 @@ yyreduce:
     break;
 
   case 72:
-#line 283 "jac.y" /* yacc.c:1646  */
+#line 282 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Div","Div");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));
@@ -2012,7 +2012,7 @@ yyreduce:
     break;
 
   case 73:
-#line 287 "jac.y" /* yacc.c:1646  */
+#line 286 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Mod","Mod");
                                                                   add_son((yyval.node),(yyvsp[-2].node));
                                                                   add_brother((yyvsp[-2].node),(yyvsp[0].node));
@@ -2021,7 +2021,7 @@ yyreduce:
     break;
 
   case 74:
-#line 291 "jac.y" /* yacc.c:1646  */
+#line 290 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Plus","Plus");
                                                                   add_son((yyval.node),(yyvsp[0].node));
                                                                   };}
@@ -2029,7 +2029,7 @@ yyreduce:
     break;
 
   case 75:
-#line 294 "jac.y" /* yacc.c:1646  */
+#line 293 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Minus","Minus");
                                                                   add_son((yyval.node),(yyvsp[0].node));
                                                                   };}
@@ -2037,7 +2037,7 @@ yyreduce:
     break;
 
   case 76:
-#line 297 "jac.y" /* yacc.c:1646  */
+#line 296 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Not","Not");
                                                                   add_son((yyval.node),(yyvsp[0].node));
                                                                   };}
@@ -2045,7 +2045,7 @@ yyreduce:
     break;
 
   case 77:
-#line 300 "jac.y" /* yacc.c:1646  */
+#line 299 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Length","Length");
                                                                   add_son((yyval.node),new_node("Id",(yyvsp[-1].string)));
                                                                   };}
@@ -2053,38 +2053,38 @@ yyreduce:
     break;
 
   case 78:
-#line 303 "jac.y" /* yacc.c:1646  */
+#line 302 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("Id",(yyvsp[0].string));
                                                                       };}
 #line 2060 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 305 "jac.y" /* yacc.c:1646  */
+#line 304 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=(yyvsp[-1].node);};}
 #line 2066 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 306 "jac.y" /* yacc.c:1646  */
+#line 305 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("BoolLit",(yyvsp[0].string));};}
 #line 2072 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 307 "jac.y" /* yacc.c:1646  */
+#line 306 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("DecLit", (yyvsp[0].string));};}
 #line 2078 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 308 "jac.y" /* yacc.c:1646  */
+#line 307 "jac.y" /* yacc.c:1646  */
     {if(flagTreeErros ==1){(yyval.node)=new_node("RealLit",(yyvsp[0].string));};}
 #line 2084 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 309 "jac.y" /* yacc.c:1646  */
+#line 308 "jac.y" /* yacc.c:1646  */
     {flagTreeErros = 0;}
 #line 2090 "y.tab.c" /* yacc.c:1646  */
     break;
@@ -2318,7 +2318,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 312 "jac.y" /* yacc.c:1906  */
+#line 311 "jac.y" /* yacc.c:1906  */
 
 
 void yyerror (const char *s) {

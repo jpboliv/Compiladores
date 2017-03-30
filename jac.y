@@ -39,9 +39,8 @@
 %left AND
 %left EQ NEQ
 %left LT LEQ GEQ GT
-
-%left STAR DIV MOD
 %left PLUS MINUS
+%left STAR DIV MOD
 %right NOT
 %left OBRACE CBRACE CCURV OCURV OSQUARE CSQUARE
 
