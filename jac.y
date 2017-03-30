@@ -3,9 +3,9 @@
   #include <string.h>
   #include <stdarg.h>
   #include "functions.h"
-  
 
-  
+
+
   void yyerror(const char *s);
   int yylex();
   extern int flag;
@@ -30,7 +30,7 @@
 }
 
 %token BOOL CLASS DO DOTLENGTH DOUBLE ELSE IF INT PARSEINT PRINT PUBLIC RETURN STATIC STRING VOID WHILE OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE AND OR LT GT EQ NEQ GEQ LEQ
-%token PLUS MINUS STAR DIV MOD NOT ASSIGN SEMI COMMA 
+%token PLUS MINUS STAR DIV MOD NOT ASSIGN SEMI COMMA
 %token <string>  REALLIT DECLIT BOOLLIT ID STRLIT RESERVED
 
 %left COMMA
@@ -57,7 +57,7 @@ Program: CLASS ID OBRACE auxProgram CBRACE {if(flagTreeErros ==1){($$)=root=new_
     aux_node=new_node("Id",$2);
     add_brother(aux_node,$4);
     add_son($$,aux_node);
-    
+
 };}
 ;
 auxProgram: %empty      {if(flagTreeErros ==1){$$ = NULL;};}
@@ -83,8 +83,8 @@ MethodDecl:  PUBLIC STATIC MethodHeader MethodBody {if(flagTreeErros ==1){$$ = n
 ;
 
 MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){$$= new_node("MethodHeader","MethodHeader");
-                                                                            add_son($$,$1); 
-                                                                          add_brother($1,new_node("Id",$2));  
+                                                                            add_son($$,$1);
+                                                                          add_brother($1,new_node("Id",$2));
                                                                           add_brother($1,$4);};}
   | VOID ID OCURV FormalParams CCURV {if(flagTreeErros ==1)               {$$= new_node("MethodHeader","MethodHeader");
                                                                             add_son($$,aux_node=new_node("Void","Void"));
@@ -95,7 +95,7 @@ MethodHeader:  Type ID OCURV FormalParams CCURV  {if(flagTreeErros ==1){$$= new_
 MethodBody:OBRACE AuxMethodBody CBRACE {if(flagTreeErros ==1){$$= new_node("MethodBody","MethodBody");add_son($$,$2);};}
 ;
 AuxMethodBody:   %empty                               {if(flagTreeErros ==1){$$=NULL;};}
-  |  VarDecl    AuxMethodBody                           {if(flagTreeErros ==1){  
+  |  VarDecl    AuxMethodBody                           {if(flagTreeErros ==1){
                                                                                   add_brother($1,$2);
                                                                                   $$=$1;
                                                                                 };}
@@ -106,9 +106,9 @@ AuxMethodBody:   %empty                               {if(flagTreeErros ==1){$$=
 
 FormalParams:  Type ID auxFormalParams                  {if(flagTreeErros ==1){$$= new_node("MethodParams","MethodParams");
                                                                                   aux2_node=new_node("ParamDecl","ParamDecl");
-                                                                                  add_son(aux2_node,$1); 
-                                                                                  add_brother($1,new_node("Id",$2)); 
-                                                                                  add_brother(aux2_node,$3); 
+                                                                                  add_son(aux2_node,$1);
+                                                                                  add_brother($1,new_node("Id",$2));
+                                                                                  add_brother(aux2_node,$3);
                                                                                   add_son($$,aux2_node);
                                                                                   };}
   | STRING OSQUARE CSQUARE ID                           {if(flagTreeErros ==1){ $$= new_node("MethodParams","MethodParams");
@@ -122,7 +122,7 @@ FormalParams:  Type ID auxFormalParams                  {if(flagTreeErros ==1){$
 ;
 auxFormalParams: COMMA Type ID auxFormalParams {if(flagTreeErros ==1){$$ = new_node("ParamDecl","ParamDecl");
                                                                         add_son($$,$2);
-                                                                        add_brother($2,new_node("Id",$3)); 
+                                                                        add_brother($2,new_node("Id",$3));
                                                                         add_brother($$,$4);};}
   | %empty                                                            {$$=NULL;}
 ;
@@ -140,27 +140,34 @@ Type: BOOL  {if(flagTreeErros ==1){$$=new_node("Bool","Bool");};}
   | INT     {if(flagTreeErros ==1){$$=new_node("Int","Int");};}
   | DOUBLE  {if(flagTreeErros ==1){$$=new_node("Double","Double");};}
 ;
-Statement: OBRACE auxStatement4 CBRACE                  {if(flagTreeErros ==1){ 
+Statement: OBRACE auxStatement4 CBRACE                  {if(flagTreeErros ==1){
                                                             if($2!=NULL){
-                                                            if((cntbrothers($2))==1){
+                                                              if((cntbrothers($2))==1){
                                                                 $$ = $2;
-                                                            }
-                                                            else{
+                                                              }
+                                                              else{
                                                                 $$ = new_node("Block","Block");
                                                                 add_son($$,$2);}
-                                                            }
+                                                              }
                                                             else{
                                                                 $$=new_node("Block","Block");
                                                             }
-                                                          
-                                                          
                                                             };}
   | IF OCURV Expr CCURV Statement ELSE Statement        {if(flagTreeErros ==1){$$=new_node("If","If");
+                                                          if($7==NULL){
+                                                            $7 = new_node("Block","Block");
+                                                          }
+                                                          if($5==NULL){
+                                                            $5 = new_node("Block","Block");
+                                                          }
                                                           add_son($$,$3);
                                                           add_brother($3,$5);
                                                           add_brother($3,$7);
                                                           };}
   | IF OCURV Expr CCURV Statement %prec ELSE            {if(flagTreeErros ==1){
+    if($5==NULL){
+      $5 = new_node("Block","Block");
+    }
                                                           $$ = new_node("If","If");
                                                           add_son($$,$3);
                                                           add_brother ($3,$5);
@@ -287,13 +294,13 @@ Expr: Assignment                    {if(flagTreeErros ==1){$$=$1;};}
                                                                   add_son($$,$1);
                                                                   add_brother($1,$3);
                                                                   };}
-  | PLUS  auxExpr                           {if(flagTreeErros ==1){$$=new_node("Plus","Plus");
+  | PLUS  auxExpr       %prec NOT             {if(flagTreeErros ==1){$$=new_node("Plus","Plus");
                                                                   add_son($$,$2);
                                                                   };}
-  | MINUS auxExpr                           {if(flagTreeErros ==1){$$=new_node("Minus","Minus");
+  | MINUS auxExpr       %prec NOT          {if(flagTreeErros ==1){$$=new_node("Minus","Minus");
                                                                   add_son($$,$2);
                                                                   };}
-  | NOT  auxExpr                            {if(flagTreeErros ==1){$$=new_node("Not","Not");
+  | NOT  auxExpr        %prec NOT             {if(flagTreeErros ==1){$$=new_node("Not","Not");
                                                                   add_son($$,$2);
                                                                   };}
   | ID DOTLENGTH                            {if(flagTreeErros ==1){$$=new_node("Length","Length");
@@ -326,7 +333,7 @@ int main(int argv, char **argc){
       flag=2;
       flagTreeErros = 1;
       yyparse();
-      
+
       if(flagTreeErros == 1 && root!=NULL ){
         print_tree(root,0);
       }
@@ -338,6 +345,3 @@ int main(int argv, char **argc){
   }
 return 0;
 }
-
-
-

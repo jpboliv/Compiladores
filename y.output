@@ -1334,10 +1334,6 @@ State 100
    72        | auxExpr . MOD auxExpr
    73        | PLUS auxExpr .
 
-    STAR  shift, and go to state 115
-    DIV   shift, and go to state 116
-    MOD   shift, and go to state 117
-
     $default  reduce using rule 73 (auxExpr)
 
 
@@ -1357,10 +1353,6 @@ State 101
    71        | auxExpr . DIV auxExpr
    72        | auxExpr . MOD auxExpr
    74        | MINUS auxExpr .
-
-    STAR  shift, and go to state 115
-    DIV   shift, and go to state 116
-    MOD   shift, and go to state 117
 
     $default  reduce using rule 74 (auxExpr)
 
