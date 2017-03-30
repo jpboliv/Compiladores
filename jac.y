@@ -39,8 +39,9 @@
 %left AND
 %left EQ NEQ
 %left LT LEQ GEQ GT
-%left PLUS MINUS
+
 %left STAR DIV MOD
+%left PLUS MINUS
 %right NOT
 %left OBRACE CBRACE CCURV OCURV OSQUARE CSQUARE
 
@@ -175,6 +176,9 @@ Statement: OBRACE auxStatement4 CBRACE                  {if(flagTreeErros ==1){
 
                                                         };}
   | DO Statement WHILE OCURV Expr CCURV SEMI            {if(flagTreeErros ==1){$$=new_node("DoWhile","DoWhile");
+                                                              if($2==NULL){
+                                                                $2 = new_node("Block","Block");
+                                                              }
                                                             add_son($$,$2);
                                                             add_brother($2,$5);
                                                           };}
