@@ -345,6 +345,10 @@ int main(int argv, char **argc){
         print_tree(root,0);
       }
     }
+    else{
+    	flag=2;
+    	yyparse();
+    }
   }
   else{
     flag=2;
