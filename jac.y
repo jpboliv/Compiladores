@@ -345,6 +345,7 @@ int main(int argv, char **argc){
         print_tree(root,0);
       }
     }
+    else if(strcmp(argc[1], "-s")==0)
     else{
     	flag=2;
     	yyparse();
