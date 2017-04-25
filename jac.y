@@ -22,6 +22,8 @@
   node* aux2_node;
   node* present_node;
   node* value_node;
+
+
 %}
 
 %union{
@@ -336,16 +338,26 @@ int main(int argv, char **argc){
       }
       yylex();
     }
-    else if(strcmp(argc[1], "-t")==0){
+    else if(strcmp(argc[1], "-t")==0 || strcmp(argc[1], "-2")==0){
       flag=2;
       flagTreeErros = 1;
       yyparse();
 
-      if(flagTreeErros == 1 && root!=NULL ){
+      if(flagTreeErros == 1 && root!=NULL && strcmp(argc[1], "-t")==0 ){
         print_tree(root,0);
       }
     }
-    else if(strcmp(argc[1], "-s")==0)
+    else if(strcmp(argc[1], "-s")==0){
+      flag= 2;
+      flagTreeErros = 1;
+      yyparse();
+      if(flagTreeErros == 1 && root!=NULL ){
+        analiseSemantica(root);
+        printTable();
+        printf("\n");
+        //print_tree(root,0);
+      }
+    }
     else{
     	flag=2;
     	yyparse();
@@ -353,7 +365,11 @@ int main(int argv, char **argc){
   }
   else{
     flag=2;
+    flagTreeErros = 1;
     yyparse();
+    if(flagTreeErros == 1 && root!=NULL ){
+      analiseSemantica(root);
+    }
   }
 return 0;
 }

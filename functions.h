@@ -2,6 +2,8 @@
 #define _functions_h
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
  //arvore
  typedef struct node {
   char* type;
@@ -12,16 +14,17 @@
   //faltam cenas COMEBACK HERE
 } node;
 
-typedef symbol{
+typedef struct symbol{
 	char* name;
-	char* paramType;
+	char* param;
 	char* type;
 	char* flag;
 	struct symbol* brother;
-}
+}symbol;
 
 typedef struct table{
 	char* name;
+	char* type;
 	int activated;
 	struct symbol* child;
 	struct table* brother;
@@ -36,6 +39,15 @@ int cntbrothers(node* root);
 
 //tabela de simbolos
 void printTable();
-symbol* addSymbol(table* aux, char* _name, char* _type, char* _param, int _line, int _col);
+symbol* addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag, int _line, int _col);
+table* addTable(table* tab, char* _name, char* _type, int _activated);
 void initTable();
+void analiseSemantica(node* aux);
+void addFieldDecl(table* tab, node* aux);
+void addMethodDecl(table* tab, node* aux);
+char* lowerCase(char* str);
+//tabela simbolos
+  table* semanticTable;
+
+
 #endif
