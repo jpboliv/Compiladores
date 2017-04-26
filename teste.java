@@ -1,14 +1,24 @@
 class gcd2 {
 public static int gcd;
-    public static int gcd(int a, int b) {
+    public static void main() {
+        int a, b;
+        if (args.length >= 2) {
+            a = Integer.parseInt(args[0]);
+            b = Integer.parseInt(args[1]);
+            gcd = gcd(a, b);
+            System.out.println(gcd);
+        } else
+            System.out.println("Error: two parameters required.");
+    }
+    public static int gcd(int a,int b, boolean p) {
         if (a == 0)
             return b;
         else {
-            while (b > 0)
-            if (a > b)
-                a = a-b;
-            else
-                b = b-a;
+                while (b > 0)
+                    if (a > b)
+                        a = a-b;
+                    else
+                        b = b-a;
                 return a;
         }
     }

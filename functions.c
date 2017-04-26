@@ -67,7 +67,6 @@ node* append_brother(node* first){
 void print_tree(node* aux, int tabs){
 	int i;
 
-
 	node *son;
 
 	for(i = 0; i < tabs; i++){
@@ -119,20 +118,20 @@ symbol* addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag
 		while(hold){
 			//printf("--%s\n", aux->name);
 			//printf("\t(%s) - (%s)\n", hold->name, _name);
-			/*if(strcmp(hold->name, _name) == 0){
+			if(strcmp(hold->name, _name) == 0){
 				//printf("+++%s\n", aux->name);
 				if(strcmp(aux->type, "Class") == 0){
 					//printf("WELELELE\n");
 					if(strcmp(hold->type, _type) != 0){
-						printf("Line %d, col %d: Conflicting types (got %s, expected %s)\n", _line, _col, _type, hold->type);
+						//printf("Line %d, col %d: Conflicting types (got %s, expected %s)\n", _line, _col, _type, hold->type);
 					}
-					return NULL;
+					//return NULL;
 				}
 				else{
-					printf("Line %d, col %d: Symbol %s already defined\n", _line, _col, _name);
+					//printf("Line %d, col %d: Symbol %s already defined\n", _line, _col, _name);
 					return NULL;
 				}
-			}*/
+			}
 			if(hold->brother)
 				hold = hold->brother;
 			else
@@ -210,17 +209,15 @@ void addFieldDecl(table* tab, node* aux){
 	for(son = aux; son != NULL; son = son->brother){
 		if(strcmp("FieldDecl", son->type) == 0){
 			char aux[50];
-
 			if(strcmp("Bool",son->son->value)==0){
-			sprintf(aux,"%s%s",lowerCase(son->son->value),"ean");
-			addSymbol(tab,son->son->brother->value,aux ,NULL,NULL,0,0);}
+				sprintf(aux,"%s%s",lowerCase(son->son->value),"ean");
+				addSymbol(tab,son->son->brother->value,aux ,NULL,NULL,0,0);
+			}
 			else{
 				addSymbol(tab,son->son->brother->value,lowerCase(son->son->value) ,NULL,NULL,0,0);
 			}
 		}
 	}
-
-	//				symbol* addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag, int _line, int _col);
 }
 
 void addMethodDecl(table* tab, node* aux){
@@ -230,12 +227,11 @@ void addMethodDecl(table* tab, node* aux){
 	node* p3;
 	node* p4;
 	char _type[50]; 
-	char _name[50];
 	char arr[20000] = {0};
 	p=aux->son;
 	p2=p->son; 
-	strcpy(_type,p2->value); //tipo de retorno
-	strcpy(_name,p2->brother->value); // nome da funçao
+	p3 = p2->brother->brother->son;
+	
 
 	i = 0;
 	for( p4 = p2->brother->brother->son ; p4 != NULL;	p4 = p4->brother){
@@ -245,23 +241,98 @@ void addMethodDecl(table* tab, node* aux){
 		}
 	}
 	arr[i] = '\0';
-	char* tmp = (char*)malloc(50+(10+strlen(arr))*sizeof(char));
 
-	//get parametros da funçao
-	for(p3 = p2->brother->brother->son; p3 != NULL; p3 = p3->brother){
-		char* tmp2 = (char*)malloc(strlen(p3->son->value)+strlen(tmp));
-		sprintf(tmp2, "%s%s",p3->son->value , arr);
-		strcat(tmp,tmp2);
+	char* tmp = (char*)malloc(50+(strlen("boolean")*strlen(arr))*sizeof(char));
+	char* _name = (char*)malloc(50+(strlen(tmp)+50)*sizeof(char));
+	strcpy(_type,p2->value); //tipo de retorno
+	//strcpy(_name,p2->brother->value); 
+	sprintf(_name,"%s",p2->brother->value);// nome da funçao
+	
+	
+	if(p3!=NULL){
+		if(strcmp(p3->son->value,"StringArray")==0){
+
+			sprintf(tmp,"(%s[]","String");
+		}
+		else{
+			if(p3!=NULL){
+				char* aux2 = (char*)malloc(strlen("boolean")*sizeof(char));
+				if(strcmp("Bool",p3->son->value)==0){
+						sprintf(aux2,"%s%s",lowerCase(p3->son->value),"ean");
+						sprintf(tmp,"(%s",aux2);
+						free(aux2);
+				}
+				else{
+					sprintf(tmp, "(%s",lowerCase(p3->son->value));
+				}
+			}
+			//get parametros da funçao
+			for(p3=p3->brother; p3 != NULL; p3 = p3->brother){
+				char* tmp2 = (char*)malloc(strlen(p3->son->value)+strlen(tmp));
+				
+				if(strcmp("Bool",p3->son->value)==0){
+					char* aux3 = (char*)malloc(strlen("boolean")*sizeof(char));
+					sprintf(aux3,"%s%s",lowerCase(p3->son->value),"ean");
+					sprintf(tmp2,",%s",aux3);
+					free(aux3);
+				}
+				else{
+					sprintf(tmp2, ",%s", lowerCase(p3->son->value));
+				}
+				strcat(tmp,tmp2);
+				free(tmp2);
+			}
+		}
+		sprintf(tmp,"%s)",tmp);
 	}
 
-	addSymbol(tab, _name, _type, tmp, NULL,0,0);
-	sprintf(tmp,"%s(%s)",_name,tmp);
-	//strcat(_name,tmp2);
-	addTable(tab, tmp, _type, 1);
-
 	
+	addSymbol(tab, _name,lowerCase(_type), tmp, NULL,0,0);
+	sprintf(_name,"%s%s",_name,tmp);
+	//strcat(_name,tmp2);
+	table* actTable = addTable(tab, _name, _type, 1);
+	free(tmp);
+	free(_name);
+	//adicionar os parametros como simbolos da tabela
+	p3 = p2->brother->brother->son;
+	if(p3!=NULL){
+		if(strcmp(p3->son->value,"StringArray")==0){
 
+				sprintf(tmp,"String[]");
+				addSymbol(actTable, p3->son->brother->value, tmp, NULL, "param",0,0);
+			}
+			else{
+				if(p3!=NULL){
+					char* aux2 = (char*)malloc(strlen("boolean")*sizeof(char));
+					if(strcmp("Bool",p3->son->value)==0){
+							sprintf(aux2,"%s%s",lowerCase(p3->son->value),"ean");
+							
+							addSymbol(actTable, p3->son->brother->value, aux2, NULL, "param",0,0);
+							free(aux2);
+					}
+					else{
+						sprintf(aux2, "%s",lowerCase(p3->son->value));
+						addSymbol(actTable, p3->son->brother->value, aux2, NULL, "param",0,0);
+						free(aux2);
+					}
+				}
+				for(p3=p3->brother; p3 != NULL; p3 = p3->brother){
+					char* aux3 = (char*)malloc(strlen("boolean")*sizeof(char));
+					if(strcmp("Bool",p3->son->value)==0){
+							sprintf(aux3,"%s%s",lowerCase(p3->son->value),"ean");
+							
+							addSymbol(actTable, p3->son->brother->value, aux3, NULL, "param",0,0);
+							free(aux3);
+					}
+					else{
+						sprintf(aux3, "%s",lowerCase(p3->son->value));
+						addSymbol(actTable, p3->son->brother->value, aux3, NULL, "param",0,0);
+						free(aux3);
+					}
+				}
 
+		}
+	}
 	// addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag, int _line, int _col)
 }
 

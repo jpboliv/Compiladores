@@ -2366,7 +2366,7 @@ int main(int argv, char **argc){
         analiseSemantica(root);
         printTable();
         printf("\n");
-        //print_tree(root,0);
+        print_tree(root,0);
       }
     }
     else{
