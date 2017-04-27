@@ -120,7 +120,7 @@ symbol* addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag
 			//printf("\t(%s) - (%s)\n", hold->name, _name);
 			if(strcmp(hold->name, _name) == 0){
 				//printf("+++%s\n", aux->name);
-				if(strcmp(aux->type, "Class") == 0){
+				if(strcmp(aux->name, "Global") == 0){
 					//printf("WELELELE\n");
 					if(strcmp(hold->type, _type) != 0){
 						//printf("Line %d, col %d: Conflicting types (got %s, expected %s)\n", _line, _col, _type, hold->type);
@@ -129,7 +129,7 @@ symbol* addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag
 				}
 				else{
 					//printf("Line %d, col %d: Symbol %s already defined\n", _line, _col, _name);
-					return NULL;
+					//return NULL;
 				}
 			}
 			if(hold->brother)
@@ -172,12 +172,10 @@ table* addTable(table* tab, char* _name, char* _type, int _activated){
 	for(; tab->brother; tab = tab->brother){
 		if(strcmp(tab->name, _name) == 0){
 			tab->activated = 1;
-			return tab;
 		}
 	}
 	if(strcmp(tab->name, _name) == 0){
 		tab->activated = 1;
-		return tab;
 	}
 	//printf("%s\n", tab->name);
 	table* ret = (table*)malloc(sizeof(table));
@@ -189,7 +187,14 @@ table* addTable(table* tab, char* _name, char* _type, int _activated){
 	ret->child = NULL;
 	ret->brother = NULL;
 	tab->brother = ret;
-	addSymbol(ret, "return", lowerCase(_type), NULL,NULL, -1, -1);
+	if(strcmp(_type,"Bool")==0){
+		addSymbol(ret, "return", "boolean", NULL,NULL, -1, -1);
+	}
+	else{
+		addSymbol(ret, "return", lowerCase(_type), NULL,NULL, -1, -1);
+	}
+	
+	//symbol* addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag, int _line, int _col)
 	return ret;
 }
 
@@ -205,19 +210,14 @@ void initTable(char* _name){
 }
 
 void addFieldDecl(table* tab, node* aux){
-	node* son;
-	for(son = aux; son != NULL; son = son->brother){
-		if(strcmp("FieldDecl", son->type) == 0){
-			char aux[50];
-			if(strcmp("Bool",son->son->value)==0){
-				sprintf(aux,"%s%s",lowerCase(son->son->value),"ean");
-				addSymbol(tab,son->son->brother->value,aux ,NULL,NULL,0,0);
+			char aux2[50];
+			if(strcmp("Bool",aux->son->value)==0){
+				sprintf(aux2,"%s%s",lowerCase(aux->son->value),"ean");
+				addSymbol(tab,aux->son->brother->value,aux2 ,NULL,NULL,0,0);
 			}
 			else{
-				addSymbol(tab,son->son->brother->value,lowerCase(son->son->value) ,NULL,NULL,0,0);
+				addSymbol(tab,aux->son->brother->value,lowerCase(aux->son->value) ,NULL,NULL,0,0);
 			}
-		}
-	}
 }
 
 void addMethodDecl(table* tab, node* aux){
@@ -228,13 +228,15 @@ void addMethodDecl(table* tab, node* aux){
 	node* p4;
 	char _type[50]; 
 	char arr[20000] = {0};
-	p=aux->son;
-	p2=p->son; 
-	p3 = p2->brother->brother->son;
+	p=aux->son; //method header
+	p2=p->son; //type da funçao
+	p3 = p2->brother->brother->son; // params decl
 	
 
+	//--------------------------------------BEGIN-METHODHEADER---------------------------//
+	//--------------------------INICIO adicionar as funçoes como simbolos da TABelas da CLASS--///////////////////////////////////////
 	i = 0;
-	for( p4 = p2->brother->brother->son ; p4 != NULL;	p4 = p4->brother){
+	for( p4 = p2->brother->brother->son ; p4 != NULL;	p4 = p4->brother){ //saber onumero de params decle!
 		if(strcmp("ParamDecl", p4->value) == 0){
 			arr[i] = ',';
 			i++;
@@ -285,17 +287,28 @@ void addMethodDecl(table* tab, node* aux){
 		}
 		sprintf(tmp,"%s)",tmp);
 	}
+	else{
+		sprintf(tmp,"()");
+	}
 
+	if(strcmp("Bool",_type)==0){
+		addSymbol(tab, _name,"boolean", tmp, NULL,0,0);
+	}
+	else{
+		addSymbol(tab, _name,lowerCase(_type), tmp, NULL,0,0);
+	}
 	
-	addSymbol(tab, _name,lowerCase(_type), tmp, NULL,0,0);
 	sprintf(_name,"%s%s",_name,tmp);
 	//strcat(_name,tmp2);
-	table* actTable = addTable(tab, _name, _type, 1);
+	table* actTable = addTable(tab, _name, _type, 1); //cria uma nova tabela method
 	free(tmp);
 	free(_name);
-	//adicionar os parametros como simbolos da tabela
+	//--------------------------fim adicionar as funçoes como simbolos da TABelas da CLASS--///////////////////////////////////////
+
+	//--------------------------INICIO adicionar os parametros como simbolos daS TABelas METHOD--///////////////////////////////////////
 	p3 = p2->brother->brother->son;
 	if(p3!=NULL){
+
 		if(strcmp(p3->son->value,"StringArray")==0){
 
 				sprintf(tmp,"String[]");
@@ -322,6 +335,7 @@ void addMethodDecl(table* tab, node* aux){
 							sprintf(aux3,"%s%s",lowerCase(p3->son->value),"ean");
 							
 							addSymbol(actTable, p3->son->brother->value, aux3, NULL, "param",0,0);
+							
 							free(aux3);
 					}
 					else{
@@ -333,6 +347,32 @@ void addMethodDecl(table* tab, node* aux){
 
 		}
 	}
+	//--------------------------FIM --- adicionar os parametros como simbolos daS TABelas METHOD--------------------////
+
+	//--------------------------------------FIM-METHODHEADER---------------------------//
+
+	//--------------------------------------INICIO-METHODBODY---------------------------//
+
+	node* v_decl = aux->son->brother->son;
+	if(v_decl!=NULL){
+		for(;v_decl != NULL; v_decl = v_decl->brother){
+			if(strcmp(v_decl->value,"VarDecl")==0){
+				char aux2[50];
+				if(strcmp("Bool",v_decl->son->value)==0){
+					sprintf(aux2,"%s%s",lowerCase(v_decl->son->value),"ean");
+					addSymbol(actTable,v_decl->son->brother->value,aux2 ,NULL,NULL,0,0);
+				}
+				else{
+					addSymbol(actTable,v_decl->son->brother->value,lowerCase(v_decl->son->value) ,NULL,NULL,0,0);
+				}
+			}
+		}
+	}
+
+
+
+	//--------------------------------------FIM-METHODBODY---------------------------//
+	//
 	// addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag, int _line, int _col)
 }
 
