@@ -17,6 +17,7 @@ node* new_node(char* type, char* value) {
 	n->type_print = (char*)malloc(sizeof(char)*10);
 	strcpy(n->type,type);
 	strcpy(n->value,value);
+	n->type_print=NULL;
 	n->son = NULL;
 	n->brother = NULL;
 
@@ -73,12 +74,15 @@ void print_tree(node* aux, int tabs){
 		printf(".");
 	}
 	if (strcmp(aux->value, aux->type) != 0){
-		printf("%s(%s)\n", aux->type, aux->value);
+		printf("%s(%s)", aux->type, aux->value);
 	}
 	else{
-		printf("%s\n", aux->value);
+		printf("%s", aux->value);
 	}
-
+	if(aux->type_print!=NULL)
+		printf(" - %s\n", aux->type_print);
+	else
+		printf("\n");
 	for(son = aux->son; son != NULL; son = son->brother){
 		print_tree(son, tabs + 2);
 	}
@@ -368,8 +372,8 @@ void addMethodDecl(table* tab, node* aux){
 			}
 		}
 	}
-
-
+	aux=aux->son->brother;
+		table_anotation(aux, actTable);
 
 	//--------------------------------------FIM-METHODBODY---------------------------//
 	//
@@ -377,6 +381,94 @@ void addMethodDecl(table* tab, node* aux){
 }
 
 
+
+void table_anotation(node *aux,table* tab){
+	node* p3;
+	node* p4;
+	char arr[20000] = {0};
+	int i;
+	if(!aux)
+		return;
+	node* hold;
+	for(hold = aux->son; hold; hold = hold->brother){
+		if(strcmp("VarDecl",hold->type)==0){
+			continue;
+		}
+		else{
+			table_anotation(hold, tab);
+		}
+	}
+	char* string;
+	char* undef = "undef";
+	if(aux->type){
+		if(strcmp("Id", aux->type) == 0){
+			string = myCat(NULL, getIdType(aux->value, tab));
+			if(string)
+				aux->type_print = myCat(NULL, getIdType(aux->value, tab));
+			else
+				aux->type_print = undef; // ERROR
+		}
+		else if(strcmp("DecLit", aux->type) == 0){
+			aux->type_print = myCat(NULL, "int");
+		}
+		else if(strcmp("Realit", aux->type) == 0){
+			aux->type_print = myCat(NULL, "int");
+		}
+		else if(strcmp("StrLit", aux->type) == 0){
+			string = myCat(NULL, "String");
+			aux->type_print = myCat(NULL,string);
+		}
+		else if(strcmp("And", aux->value) == 0 || strcmp("Or", aux->value) == 0 || strcmp("Eq", aux->value) == 0 
+			|| strcmp("Geq", aux->value) == 0 || strcmp("Gt", aux->value) == 0  || strcmp("Leq", aux->value) == 0 
+			|| strcmp("Lt", aux->value) == 0 || strcmp("Neq", aux->value) == 0 || strcmp("Not", aux->value) == 0){
+			string = myCat(NULL, "boolean");
+			aux->type_print = myCat(NULL,string);
+		}
+		else if (strcmp("Length", aux->value)==0 || strcmp("ParseArgs",aux->value)==0){
+			string = myCat(NULL, "int");
+			aux->type_print = myCat(NULL,string);
+		}
+		else if(strcmp("Assign",aux->value)==0){
+			aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
+		}
+		else if(strcmp("Add",aux->value)==0 || strcmp("Sub",aux->value)==0 || strcmp("Div",aux->value)==0 || strcmp("Mul",aux->value)==0 ){
+			aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
+		}
+		else if(strcmp("Call",aux->value)==0){
+			string = myCat(NULL, getIdType(aux->son->value, tab));
+			if(string)
+				aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
+			//get parametros da funçao
+			i = 0;
+			for( p4 = aux->son->brother->brother ; p4 != NULL;	p4 = p4->brother){ //saber onumero de params decle!
+					arr[i] = ',';
+					i++;
+			}
+			arr[i] = '\0';
+
+			char* tmp = (char*)malloc(50+(strlen("boolean")*strlen(arr))*sizeof(char));
+
+			char* aux2 = (char*)malloc(4*sizeof(char));
+			if(aux->son->brother!=NULL){
+
+				sprintf(tmp, "(%s",getIdType(aux->son->brother->value, tab));
+				
+				if(aux->son->brother->brother!=NULL){
+					for(p3=aux->son->brother->brother; p3 != NULL; p3 = p3->brother){
+					sprintf(tmp, "%s,%s",tmp,getIdType(p3->value, tab));
+					}
+				}
+				
+				sprintf(tmp,"%s)",tmp);
+				aux->son->type_print = tmp;
+			}
+			else{
+				sprintf(tmp,"()");
+				aux->son->type_print = tmp;
+			}
+		}
+	}
+}
 void analiseSemantica(node* aux){
 	if(!aux)
 		return;
@@ -394,6 +486,46 @@ void analiseSemantica(node* aux){
 		}
 	}
 }
+
+
+char* getIdParamType(char* str){
+	symbol* child;
+	for(child = semanticTable->child; child; child = child->brother){
+		if(strcmp(str, child->name) == 0 || child->param!=NULL)
+			return child->param;	
+	}
+	return NULL;
+}
+
+char* getIdType(char* str, table* tab){
+	symbol* child;
+	for(child = tab->child; child; child = child->brother){
+		if(strcmp(str, child->name) == 0)
+			return child->type;
+	}
+	for(child = semanticTable->child; child; child = child->brother){
+		if(strcmp(str, child->name) == 0)
+			return child->type;	
+	}
+	return NULL;
+}
+
+char* myCat(char* str1, char* str2){
+	int size1, size2;
+	if(str1)
+		size1 = strlen(str1);
+	else
+		size1 = 0;
+	if(str2)
+		size2 = strlen(str2);
+	else
+		size2 = 0;
+	str1 = realloc(str1, (1+size1+size2)*sizeof(char));
+	str1[size1] = '\0';
+	sprintf(str1, "%s%s", str1, str2);
+	return str1;
+}
+
 
 char* lowerCase(char* str){
 	int i;

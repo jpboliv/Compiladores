@@ -43,8 +43,12 @@ symbol* addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag
 table* addTable(table* tab, char* _name, char* _type, int _activated);
 void initTable();
 void analiseSemantica(node* aux);
+void table_anotation(node *aux,table* tab);
 void addFieldDecl(table* tab, node* aux);
 void addMethodDecl(table* tab, node* aux);
+char* myCat(char* str1, char* str2);
+char* getIdType(char* str, table* tab);
+char* getIdParamType(char* str);
 char* lowerCase(char* str);
 //tabela simbolos
   table* semanticTable;

@@ -1,389 +1,6 @@
-===== Class gcd Symbol Table =====
-a		int
-b		int
-c		int
-d		double
-e		double
-f		double
-g		boolean
-h		boolean
-i		boolean
-main	(String[])	void
-foo1	()	int
-foo2	(int)	int
-foo3	(int,int,int)	int
-foo4	()	double
-foo5	(double)	double
-foo6	(double,double,double)	double
-foo7	()	boolean
-foo8	(boolean)	boolean
-middle		double
-foo9	(boolean,boolean,boolean)	boolean
-foo8	(int,double,boolean)	int
-foo9	(double,boolean,int)	double
-foo10	(double,int,boolean)	boolean
-foo11	(String[])	void
-foo12	(double)	void
-foo12	(int,double,boolean)	void
-bigfunctionname	(int,double,boolean,int,boolean)	int
-bottom		int
-just	(String[])	int
-gcd		int
-main	(String[])	void
-________________gcd_________________	(int,int)	int
-main	(String[])	void
-
-===== Method main(String[]) Symbol Table =====
-return		void
-args		String[]	param
-
-===== Method foo1() Symbol Table =====
-return		int
-
-===== Method foo2(int) Symbol Table =====
-return		int
-_a		int	param
-
-===== Method foo3(int,int,int) Symbol Table =====
-return		int
-_a		int	param
-_b		int	param
-_c		int	param
-
-===== Method foo4() Symbol Table =====
-return		double
-
-===== Method foo5(double) Symbol Table =====
-return		double
-_a		double	param
-
-===== Method foo6(double,double,double) Symbol Table =====
-return		double
-_a		double	param
-_b		double	param
-_c		double	param
-
-===== Method foo7() Symbol Table =====
-return		boolean
-
-===== Method foo8(boolean) Symbol Table =====
-return		boolean
-_a		boolean	param
-
-===== Method foo9(boolean,boolean,boolean) Symbol Table =====
-return		boolean
-_a		boolean	param
-_b		boolean	param
-_c		boolean	param
-
-===== Method foo8(int,double,boolean) Symbol Table =====
-return		int
-a__		int	param
-b__		double	param
-c__		boolean	param
-
-===== Method foo9(double,boolean,int) Symbol Table =====
-return		double
-b__		double	param
-c__		boolean	param
-a__		int	param
-
-===== Method foo10(double,int,boolean) Symbol Table =====
-return		boolean
-b__		double	param
-a__		int	param
-c__		boolean	param
-
-===== Method foo11(String[]) Symbol Table =====
-return		void
-args		String[]	param
-
-===== Method foo12(double) Symbol Table =====
-return		void
-__b__		double	param
-
-===== Method foo12(int,double,boolean) Symbol Table =====
-return		void
-a__		int	param
-b__		double	param
-c__		boolean	param
-
-===== Method bigfunctionname(int,double,boolean,int,boolean) Symbol Table =====
-return		int
-___a_33333___		int	param
-___fsda___2222_		double	param
-___a____ff		boolean	param
-a_3333___		int	param
-___a____3		boolean	param
-
-===== Method just(String[]) Symbol Table =====
-return		int
-args		String[]	param
-
-===== Method main(String[]) Symbol Table =====
-return		void
-args		String[]	param
-
-===== Method ________________gcd_________________(int,int) Symbol Table =====
-return		int
-a		int	param
-b		int	param
-fgh		int
-hf		int
-last		boolean
-
-===== Method main(String[]) Symbol Table =====
-return		void
-args		String[]	param
-fgh		int
-g		double
-df		double
-ghh		double
-wewer		double
-fd4		double
 
 Program
-..Id(gcd)
-..FieldDecl
-....Int
-....Id(a)
-..FieldDecl
-....Int
-....Id(b)
-..FieldDecl
-....Int
-....Id(c)
-..FieldDecl
-....Double
-....Id(d)
-..FieldDecl
-....Double
-....Id(e)
-..FieldDecl
-....Double
-....Id(f)
-..FieldDecl
-....Bool
-....Id(g)
-..FieldDecl
-....Bool
-....Id(h)
-..FieldDecl
-....Bool
-....Id(i)
-..MethodDecl
-....MethodHeader
-......Void
-......Id(main)
-......MethodParams
-........ParamDecl
-..........StringArray
-..........Id(args)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Int
-......Id(foo1)
-......MethodParams
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Int
-......Id(foo2)
-......MethodParams
-........ParamDecl
-..........Int
-..........Id(_a)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Int
-......Id(foo3)
-......MethodParams
-........ParamDecl
-..........Int
-..........Id(_a)
-........ParamDecl
-..........Int
-..........Id(_b)
-........ParamDecl
-..........Int
-..........Id(_c)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Double
-......Id(foo4)
-......MethodParams
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Double
-......Id(foo5)
-......MethodParams
-........ParamDecl
-..........Double
-..........Id(_a)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Double
-......Id(foo6)
-......MethodParams
-........ParamDecl
-..........Double
-..........Id(_a)
-........ParamDecl
-..........Double
-..........Id(_b)
-........ParamDecl
-..........Double
-..........Id(_c)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Bool
-......Id(foo7)
-......MethodParams
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Bool
-......Id(foo8)
-......MethodParams
-........ParamDecl
-..........Bool
-..........Id(_a)
-....MethodBody
-..FieldDecl
-....Double
-....Id(middle)
-..MethodDecl
-....MethodHeader
-......Bool
-......Id(foo9)
-......MethodParams
-........ParamDecl
-..........Bool
-..........Id(_a)
-........ParamDecl
-..........Bool
-..........Id(_b)
-........ParamDecl
-..........Bool
-..........Id(_c)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Int
-......Id(foo8)
-......MethodParams
-........ParamDecl
-..........Int
-..........Id(a__)
-........ParamDecl
-..........Double
-..........Id(b__)
-........ParamDecl
-..........Bool
-..........Id(c__)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Double
-......Id(foo9)
-......MethodParams
-........ParamDecl
-..........Double
-..........Id(b__)
-........ParamDecl
-..........Bool
-..........Id(c__)
-........ParamDecl
-..........Int
-..........Id(a__)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Bool
-......Id(foo10)
-......MethodParams
-........ParamDecl
-..........Double
-..........Id(b__)
-........ParamDecl
-..........Int
-..........Id(a__)
-........ParamDecl
-..........Bool
-..........Id(c__)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Void
-......Id(foo11)
-......MethodParams
-........ParamDecl
-..........StringArray
-..........Id(args)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Void
-......Id(foo12)
-......MethodParams
-........ParamDecl
-..........Double
-..........Id(__b__)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Void
-......Id(foo12)
-......MethodParams
-........ParamDecl
-..........Int
-..........Id(a__)
-........ParamDecl
-..........Double
-..........Id(b__)
-........ParamDecl
-..........Bool
-..........Id(c__)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Int
-......Id(bigfunctionname)
-......MethodParams
-........ParamDecl
-..........Int
-..........Id(___a_33333___)
-........ParamDecl
-..........Double
-..........Id(___fsda___2222_)
-........ParamDecl
-..........Bool
-..........Id(___a____ff)
-........ParamDecl
-..........Int
-..........Id(a_3333___)
-........ParamDecl
-..........Bool
-..........Id(___a____3)
-....MethodBody
-..FieldDecl
-....Int
-....Id(bottom)
-..MethodDecl
-....MethodHeader
-......Int
-......Id(just)
-......MethodParams
-........ParamDecl
-..........StringArray
-..........Id(args)
-....MethodBody
+..Id(gcd2)
 ..FieldDecl
 ....Int
 ....Id(gcd)
@@ -396,106 +13,68 @@ Program
 ..........StringArray
 ..........Id(args)
 ....MethodBody
-......Assign
+......VarDecl
+........Int
 ........Id(a)
-........ParseArgs
-..........Id(args)
-..........DecLit(0)
-......Assign
+......VarDecl
+........Int
 ........Id(b)
-........ParseArgs
-..........Id(args)
-..........DecLit(1)
-......Print
-........Id(gcd)
-......Print
-........StrLit("Error: two parameters required.")
+......If
+........Geq - boolean
+..........Length - int
+............Id(args) - String[]
+..........DecLit(2) - int
+........Block
+..........Assign - int
+............Id(a) - int
+............ParseArgs - int
+..............Id(args) - String[]
+..............DecLit(0) - int
+..........Assign - int
+............Id(b) - int
+............ParseArgs - int
+..............Id(args) - String[]
+..............DecLit(1) - int
+..........Assign - int
+............Id(gcd) - int
+............Call - int
+..............Id(gcd) - int
+..............Id(a) - int
+..............Id(b) - int
+..........Print
+............Id(gcd) - int
+........Print
+..........StrLit("Error: two parameters required.") - String
 ..MethodDecl
 ....MethodHeader
 ......Int
-......Id(________________gcd_________________)
+......Id(gcd)
 ......MethodParams
-........ParamDecl
-..........Int
-..........Id(a)
-........ParamDecl
-..........Int
-..........Id(b)
 ....MethodBody
-......VarDecl
-........Int
-........Id(fgh)
-......VarDecl
-........Int
-........Id(hf)
 ......If
-........Eq
-..........Id(a)
-..........DecLit(0)
+........Eq - boolean
+..........Id(a) - (null)
+..........DecLit(0) - int
 ........Return
-..........Id(b)
+..........Id(b) - (null)
 ........Block
 ..........While
-............Gt
-..............Id(b)
-..............DecLit(0)
+............Gt - boolean
+..............Id(b) - (null)
+..............DecLit(0) - int
 ............If
-..............Gt
-................Id(a)
-................Id(b)
-..............Assign
-................Id(a)
-................Sub
-..................Id(a)
-..................Id(b)
-..............Assign
-................Id(b)
-................Sub
-..................Id(b)
-..................Id(a)
+..............Gt - boolean
+................Id(a) - (null)
+................Id(b) - (null)
+..............Assign - (null)
+................Id(a) - (null)
+................Sub - (null)
+..................Id(a) - (null)
+..................Id(b) - (null)
+..............Assign - (null)
+................Id(b) - (null)
+................Sub - (null)
+..................Id(b) - (null)
+..................Id(a) - (null)
 ..........Return
-............Id(a)
-......VarDecl
-........Bool
-........Id(last)
-..MethodDecl
-....MethodHeader
-......Void
-......Id(main)
-......MethodParams
-........ParamDecl
-..........StringArray
-..........Id(args)
-....MethodBody
-......Assign
-........Id(a)
-........ParseArgs
-..........Id(args)
-..........DecLit(0)
-......Assign
-........Id(b)
-........ParseArgs
-..........Id(args)
-..........DecLit(1)
-......Print
-........Id(gcd)
-......Print
-........StrLit("Error: two parameters required.")
-......VarDecl
-........Int
-........Id(fgh)
-......VarDecl
-........Double
-........Id(g)
-......VarDecl
-........Double
-........Id(df)
-......VarDecl
-........Double
-........Id(ghh)
-......VarDecl
-........Double
-........Id(wewer)
-......VarDecl
-........Double
-........Id(fd4)
+............Id(a) - (null)

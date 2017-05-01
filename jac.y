@@ -353,7 +353,7 @@ int main(int argv, char **argc){
       yyparse();
       if(flagTreeErros == 1 && root!=NULL ){
         analiseSemantica(root);
-        printTable();
+        //printTable();
         printf("\n");
         print_tree(root,0);
       }
