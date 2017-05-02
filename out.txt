@@ -1,4 +1,3 @@
-
 Program
 ..Id(gcd2)
 ..FieldDecl
@@ -38,7 +37,7 @@ Program
 ..........Assign - int
 ............Id(gcd) - int
 ............Call - int
-..............Id(gcd) - int
+..............Id(gcd) - (int,int)
 ..............Id(a) - int
 ..............Id(b) - int
 ..........Print
@@ -50,31 +49,37 @@ Program
 ......Int
 ......Id(gcd)
 ......MethodParams
+........ParamDecl
+..........Int
+..........Id(a)
+........ParamDecl
+..........Int
+..........Id(b)
 ....MethodBody
 ......If
 ........Eq - boolean
-..........Id(a) - (null)
+..........Id(a) - int
 ..........DecLit(0) - int
 ........Return
-..........Id(b) - (null)
+..........Id(b) - int
 ........Block
 ..........While
 ............Gt - boolean
-..............Id(b) - (null)
+..............Id(b) - int
 ..............DecLit(0) - int
 ............If
 ..............Gt - boolean
-................Id(a) - (null)
-................Id(b) - (null)
-..............Assign - (null)
-................Id(a) - (null)
-................Sub - (null)
-..................Id(a) - (null)
-..................Id(b) - (null)
-..............Assign - (null)
-................Id(b) - (null)
-................Sub - (null)
-..................Id(b) - (null)
-..................Id(a) - (null)
+................Id(a) - int
+................Id(b) - int
+..............Assign - int
+................Id(a) - int
+................Sub - int
+..................Id(a) - int
+..................Id(b) - int
+..............Assign - int
+................Id(b) - int
+................Sub - int
+..................Id(b) - int
+..................Id(a) - int
 ..........Return
-............Id(a) - (null)
+............Id(a) - int

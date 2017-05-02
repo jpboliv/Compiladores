@@ -14,7 +14,7 @@ node* new_node(char* type, char* value) {
 	node* n = (node*)malloc(sizeof(node));
 	n->type = (char*)malloc(sizeof(char)*strlen(type) +1);
 	n->value = (char*)malloc(sizeof(char)*strlen(value) +1);
-	n->type_print = (char*)malloc(sizeof(char)*10);
+	n->type_print = (char*)malloc(sizeof(char)*100);
 	strcpy(n->type,type);
 	strcpy(n->value,value);
 	n->type_print=NULL;
@@ -370,10 +370,12 @@ void addMethodDecl(table* tab, node* aux){
 					addSymbol(actTable,v_decl->son->brother->value,lowerCase(v_decl->son->value) ,NULL,NULL,0,0);
 				}
 			}
+			else{aux=aux->son->brother;
+				table_anotation(aux, actTable);}
 		}
 	}
-	aux=aux->son->brother;
-		table_anotation(aux, actTable);
+	
+		
 
 	//--------------------------------------FIM-METHODBODY---------------------------//
 	//
@@ -399,14 +401,17 @@ void table_anotation(node *aux,table* tab){
 		}
 	}
 	char* string;
-	char* undef = "undef";
+	char* undef = myCat(NULL, "undef");
 	if(aux->type){
 		if(strcmp("Id", aux->type) == 0){
-			string = myCat(NULL, getIdType(aux->value, tab));
-			if(string)
+			string = getIdType(aux->value, tab);
+			
+			if(string){
 				aux->type_print = myCat(NULL, getIdType(aux->value, tab));
-			else
+			}
+			else{
 				aux->type_print = undef; // ERROR
+			}
 		}
 		else if(strcmp("BoolLit", aux->type) == 0){
 			aux->type_print = myCat(NULL, "boolean");
