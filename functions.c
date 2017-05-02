@@ -98,8 +98,8 @@ void printTable(){
 		if(hold->activated){
 			if(strcmp(hold->type,"Class")==0){
 				printf("===== Class %s Symbol Table =====\n", hold->name);
-			} 
-			else 
+			}
+			else
 				printf("\n===== Method %s Symbol Table =====\n",hold->name);
 			for(holdChild = hold->child; holdChild; holdChild = holdChild->brother){
 				printf("%s\t", holdChild->name);
@@ -197,7 +197,7 @@ table* addTable(table* tab, char* _name, char* _type, int _activated){
 	else{
 		addSymbol(ret, "return", lowerCase(_type), NULL,NULL, -1, -1);
 	}
-	
+
 	//symbol* addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag, int _line, int _col)
 	return ret;
 }
@@ -230,12 +230,12 @@ void addMethodDecl(table* tab, node* aux){
 	node*p2;
 	node* p3;
 	node* p4;
-	char _type[50]; 
+	char _type[50];
 	char arr[20000] = {0};
 	p=aux->son; //method header
 	p2=p->son; //type da funçao
 	p3 = p2->brother->brother->son; // params decl
-	
+
 
 	//--------------------------------------BEGIN-METHODHEADER---------------------------//
 	//--------------------------INICIO adicionar as funçoes como simbolos da TABelas da CLASS--///////////////////////////////////////
@@ -251,10 +251,10 @@ void addMethodDecl(table* tab, node* aux){
 	char* tmp = (char*)malloc(50+(strlen("boolean")*strlen(arr))*sizeof(char));
 	char* _name = (char*)malloc(50+(strlen(tmp)+50)*sizeof(char));
 	strcpy(_type,p2->value); //tipo de retorno
-	//strcpy(_name,p2->brother->value); 
+	//strcpy(_name,p2->brother->value);
 	sprintf(_name,"%s",p2->brother->value);// nome da funçao
-	
-	
+
+
 	if(p3!=NULL){
 		if(strcmp(p3->son->value,"StringArray")==0){
 
@@ -275,7 +275,7 @@ void addMethodDecl(table* tab, node* aux){
 			//get parametros da funçao
 			for(p3=p3->brother; p3 != NULL; p3 = p3->brother){
 				char* tmp2 = (char*)malloc(strlen(p3->son->value)+strlen(tmp));
-				
+
 				if(strcmp("Bool",p3->son->value)==0){
 					char* aux3 = (char*)malloc(strlen("boolean")*sizeof(char));
 					sprintf(aux3,"%s%s",lowerCase(p3->son->value),"ean");
@@ -301,7 +301,7 @@ void addMethodDecl(table* tab, node* aux){
 	else{
 		addSymbol(tab, _name,lowerCase(_type), tmp, NULL,0,0);
 	}
-	
+
 	sprintf(_name,"%s%s",_name,tmp);
 	//strcat(_name,tmp2);
 	table* actTable = addTable(tab, _name, _type, 1); //cria uma nova tabela method
@@ -323,7 +323,7 @@ void addMethodDecl(table* tab, node* aux){
 					char* aux2 = (char*)malloc(strlen("boolean")*sizeof(char));
 					if(strcmp("Bool",p3->son->value)==0){
 							sprintf(aux2,"%s%s",lowerCase(p3->son->value),"ean");
-							
+
 							addSymbol(actTable, p3->son->brother->value, aux2, NULL, "param",0,0);
 							free(aux2);
 					}
@@ -337,9 +337,9 @@ void addMethodDecl(table* tab, node* aux){
 					char* aux3 = (char*)malloc(strlen("boolean")*sizeof(char));
 					if(strcmp("Bool",p3->son->value)==0){
 							sprintf(aux3,"%s%s",lowerCase(p3->son->value),"ean");
-							
+
 							addSymbol(actTable, p3->son->brother->value, aux3, NULL, "param",0,0);
-							
+
 							free(aux3);
 					}
 					else{
@@ -357,25 +357,26 @@ void addMethodDecl(table* tab, node* aux){
 
 	//--------------------------------------INICIO-METHODBODY---------------------------//
 
-	node* v_decl = aux->son->brother->son;
-	if(v_decl!=NULL){
-		for(;v_decl != NULL; v_decl = v_decl->brother){
-			if(strcmp(v_decl->value,"VarDecl")==0){
+	//node* v_decl = aux->son->brother->son;
+	aux = aux->son->brother->son;
+	if(aux!=NULL){
+		for(;aux != NULL; aux = aux->brother){
+			if(strcmp(aux->value,"VarDecl")==0){
 				char aux2[50];
-				if(strcmp("Bool",v_decl->son->value)==0){
-					sprintf(aux2,"%s%s",lowerCase(v_decl->son->value),"ean");
-					addSymbol(actTable,v_decl->son->brother->value,aux2 ,NULL,NULL,0,0);
+				if(strcmp("Bool",aux->son->value)==0){
+					sprintf(aux2,"%s%s",lowerCase(aux->son->value),"ean");
+					addSymbol(actTable,aux->son->brother->value,aux2 ,NULL,NULL,0,0);
 				}
 				else{
-					addSymbol(actTable,v_decl->son->brother->value,lowerCase(v_decl->son->value) ,NULL,NULL,0,0);
+					addSymbol(actTable,aux->son->brother->value,lowerCase(aux->son->value) ,NULL,NULL,0,0);
 				}
 			}
-			else{aux=aux->son->brother;
+			else{
 				table_anotation(aux, actTable);}
 		}
 	}
-	
-		
+
+
 
 	//--------------------------------------FIM-METHODBODY---------------------------//
 	//
@@ -405,7 +406,7 @@ void table_anotation(node *aux,table* tab){
 	if(aux->type){
 		if(strcmp("Id", aux->type) == 0){
 			string = getIdType(aux->value, tab);
-			
+
 			if(string){
 				aux->type_print = myCat(NULL, getIdType(aux->value, tab));
 			}
@@ -426,8 +427,8 @@ void table_anotation(node *aux,table* tab){
 			string = myCat(NULL, "String");
 			aux->type_print = myCat(NULL,string);
 		}
-		else if(strcmp("And", aux->value) == 0 || strcmp("Or", aux->value) == 0 || strcmp("Eq", aux->value) == 0 
-			|| strcmp("Geq", aux->value) == 0 || strcmp("Gt", aux->value) == 0  || strcmp("Leq", aux->value) == 0 
+		else if(strcmp("And", aux->value) == 0 || strcmp("Or", aux->value) == 0 || strcmp("Eq", aux->value) == 0
+			|| strcmp("Geq", aux->value) == 0 || strcmp("Gt", aux->value) == 0  || strcmp("Leq", aux->value) == 0
 			|| strcmp("Lt", aux->value) == 0 || strcmp("Neq", aux->value) == 0 || strcmp("Not", aux->value) == 0){
 			string = myCat(NULL, "boolean");
 			aux->type_print = myCat(NULL,string);
@@ -437,49 +438,115 @@ void table_anotation(node *aux,table* tab){
 			aux->type_print = myCat(NULL,string);
 		}
 		else if(strcmp("Assign",aux->value)==0){
-			aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
-		}
-		else if(strcmp("Add",aux->value)==0 || strcmp("Sub",aux->value)==0 || strcmp("Div",aux->value)==0 || strcmp("Mul",aux->value)==0 || strcmp("Mod",aux->value)==0
-				|| strcmp("Minus",aux->value)==0 || strcmp("Plus",aux->value)==0){
-			aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
-		}
-		else if(strcmp("Call",aux->value)==0){
-			string = myCat(NULL, getIdType(aux->son->value, tab));
-			if(string)
-				aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
-			//get parametros da funçao
-			i = 0;
-				for( p4 = aux->son->brother; p4 != NULL;	p4 = p4->brother){ //saber
-					if(strcmp("Id", p4->value) == 0){
-						arr2[i] = ',';
-						i++;
-					}
+			if(aux->son->brother->type_print!=NULL){
+				if(strcmp(aux->son->type_print,"undef")==0 || strcmp(aux->son->brother->type_print,"undef")==0){
+					aux->type_print = undef;
 				}
-				arr2[i] = '\0';
-			
-
-			char* tmp = (char*)malloc(50+(strlen("boolean")*strlen(arr2))*sizeof(char));
-
-			if(aux->son->brother!=NULL){
-
-				sprintf(tmp, "(%s",getIdType(aux->son->brother->value, tab));
-				
-				if(aux->son->brother->brother!=NULL){
-					for(p3=aux->son->brother->brother; p3 != NULL; p3 = p3->brother){
-					sprintf(tmp, "%s,%s",tmp,getIdType(p3->value, tab));
-					}
+				else if(strcmp(aux->son->type_print,"boolean")==0 || strcmp(aux->son->brother->type_print,"boolean")==0){
+					aux->type_print = undef;
 				}
-				
-				sprintf(tmp,"%s)",tmp);
-				aux->son->type_print = tmp;
+				else{
+					aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
+				}
 			}
 			else{
-				sprintf(tmp,"()");
-				aux->son->type_print = tmp;
+				aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
 			}
+		}
+		else if(strcmp("Add",aux->value)==0 || strcmp("Sub",aux->value)==0 || strcmp("Div",aux->value)==0 || strcmp("Mul",aux->value)==0 || strcmp("Mod",aux->value)==0){
+			if(strcmp(aux->son->type_print,"undef")==0 || strcmp(aux->son->brother->type_print,"undef")==0){
+				aux->type_print = undef;
+			}else{
+				if(strcmp(aux->son->type_print,"int")==0 && strcmp(aux->son->brother->type_print,"int")==0){
+					aux->type_print = myCat(NULL,"int");
+				}
+				else if((strcmp(aux->son->type_print,"double")==0 && strcmp(aux->son->brother->type_print,"int")==0) ||(strcmp(aux->son->type_print,"int")==0 && strcmp(aux->son->brother->type_print,"double")==0)){
+					aux->type_print = myCat(NULL,"double");
+				}
+				else if(strcmp(aux->son->type_print,"double")==0 && strcmp(aux->son->brother->type_print,"double")==0){
+					aux->type_print = myCat(NULL,"double");
+				}
+				else{
+					aux->type_print = undef;
+				}
+			}
+
+		}
+		else if((strcmp("Minus",aux->value)==0 || strcmp("Plus",aux->value)==0)){
+			if(strcmp(aux->son->type_print,"int")==0 ||strcmp(aux->son->type_print,"double")==0 ){
+				aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
+			}
+			else{
+				aux->type_print = undef;
+			}
+		}
+		else if(strcmp("Call",aux->value)==0){
+		// 	string = myCat(NULL, getIdType(aux->son->value, tab));
+		// 	if(string)
+		// 		aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
+		// 	//get parametros da funçao
+		// 	i = 0;
+		// 		for( p4 = aux->son->brother; p4 != NULL;	p4 = p4->brother){ //saber
+		// 			if(strcmp("Id", p4->value) == 0){
+		// 				arr2[i] = ',';
+		// 				i++;
+		// 			}
+		// 		}
+		// 		arr2[i] = '\0';
+		//
+		//
+		// 	char* tmp = (char*)malloc(50+(strlen("boolean")*strlen(arr2))*sizeof(char));
+		//
+		// 	if(aux->son->brother!=NULL){
+		//
+		// 		sprintf(tmp, "(%s",getIdType(aux->son->brother->value, tab));
+		//
+		// 		if(aux->son->brother->brother!=NULL){
+		// 			for(p3=aux->son->brother->brother; p3 != NULL; p3 = p3->brother){
+		// 			sprintf(tmp, "%s,%s",tmp,getIdType(p3->value, tab));
+		// 			}
+		// 		}
+		//
+		// 		sprintf(tmp,"%s)",tmp);
+		// 		aux->son->type_print = tmp;
+		// 	}
+		// 	else{
+		// 		sprintf(tmp,"()");
+		// 		aux->son->type_print = tmp;
+		// 	}
+		// }
+
+		checkCall(aux);
+
 		}
 	}
 }
+//função para contar metodos c o mesmo nome, retorna 0 senão existir
+int count_method(char* str){
+	symbol* child;
+	int count=0;
+	for(child = semanticTable->child; child; child = child->brother){
+		if(strcmp(str, child->name) == 0 && child->param!=NULL){
+			count+=1;
+			}
+	}
+	return count;
+}
+void checkCall(node* aux){
+	//verificar se existe função
+	int n_func=0;
+	if(n_func=count_method(aux->son->value)!=0){
+		if(n_func==1){
+			//se só existe uma, verificar params
+			if(getIdParamType(aux->son->value)){
+				
+			}
+
+		}
+	}
+}
+
+
 void analiseSemantica(node* aux){
 	if(!aux)
 		return;
@@ -502,8 +569,8 @@ void analiseSemantica(node* aux){
 char* getIdParamType(char* str){
 	symbol* child;
 	for(child = semanticTable->child; child; child = child->brother){
-		if(strcmp(str, child->name) == 0 || child->param!=NULL)
-			return child->param;	
+		if(strcmp(str, child->name) == 0 && child->param!=NULL)
+			return child->param;
 	}
 	return NULL;
 }
@@ -516,7 +583,7 @@ char* getIdType(char* str, table* tab){
 	}
 	for(child = semanticTable->child; child; child = child->brother){
 		if(strcmp(str, child->name) == 0)
-			return child->type;	
+			return child->type;
 	}
 	return NULL;
 }

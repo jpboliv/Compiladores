@@ -50,6 +50,8 @@ char* myCat(char* str1, char* str2);
 char* getIdType(char* str, table* tab);
 char* getIdParamType(char* str);
 char* lowerCase(char* str);
+int count_method(char* str);
+void checkCall(node* aux);
 //tabela simbolos
   table* semanticTable;
 
