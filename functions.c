@@ -385,7 +385,7 @@ void addMethodDecl(table* tab, node* aux){
 void table_anotation(node *aux,table* tab){
 	node* p3;
 	node* p4;
-	char arr[20000] = {0};
+	char arr2[20000] = {0};
 	int i;
 	if(!aux)
 		return;
@@ -407,6 +407,9 @@ void table_anotation(node *aux,table* tab){
 				aux->type_print = myCat(NULL, getIdType(aux->value, tab));
 			else
 				aux->type_print = undef; // ERROR
+		}
+		else if(strcmp("BoolLit", aux->type) == 0){
+			aux->type_print = myCat(NULL, "boolean");
 		}
 		else if(strcmp("DecLit", aux->type) == 0){
 			aux->type_print = myCat(NULL, "int");
@@ -431,7 +434,8 @@ void table_anotation(node *aux,table* tab){
 		else if(strcmp("Assign",aux->value)==0){
 			aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
 		}
-		else if(strcmp("Add",aux->value)==0 || strcmp("Sub",aux->value)==0 || strcmp("Div",aux->value)==0 || strcmp("Mul",aux->value)==0 ){
+		else if(strcmp("Add",aux->value)==0 || strcmp("Sub",aux->value)==0 || strcmp("Div",aux->value)==0 || strcmp("Mul",aux->value)==0 || strcmp("Mod",aux->value)==0
+				|| strcmp("Minus",aux->value)==0 || strcmp("Plus",aux->value)==0){
 			aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
 		}
 		else if(strcmp("Call",aux->value)==0){
@@ -440,15 +444,17 @@ void table_anotation(node *aux,table* tab){
 				aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
 			//get parametros da funçao
 			i = 0;
-			for( p4 = aux->son->brother->brother ; p4 != NULL;	p4 = p4->brother){ //saber onumero de params decle!
-					arr[i] = ',';
-					i++;
-			}
-			arr[i] = '\0';
+				for( p4 = aux->son->brother; p4 != NULL;	p4 = p4->brother){ //saber
+					if(strcmp("Id", p4->value) == 0){
+						arr2[i] = ',';
+						i++;
+					}
+				}
+				arr2[i] = '\0';
+			
 
-			char* tmp = (char*)malloc(50+(strlen("boolean")*strlen(arr))*sizeof(char));
+			char* tmp = (char*)malloc(50+(strlen("boolean")*strlen(arr2))*sizeof(char));
 
-			char* aux2 = (char*)malloc(4*sizeof(char));
 			if(aux->son->brother!=NULL){
 
 				sprintf(tmp, "(%s",getIdType(aux->son->brother->value, tab));
