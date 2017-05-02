@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <assert.h>
  //arvore
  typedef struct node {
   char* type;
@@ -21,6 +22,8 @@ typedef struct symbol{
 	char* flag;
 	struct symbol* brother;
 }symbol;
+
+
 
 typedef struct table{
 	char* name;
@@ -51,7 +54,12 @@ char* getIdType(char* str, table* tab);
 char* getIdParamType(char* str);
 char* lowerCase(char* str);
 int count_method(char* str);
-void checkCall(node* aux);
+void checkCall(node* aux, table* tab);
+char* getIdTableType(char* str);
+int split (char *str, char c, char ***arr);
+char *newStr(const char *string);
+char *newStr2(const char *string);
+
 //tabela simbolos
   table* semanticTable;
 
