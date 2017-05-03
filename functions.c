@@ -509,6 +509,7 @@ char* getIdTableType(char* str){
 			int c = 0;
 			char **arr3 = NULL;
 			c = split(hold->name, '(', &arr3);
+
 			if(strcmp(arr3[0], str)==0){
 				return hold->child->type;
 			}
@@ -550,26 +551,46 @@ void checkCall(node* aux){
 			for(node* s = aux->son->brother; s!=NULL; s=s->brother){
 				c_params++;
 			}
-			if(c_params == c){
-				int i;
-				i=0;
-				for(node* s = aux->son->brother; s!=NULL; s=s->brother){
-					if(strcmp(s->type_print,arr3[i])==0){
-						i++;
+			if(c_params>0){
+				if(c_params == c){
+					int i;
+					i=0;
+					for(node* s = aux->son->brother; s!=NULL; s=s->brother){
+						if(s->type_print !=NULL && arr3[1]!=NULL){
+							if(strcmp(s->type_print,arr3[i])==0){
+								i++;
+							}
+							else{
+								aux->type_print = undef;
+								aux->son->type_print = undef;
+								return;
+							}
+						}
 					}
-					else{
-						aux->type_print = undef;
-						aux->son->type_print = undef;
-						return;
+					aux->son->type_print = myCat(NULL,pop);
+					aux->type_print = myCat(NULL,getIdTableType(aux->son->value));
+
+				}
+			}
+				else{
+					for(; hold; hold = hold->brother){
+						int c3 = 0;
+						//int i;
+						//int c_params=0;
+						char **arr5 = NULL;
+						c3 = split(hold->name, '(', &arr5);
+						if(arr5[0]!=NULL && aux->son->value != NULL){
+							if(strcmp(arr5[0], aux->son->value)==0){
+								if(arr5[1]!=NULL){
+										if(strcmp(arr5[1],")")==0){
+											aux->son->type_print = myCat(NULL,"()");
+											aux->type_print = myCat(NULL,getIdTableType(aux->son->value));
+										}
+									}
+							}
+						}
 					}
 				}
-				aux->son->type_print = myCat(NULL,pop);
-				aux->type_print = myCat(NULL,getIdTableType(aux->son->value));
-
-			}
-			else{
-				aux->type_print = undef;
-				aux->son->type_print = undef;}
 			}
 			else{
 
@@ -638,8 +659,6 @@ void checkCall(node* aux){
 						c3 = split(hold->name, '(', &arr5);
 						if(arr5[0]!=NULL && aux->son->value != NULL){
 							if(strcmp(arr5[0], aux->son->value)==0){
-								printf("hello:%s\n", arr5[0]);
-								printf("hello:%s\n", arr5[0]);
 								if(arr5[1]!=NULL){
 										if(strcmp(arr5[1],")")==0){
 											aux->son->type_print = myCat(NULL,"()");
@@ -743,12 +762,11 @@ void checkCall(node* aux){
 			if(strcmp("FieldDecl", son->type) == 0){
 				addFieldDecl(tab, son);
 			}
-		}
-		for(son = aux->son; son != NULL; son = son->brother){
-			if(strcmp("MethodDecl", son->type) == 0){
+			else if(strcmp("MethodDecl", son->type) == 0){
 				addMethodDecl(tab,son);
 			}
 		}
+			
 		for(son = aux->son; son != NULL; son = son->brother){
 			table_anotation_call(son);
 		}
