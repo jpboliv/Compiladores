@@ -1,3 +1,4 @@
+
 Program
 ..Id(gcd2)
 ..FieldDecl
@@ -36,8 +37,8 @@ Program
 ..............DecLit(1) - int
 ..........Assign - int
 ............Id(gcd) - int
-............Call - int
-..............Id(gcd) - (int,int)
+............Call
+..............Id(gcd) - int
 ..............Id(a) - int
 ..............Id(b) - int
 ..........Print
