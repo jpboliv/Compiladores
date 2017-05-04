@@ -252,7 +252,7 @@ void addMethodDecl(table* tab, node* aux){
 	arr[i] = '\0';
 
 	char* tmp = (char*)malloc(50+(strlen("boolean")*strlen(arr))*sizeof(char));
-	char* _name = (char*)malloc(100+(strlen(tmp))*sizeof(char));
+	char* _name = (char*)malloc(50+(strlen(tmp)+50)*sizeof(char));
 	strcpy(_type,p2->value); //tipo de retorno
 	//strcpy(_name,p2->brother->value);
 	sprintf(_name,"%s",p2->brother->value);// nome da funçao
@@ -379,9 +379,6 @@ void addMethodDecl(table* tab, node* aux){
 					}
 				}
 			}
-			else {
-				table_anotation(aux, actTable);
-			}
 		}
 	}
 
@@ -502,13 +499,14 @@ int count_method(char* str){
 	}
 	return count;
 }
+/*
 char* getIdTableType(char* str){
 	table* hold = semanticTable;
 	for(; hold; hold = hold->brother){
 		if(hold->activated){
 			int c = 0;
 			char **arr3 = NULL;
-			c = split(hold->name, '(', &arr3);
+			c = new_split(hold->name, '(');
 
 			if(strcmp(arr3[0], str)==0){
 				return hold->child->type;
@@ -518,63 +516,103 @@ char* getIdTableType(char* str){
 	return NULL;
 }
 
+*/
+
+
+
 void checkCall(node* aux){
 	//verificar se existe função
 	int c_params;
-	char* pop=NULL;
+	//char* pop=NULL;
 	char* undef = myCat(NULL, "undef");
 	int n_func=0;
-	table* hold = semanticTable->brother;
+	//table* hold = semanticTable->brother;
 	aux->type_print = undef;
 	aux->son->type_print = undef;
+	//char* concatenate = (char*)malloc(sizeof(char)* (10) );
 	if(count_method(aux->son->value)!=0){
 
 
 		n_func=count_method(aux->son->value);
-		if(n_func==1){
+		if(n_func==1){ //se so houver uma funcao declarada com o nome da call;
 
-			char* name=NULL;
+			//char* name=NULL;
 			//se só existe uma, verificar params
-			if(getIdParamType(aux->son->value) != NULL){
-				name= newStr(getIdParamType(aux->son->value));
-				pop = getIdParamType(aux->son->value);
-			} // remove primeiro char
-			if(name!=NULL){
-				name = newStr2(name);
-			} //remove ultimo char
-			int c = 0;
-
+			
 			c_params=0;
-			char **arr3 = NULL;
-			c = split(name, ',', &arr3);
-
-			for(node* s = aux->son->brother; s!=NULL; s=s->brother){
+			for(node* s = aux->son->brother; s!=NULL; s=s->brother){ //contar numero de paramettros da funçao que faço call
 				c_params++;
 			}
-			if(c_params>0){
-				if(c_params == c){
+			//char* aux_p = new_split(,"(");
+			//fazer parse do name, saber o numero de elementos , e ter os elementos num array
+			table* hold = semanticTable;
+			int f_params =0;
+			for(; hold; hold = hold->brother){
+				if(hold->activated){
+					char* c=NULL;
+					const char *aspa = "(";
+					char* aux_name = strdup(hold->name);
+					c = new_split(aux_name, aspa);
+					symbol* child;
+					if(strcmp(c,aux->son->value)==0){
+						node* s2 = aux->son->brother;
+						for(child = hold->child; child; child = child->brother){
+							if(child->flag){
+								f_params++;
+							}
+						}
+						if(f_params == c_params){
+							for(child = hold->child; child; child = child->brother){
+							if(child->flag){
+								if(strcmp(child->type,s2->type_print)==0 || ( (strcmp("int",child->type)==0) && (strcmp("boolean",s2->type_print)==0) )){
+
+								}
+								else{
+									break;
+								}
+									s2=s2->brother;
+								}
+							}
+							//aux->son->type_print = myCat(NULL,);
+							//aux->type_print = myCat(NULL,getIdTableType(aux->son->value));
+						}
+
+					}
+					
+				}
+			}
+			/*
+			if(c_params>0){ //se o numero de parametros for maior que 0
+				if(c_params == c){ // se o numro de parametros da call for igual ao numero de parametros da funçao que tem o mesmo nome
 					int i;
 					i=0;
-					for(node* s = aux->son->brother; s!=NULL; s=s->brother){
+					int flag_aux=0;
+					for(node* s = aux->son->brother; s!=NULL; s=s->brother){ // percorrer os parametros da call e comparar com os que vêm do parse
 						if(s->type_print !=NULL && arr3[1]!=NULL){
-							if(strcmp(s->type_print,arr3[i])==0){
+							//se forem do mesmo tipo, OU se a variavel da call seja double e a da funçao declara é int
+							//exemplo main(int a) --> call main(2.0);
+							if(strcmp(s->type_print,arr3[i])==0 || ( (strcmp("int",arr3[i])==0) && (strcmp("boolean",s->type_print)==0) )  ){
 								i++;
 							}
-							else{
-								aux->type_print = undef;
+							else{ //entra aqui, significa que n ha funçao com o mesmo nome e com parametros iguais
 								aux->son->type_print = undef;
+								aux->type_print = undef;
 								return;
 							}
 						}
 					}
+
 					aux->son->type_print = myCat(NULL,pop);
 					aux->type_print = myCat(NULL,getIdTableType(aux->son->value));
 
 				}
 			}
-
-				else{
+				else{ // se o numero de parametros for menor que 0 
 					for(; hold; hold = hold->brother){
+						// fazer parse do nome
+
+
+						//verificar se o nome é igual ao nome da call->son
 						int c3 = 0;
 						//int i;
 						//int c_params=0;
@@ -582,6 +620,7 @@ void checkCall(node* aux){
 						c3 = split(hold->name, '(', &arr5);
 						if(arr5[0]!=NULL && aux->son->value != NULL){
 							if(strcmp(arr5[0], aux->son->value)==0){
+								printf("estou mesomqu:%s\n",arr5[1]);
 								if(arr5[1]!=NULL){
 										if(strcmp(arr5[1],")")==0){
 											aux->son->type_print = myCat(NULL,"()");
@@ -591,7 +630,7 @@ void checkCall(node* aux){
 							}
 						}
 					}
-				}
+				}*/
 			}
 
 			else{
@@ -621,70 +660,36 @@ void checkCall(node* aux){
 		return aux;
 	}
 
-	int split (char *str, char c, char ***arr)
-	{
-		int count = 1;
-		int token_len = 1;
-		int i = 0;
-		char *p;
-		char *t;
+char* new_split(char* str, const char* delimeter){
+  char ** res  = NULL;
+  char *  p    = strtok (str, delimeter);
+  int n_spaces = 0;
+  /* split string and append tokens to 'res' */
+  while (p) {
+    res = realloc (res, sizeof (char*) * ++n_spaces);
+    if (res == NULL)
+      exit (-1); /* memory allocation failed */
+    res[n_spaces-1] = p;
+    p = strtok (NULL, " ");
+  }
+  /* realloc one extra element for the last NULL */
+  res = realloc (res, sizeof (char*) * (n_spaces+1));
+  res[n_spaces] = 0;
+  /* print the result */
+  /*for (i = 0; i < (n_spaces+1); ++i){
+    printf ("res[%d] = %s\n", i, res[i]);
+  }*/
 
-		p = str;
-		while (*p != '\0')
-		{
-			if (*p == c)
-			count++;
-			p++;
-		}
-
-		*arr = (char**) malloc(sizeof(char*) * count);
-		if (*arr == NULL)
-		exit(1);
-
-		p = str;
-		while (*p != '\0')
-		{
-			if (*p == c)
-			{
-				(*arr)[i] = (char*) malloc( sizeof(char) * token_len );
-				if ((*arr)[i] == NULL)
-				exit(1);
-
-				token_len = 0;
-				i++;
-			}
-			p++;
-			token_len++;
-		}
-		(*arr)[i] = (char*) malloc( sizeof(char) * token_len );
-		if ((*arr)[i] == NULL)
-		exit(1);
-
-		i = 0;
-		p = str;
-		t = ((*arr)[i]);
-		while (*p != '\0')
-		{
-			if (*p != c && *p != '\0')
-			{
-				*t = *p;
-				t++;
-			}
-			else
-			{
-				*t = '\0';
-				i++;
-				t = ((*arr)[i]);
-			}
-			p++;
-		}
-
-		return count;
-	}
+  return res[0];
+  /* free the memory allocated */
+}
 	void analiseSemantica(node* aux){
 		if(!aux)
 		return;
 		node* son;
+		node* noob;
+		node* hello;
+		table* child;
 		if(strcmp("Id", aux->son->type) == 0){
 			initTable(aux->son->value);
 		}
@@ -698,9 +703,20 @@ void checkCall(node* aux){
 			}
 		}
 
+			child = tab->brother;
+			for(hello = aux->son; hello != NULL; hello = hello->brother){
+					if(strcmp(hello->value,"MethodDecl")==0){
+						noob = hello->son->brother;
+						table_anotation(noob, child);
+						child= child->brother;
+					}
+			}
+	
+		
+			/*
 		for(son = aux->son; son != NULL; son = son->brother){
 			table_anotation_call(son);
-		}
+		}*/
 	}
 
 	void table_anotation_call(node* aux){
@@ -721,7 +737,7 @@ void checkCall(node* aux){
 
 		if(aux->type){
 			if(strcmp("Call", aux->type) == 0){
-				//checkCall(aux);
+				checkCall(aux);
 			}
 		}
 	}
@@ -748,7 +764,7 @@ void checkCall(node* aux){
 		}
 		for(child = semanticTable->child; child; child = child->brother){
 			if(str != NULL && child->name != NULL){
-				if(strcmp(str, child->name) == 0)
+				if(strcmp(str, child->name) == 0 && child->param==NULL)
 					return child->type;
 			}
 		}

@@ -56,8 +56,8 @@ char* getIdParamType(char* str);
 char* lowerCase(char* str);
 int count_method(char* str);
 void checkCall(node* aux);
-char* getIdTableType(char* str);
-int split (char *str, char c, char ***arr);
+//char* getIdTableType(char* str);
+char* new_split(char* str, const char* delimeter);
 char *newStr(const char *string);
 char *newStr2(const char *string);
 
