@@ -12,8 +12,8 @@
 node* new_node(char* type, char* value) {
 	//printf("NEW NODE %s AND %s\n",type,value);
 	node* n = (node*)malloc(sizeof(node));
-	n->type = (char*)malloc(sizeof(char)*strlen(type) +1);
-	n->value = (char*)malloc(sizeof(char)*strlen(value) +1);
+	n->type = (char*)malloc(sizeof(char)*(strlen(type) +1));
+	n->value = (char*)malloc(sizeof(char)*(strlen(value) +1));
 	strcpy(n->type,type);
 	strcpy(n->value,value);
 	n->type_print=NULL;
@@ -144,17 +144,17 @@ symbol* addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag
 		hold = hold->brother;
 	}
 	hold->brother = NULL;
-	hold->name = (char*)malloc(1+strlen(_name)*sizeof(char));
+	hold->name = (char*)malloc((1+strlen(_name))*sizeof(char));
 	strcpy(hold->name, _name);
-	hold->type = (char*)malloc(1+strlen(_type)*sizeof(char));
+	hold->type = (char*)malloc((1+strlen(_type))*sizeof(char));
 	strcpy(hold->type, _type);
 	if(_param){
-		hold->param = (char*)malloc(1+strlen(_param)*sizeof(char));
+		hold->param = (char*)malloc((1+strlen(_param))*sizeof(char));
 		strcpy(hold->param, _param);
 	}else
 	hold->param = NULL;
 	if(_flag){
-		hold->flag = (char*)malloc(1+strlen(_flag)*sizeof(char));
+		hold->flag = (char*)malloc((1+strlen(_flag))*sizeof(char));
 		strcpy(hold->flag, _flag);
 	}else
 	hold->flag = NULL;
@@ -182,9 +182,9 @@ table* addTable(table* tab, char* _name, char* _type, int _activated){
 	}
 	//printf("%s\n", tab->name);
 	table* ret = (table*)malloc(sizeof(table));
-	ret->name = (char*)malloc(1+strlen(_name)*sizeof(char));
+	ret->name = (char*)malloc((1+strlen(_name))*sizeof(char));
 	strcpy(ret->name, _name);
-	ret->type = (char*)malloc(1+strlen("Method")*sizeof(char));
+	ret->type = (char*)malloc((1+strlen("Method"))*sizeof(char));
 	strcpy(ret->type, "Method");
 	ret->activated = _activated;
 	ret->child = NULL;
@@ -205,9 +205,9 @@ table* addTable(table* tab, char* _name, char* _type, int _activated){
 
 void initTable(char* _name){
 	semanticTable = (table*)malloc(sizeof(table));
-	semanticTable->name = (char*)malloc(1+strlen(_name)*sizeof(char));
+	semanticTable->name = (char*)malloc((1+strlen(_name))*sizeof(char));
 	strcpy(semanticTable->name, _name);
-	semanticTable->type = (char*)malloc(1+strlen("Class")*sizeof(char));
+	semanticTable->type = (char*)malloc((1+strlen("Class"))*sizeof(char));
 	strcpy(semanticTable->type, "Class");
 	semanticTable->activated = 1;
 	semanticTable->child = NULL;
@@ -252,7 +252,7 @@ void addMethodDecl(table* tab, node* aux){
 	arr[i] = '\0';
 
 	char* tmp = (char*)malloc(50+(strlen("boolean")*strlen(arr))*sizeof(char));
-	char* _name = (char*)malloc(50+(strlen(tmp)+50)*sizeof(char));
+	char* _name = (char*)malloc(100+(strlen(tmp))*sizeof(char));
 	strcpy(_type,p2->value); //tipo de retorno
 	//strcpy(_name,p2->brother->value);
 	sprintf(_name,"%s",p2->brother->value);// nome da funçao
@@ -265,7 +265,7 @@ void addMethodDecl(table* tab, node* aux){
 		}
 		else{
 			if(p3!=NULL){
-				char* aux2 = (char*)malloc(strlen("boolean")*sizeof(char));
+				char* aux2 = (char*)malloc((strlen("boolean")+1)*sizeof(char));
 				if(p3->son->value!=NULL){
 					if(strcmp("Bool",p3->son->value)==0){
 						sprintf(aux2,"%s%s",lowerCase(p3->son->value),"ean");
@@ -279,10 +279,10 @@ void addMethodDecl(table* tab, node* aux){
 			}
 			//get parametros da funçao
 			for(p3=p3->brother; p3 != NULL; p3 = p3->brother){
-				char* tmp2 = (char*)malloc(strlen(p3->son->value)+strlen(tmp));
+				char* tmp2 = (char*)malloc(1+strlen(p3->son->value)+strlen(tmp));
 				if(p3->son->value!=NULL){
 					if(strcmp("Bool",p3->son->value)==0){
-						char* aux3 = (char*)malloc(strlen("boolean")*sizeof(char));
+						char* aux3 = (char*)malloc((strlen("boolean")+1)*sizeof(char));
 						sprintf(aux3,"%s%s",lowerCase(p3->son->value),"ean");
 						sprintf(tmp2,",%s",aux3);
 						free(aux3);
@@ -326,7 +326,7 @@ void addMethodDecl(table* tab, node* aux){
 			}
 			else{
 				if(p3!=NULL){
-					char* aux2 = (char*)malloc(strlen("boolean")*sizeof(char));
+					char* aux2 = (char*)malloc((1+strlen("boolean"))*sizeof(char));
 					if(strcmp("Bool",p3->son->value)==0){
 						sprintf(aux2,"%s%s",lowerCase(p3->son->value),"ean");
 
@@ -340,7 +340,7 @@ void addMethodDecl(table* tab, node* aux){
 					}
 				}
 				for(p3=p3->brother; p3 != NULL; p3 = p3->brother){
-					char* aux3 = (char*)malloc(strlen("boolean")*sizeof(char));
+					char* aux3 = (char*)malloc((strlen("boolean")+1)*sizeof(char));
 					if(strcmp("Bool",p3->son->value)==0){
 						sprintf(aux3,"%s%s",lowerCase(p3->son->value),"ean");
 
@@ -521,9 +521,10 @@ char* getIdTableType(char* str){
 void checkCall(node* aux){
 	//verificar se existe função
 	int c_params;
+	char* pop=NULL;
 	char* undef = myCat(NULL, "undef");
 	int n_func=0;
-	table* hold = semanticTable;
+	table* hold = semanticTable->brother;
 	aux->type_print = undef;
 	aux->son->type_print = undef;
 	if(count_method(aux->son->value)!=0){
@@ -533,7 +534,6 @@ void checkCall(node* aux){
 		if(n_func==1){
 
 			char* name=NULL;
-			char* pop=NULL;
 			//se só existe uma, verificar params
 			if(getIdParamType(aux->son->value) != NULL){
 				name= newStr(getIdParamType(aux->son->value));
@@ -596,83 +596,6 @@ void checkCall(node* aux){
 
 			else{
 
-				c_params=0;
-				//conta o numero de filho da call-1(numero de parametros)
-				for(node* s = aux->son->brother; s!=NULL; s=s->brother){
-					c_params++;
-				}
-				if(c_params>0){
-					//percorre todas as tabelas
-					int identica;
-					identica=0;
-					for(; hold; hold = hold->brother){
-						if(hold->activated){
-							int c = 0;
-							//int i;
-							//int c_params=0;
-							char **arr6 = NULL;
-							c = split(hold->name, '(', &arr6);
-							//verifica se o nome da tabela corresponde aa da nossa call
-							if(strcmp(arr6[0], aux->son->value)==0){ //se corresponde, decrementa o n_func
-								char* pop=NULL;
-								if(arr6[1]!=NULL){
-									pop = newStr2(arr6[1]);
-								}
-								int c2 = 0;
-								char **arr7 = NULL;
-
-								c2 = split(pop, ',', &arr7);
-								if(c_params == c2){
-									int flag=1;
-									int i;
-									i=0;
-									for(node* s = aux->son->brother; s!=NULL; s=s->brother){
-										if(s->type_print != NULL && arr7[i] != NULL ){
-											if(strcmp(s->type_print,arr7[i])==0){
-												i++;
-											}
-											else{
-												flag=0;
-												break;
-											}
-										}
-									}
-									if(flag==1){
-										sprintf(pop,"%s)", pop);
-										char *d = malloc (strlen (pop) + 2);
-										sprintf(d,"(%s",pop);
-										aux->son->type_print = myCat(NULL,d);
-										aux->type_print = myCat(NULL,getIdTableType(aux->son->value));
-									}
-
-								}
-
-							}
-
-						}
-					}
-
-				}/*
-				else{
-					for(; hold; hold = hold->brother){
-						int c3 = 0;
-						//int i;
-						//int c_params=0;
-						char **arr10 = NULL;
-						c3 = split(hold->name, '(', &arr10);
-						if(arr10[0]!=NULL && aux->son->value != NULL){
-							if(strcmp(arr10[0], aux->son->value)==0){
-								if(arr10[1]!=NULL){
-										if(strcmp(arr10[1],")")==0){
-											aux->son->type_print = myCat(NULL,"()");
-											aux->type_print = myCat(NULL,getIdTableType(aux->son->value));
-										}
-									}
-							}
-						}
-					}
-				}
-*/
 			}
 
 		}
@@ -687,10 +610,15 @@ void checkCall(node* aux){
 
 	char *newStr2(const char *string)
 	{
-		char* aux = strdup(string);
+
+		char* aux = NULL;
+		if(string!=NULL){
+			aux = strdup(string);
+		
 		if (aux[strlen(aux)-1] == ')')
-		aux[strlen(aux)-1]= '\0';
-		return strdup(aux);
+			aux[strlen(aux)-1]= '\0';
+		}
+		return aux;
 	}
 
 	int split (char *str, char c, char ***arr)
@@ -793,7 +721,7 @@ void checkCall(node* aux){
 
 		if(aux->type){
 			if(strcmp("Call", aux->type) == 0){
-				checkCall(aux);
+				//checkCall(aux);
 			}
 		}
 	}
