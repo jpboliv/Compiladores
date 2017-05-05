@@ -523,10 +523,11 @@ char* getIdTableType(char* str){
 void checkCall(node* aux){
 	//verificar se existe função
 	int c_params;
-
+	//table* aux_pop;
 	char* undef = myCat(NULL, "undef");
 	int n_func=0;
-
+	//char* save_point=NULL;
+	//int alternativ=0;
 	aux->type_print = undef;
 	aux->son->type_print = undef;
 	char* concatenate=NULL;
@@ -567,7 +568,6 @@ void checkCall(node* aux){
 								strcat(concatenate,"(");
 							for(child = hold->child; child; child = child->brother){
 							if(child->flag){
-								printf("entro aqui\n");
 								if( (strcmp(child->type,s2->type_print)==0 )|| ( (strcmp("double",child->type)==0) && (strcmp("int",s2->type_print)==0) )){
 									concatenate = (char*)realloc(concatenate,sizeof(char)*(strlen(concatenate)+strlen(child->type)+1));
 									strcat(concatenate,child->type);
@@ -641,22 +641,26 @@ void checkCall(node* aux){
 										}
 									}
 									if(flag_a==1){
+									alternativ++;
 									concatenate = (char*)realloc(concatenate,sizeof(char)*(strlen(concatenate)+strlen(")")+1));
 									strcat(concatenate,")");
-									aux->son->type_print = myCat(NULL,concatenate);
-									aux->type_print = myCat(NULL,hold->child->type);
-									return;
+									save_point = strdup(concatenate);
+									aux_pop = hold;
 									}
 								}
 							}
 						}
 					}
+					if(alternativ==1){
+							aux->son->type_print = myCat(NULL,save_point);
+							aux->type_print = myCat(NULL,aux_pop->child->type);
+							return;
+						}
 					
-					if(flag_a==0){//se nao encontrar o caso perfeito, vai procurar um alternativo
+					else{//se nao encontrar o caso perfeito, vai procurar um alternativo
 						int f_params;
 						int flag_a;
-						int alternativ;
-						char* save_point=NULL;
+						
 						table* hold = semanticTable->brother;
 						for(; hold; hold = hold->brother){
 							f_params=0;
@@ -691,9 +695,10 @@ void checkCall(node* aux){
 												}
 												else{
 													flag_a=0;
+													s2=s2->brother;
 													break;
 												}
-												s2=s2->brother;
+												
 											}
 										}
 										if(flag_a==1){
@@ -701,6 +706,7 @@ void checkCall(node* aux){
 											concatenate = (char*)realloc(concatenate,sizeof(char)*(strlen(concatenate)+strlen(")")+1));
 											strcat(concatenate,")");
 											save_point = strdup(concatenate);
+											break;
 										}
 									}
 								}
@@ -790,10 +796,10 @@ char* new_split(char* str, const char* delimeter){
 						child= child->brother;
 					}
 			}	
-		/*	
+			
 		for(son = aux->son; son != NULL; son = son->brother){
 			table_anotation_call(son);
-		}*/
+		}
 	}
 
 	void table_anotation_call(node* aux){
@@ -836,7 +842,7 @@ char* new_split(char* str, const char* delimeter){
 		char* swag=NULL;
 		for(child = semanticTable->child; child; child = child->brother){
 			if(str != NULL && child->name != NULL){
-				if(strcmp(str, child->name) == 0 && child->param==NULL)
+				if(strcmp(str, child->name) == 0)
 					swag = child->type;
 			}
 		}
