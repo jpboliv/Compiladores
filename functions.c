@@ -144,6 +144,7 @@ symbol* addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag
 		hold = hold->brother;
 	}
 	hold->brother = NULL;
+	hold->flag_declared = 0;
 	hold->name = (char*)malloc((1+strlen(_name))*sizeof(char));
 	strcpy(hold->name, _name);
 	hold->type = (char*)malloc((1+strlen(_type))*sizeof(char));
@@ -151,6 +152,7 @@ symbol* addSymbol(table* aux, char* _name, char* _type, char* _param,char* _flag
 	if(_param){
 		hold->param = (char*)malloc((1+strlen(_param))*sizeof(char));
 		strcpy(hold->param, _param);
+		hold->flag_declared = 1;
 	}else
 	hold->param = NULL;
 	if(_flag){
@@ -238,6 +240,8 @@ void addMethodDecl(table* tab, node* aux){
 	p=aux->son; //method header
 	p2=p->son; //type da funçao
 	p3 = p2->brother->brother->son; // params decl
+	char* tmp ;
+	char* _name; 
 
 
 	//--------------------------------------BEGIN-METHODHEADER---------------------------//
@@ -251,8 +255,8 @@ void addMethodDecl(table* tab, node* aux){
 	}
 	arr[i] = '\0';
 
-	char* tmp = (char*)malloc(50+(strlen("boolean")*strlen(arr))*sizeof(char));
-	char* _name = (char*)malloc(50+(strlen(tmp)+50)*sizeof(char));
+	tmp = (char*)malloc(50+(strlen("boolean")*strlen(arr))*sizeof(char));
+	_name = (char*)malloc(50+(strlen("boolean")*strlen(arr)+50)*sizeof(char));
 	strcpy(_type,p2->value); //tipo de retorno
 	//strcpy(_name,p2->brother->value);
 	sprintf(_name,"%s",p2->brother->value);// nome da funçao
@@ -397,6 +401,7 @@ void table_anotation(node *aux,table* tab){
 	node* hold;
 	for(hold = aux->son; hold; hold = hold->brother){
 		if(strcmp("VarDecl",hold->type)==0){
+			check_declared(tab,hold->son->brother->value);
 			continue;
 		}
 		else{
@@ -410,7 +415,7 @@ void table_anotation(node *aux,table* tab){
 			string = getIdType(aux->value, tab);
 
 			if(string){
-				aux->type_print = myCat(NULL, getIdType(aux->value, tab));
+				aux->type_print = myCat(NULL, new_getIdType(aux->value, tab));
 			}
 			else{
 				aux->type_print = undef; // ERROR
@@ -499,6 +504,8 @@ int count_method(char* str){
 	}
 	return count;
 }
+
+
 /*
 char* getIdTableType(char* str){
 	table* hold = semanticTable;
@@ -784,6 +791,7 @@ char* new_split(char* str, const char* delimeter){
 			child = tab->brother;
 			for(hello = aux->son; hello != NULL; hello = hello->brother){
 					if(strcmp(hello->value,"MethodDecl")==0){
+						check_paramdecl(child, hello->son->son->brother->brother);
 						noob = hello->son->brother;
 						table_anotation(noob, child);
 						child= child->brother;
@@ -830,6 +838,28 @@ char* new_split(char* str, const char* delimeter){
 		return NULL;
 	}
 
+	char* new_getIdType(char* str, table* tab){
+		symbol* child;
+		char* swag=NULL;
+		for(child = semanticTable->child; child; child = child->brother){
+			if(str != NULL && child->name != NULL){
+				if(strcmp(str, child->name) == 0 && child->param==NULL)
+					swag = child->type;
+			}
+		}
+		for(child = tab->child; child; child = child->brother){
+			if(str != NULL && child->name != NULL){
+				if(strcmp(str, child->name) == 0 && child->flag_declared==1 )
+					swag = child->type;
+			}
+		}
+		if(swag!=NULL){
+			return swag;
+		}
+		return NULL;
+	}
+
+
 	char* getIdType(char* str, table* tab){
 		symbol* child;
 		for(child = tab->child; child; child = child->brother){
@@ -845,6 +875,24 @@ char* new_split(char* str, const char* delimeter){
 			}
 		}
 		return NULL;
+	}
+
+	void check_declared(table* tab, char* str){
+		symbol* var;
+		for(var=tab->child; var; var=var->brother){
+			if(var->name != NULL){
+				if(strcmp(str, var->name)==0){
+					var->flag_declared=1;
+				}
+			}
+		}
+	}
+
+	void check_paramdecl(table* tab, node* no){
+		node* hello;
+		for(hello= no->son; hello!=NULL; hello= hello->brother){
+			check_declared(tab, hello->son->brother->value);
+		}
 	}
 
 	char* myCat(char* str1, char* str2){

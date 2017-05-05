@@ -21,6 +21,7 @@ typedef struct symbol{
 	char* type;
 	char* flag;
 	struct symbol* brother;
+	int flag_declared;
 }symbol;
 
 
@@ -56,6 +57,9 @@ char* getIdParamType(char* str);
 char* lowerCase(char* str);
 int count_method(char* str);
 void checkCall(node* aux);
+void check_declared(table* tab, char* str);
+char* new_getIdType(char* str, table* tab);
+void check_paramdecl(table* tab, node* no);
 //char* getIdTableType(char* str);
 char* new_split(char* str, const char* delimeter);
 char *newStr(const char *string);
