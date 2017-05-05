@@ -491,6 +491,11 @@ void table_anotation(node *aux,table* tab){
 				}
 			}
 		}
+		else if(strcmp("Call",aux->value)==0){
+			string= myCat(NULL,getIdType(aux->son->value,tab));
+			if(string)
+				aux->type_print = myCat(NULL,getIdType(aux->son->value,tab));
+		}
 	}
 }
 //função para contar metodos c o mesmo nome, retorna 0 senão existir

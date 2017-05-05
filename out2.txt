@@ -1,188 +1,152 @@
+Line 3, col 36: Cannot find symbol b
+Line 3, col 35: Operator + cannot be applied to types int, undef
+Line 3, col 38: Cannot find symbol c
+Line 3, col 37: Operator + cannot be applied to types undef, undef
+Line 3, col 39: Operator + cannot be applied to types undef, int
+Line 3, col 42: Cannot find symbol b
+Line 3, col 41: Operator + cannot be applied to types undef, undef
+Line 3, col 43: Operator + cannot be applied to types undef, int
+Line 3, col 46: Cannot find symbol c
+Line 3, col 45: Operator - cannot be applied to types undef, undef
+Line 3, col 48: Cannot find symbol d
+Line 3, col 50: Cannot find symbol e
+Line 3, col 49: Operator * cannot be applied to types undef, undef
+Line 3, col 47: Operator + cannot be applied to types undef, undef
+Line 3, col 52: Cannot find symbol f
+Line 3, col 54: Cannot find symbol e
+Line 3, col 53: Operator / cannot be applied to types undef, undef
+Line 3, col 51: Operator + cannot be applied to types undef, undef
+Line 3, col 55: Operator + cannot be applied to types undef, int
+Line 3, col 59: Cannot find symbol r
+Line 3, col 61: Cannot find symbol r
+Line 3, col 60: Operator + cannot be applied to types undef, undef
+Line 3, col 57: Operator && cannot be applied to types undef, undef
+Line 3, col 64: Cannot find symbol n
+Line 3, col 65: Operator + cannot be applied to types undef, int
+Line 3, col 68: Operator < cannot be applied to types undef, int
+Line 3, col 74: Operator <= cannot be applied to types boolean, int
+Line 3, col 81: Operator > cannot be applied to types boolean, int
+Line 3, col 86: Operator >= cannot be applied to types boolean, int
+Line 3, col 90: Operator == cannot be applied to types boolean, int
+Line 3, col 116: Cannot find symbol b
+Line 3, col 115: Operator + cannot be applied to types int, undef
+Line 3, col 109: Cannot find symbol main(undef)
+Line 3, col 108: Operator + cannot be applied to types int, undef
+Line 3, col 95: Operator != cannot be applied to types boolean, undef
+Line 3, col 127: Operator + cannot be applied to types boolean, double
+Line 3, col 137: Operator + cannot be applied to types undef, int
+Line 3, col 139: Operator + cannot be applied to types undef, int
+Line 3, col 144: Cannot find symbol s
+Line 3, col 142: Operator + cannot be applied to types undef, boolean
+Line 3, col 146: Cannot find symbol is
+Line 3, col 148: Operator .length cannot be applied to type undef
+Line 3, col 145: Operator + cannot be applied to types undef, int
+Line 3, col 29: Cannot find symbol main(boolean,int,undef)
+Line 3, col 10: Operator Integer.parseInt cannot be applied to type int, undef
 ===== Class gcd2 Symbol Table =====
-a	()	int
-meow	()	int
-meow	(double)	void
-b	(int,double)	void
-b	()	double
-b	(double,int)	void
-b	(double,double)	void
-b	(int,int)	boolean
-b	(boolean,boolean,boolean,boolean)	int
-
-===== Method a() Symbol Table =====
-return		int
+b	()	int
 a		int
-b		double
-d		boolean
-
-===== Method meow() Symbol Table =====
-return		int
-
-===== Method meow(double) Symbol Table =====
-return		void
-a		double	param
-lol		int
-
-===== Method b(int,double) Symbol Table =====
-return		void
-b		int	param
-c		double	param
 
 ===== Method b() Symbol Table =====
-return		double
-
-===== Method b(double,int) Symbol Table =====
-return		void
-b		double	param
-c		int	param
-
-===== Method b(double,double) Symbol Table =====
-return		void
-b		double	param
-c		double	param
-
-===== Method b(int,int) Symbol Table =====
-return		boolean
-a		int	param
-b		int	param
-
-===== Method b(boolean,boolean,boolean,boolean) Symbol Table =====
 return		int
-asd		boolean	param
-b		boolean	param
-d		boolean	param
-o		boolean	param
-a		int
 
 Program
 ..Id(gcd2)
 ..MethodDecl
 ....MethodHeader
 ......Int
-......Id(a)
-......MethodParams
-....MethodBody
-......VarDecl
-........Int
-........Id(a)
-......VarDecl
-........Double
-........Id(b)
-......VarDecl
-........Bool
-........Id(d)
-......Call - int
-........Id(b) - (boolean,boolean,boolean,boolean)
-........Id(d) - boolean
-........Id(d) - boolean
-........Id(d) - boolean
-........Id(d) - boolean
-......Call - void
-........Id(meow) - (double)
-........Id(a) - int
-..MethodDecl
-....MethodHeader
-......Int
-......Id(meow)
-......MethodParams
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Void
-......Id(meow)
-......MethodParams
-........ParamDecl
-..........Double
-..........Id(a)
-....MethodBody
-......VarDecl
-........Int
-........Id(lol)
-..MethodDecl
-....MethodHeader
-......Void
-......Id(b)
-......MethodParams
-........ParamDecl
-..........Int
-..........Id(b)
-........ParamDecl
-..........Double
-..........Id(c)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Double
 ......Id(b)
 ......MethodParams
 ....MethodBody
-..MethodDecl
-....MethodHeader
-......Void
-......Id(b)
-......MethodParams
-........ParamDecl
-..........Double
-..........Id(b)
-........ParamDecl
-..........Int
-..........Id(c)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Void
-......Id(b)
-......MethodParams
-........ParamDecl
-..........Double
-..........Id(b)
-........ParamDecl
-..........Double
-..........Id(c)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Bool
-......Id(b)
-......MethodParams
-........ParamDecl
-..........Int
-..........Id(a)
-........ParamDecl
-..........Int
-..........Id(b)
-....MethodBody
-..MethodDecl
-....MethodHeader
-......Int
-......Id(b)
-......MethodParams
-........ParamDecl
-..........Bool
-..........Id(asd)
-........ParamDecl
-..........Bool
-..........Id(b)
-........ParamDecl
-..........Bool
-..........Id(d)
-........ParamDecl
-..........Bool
-..........Id(o)
-....MethodBody
-......VarDecl
-........Int
-........Id(a)
-......Call - int
-........Id(b) - (boolean,boolean,boolean,boolean)
-........Id(d) - boolean
-........Id(d) - boolean
-........Id(d) - boolean
-........Id(d) - boolean
-......Call - void
-........Id(meow) - (double)
-........Id(a) - int
-......Call - int
-........Id(a) - ()
-......Call - double
-........Id(b) - ()
+......Return
+........Assign - int
+..........Id(a) - int
+..........ParseArgs - int
+............Id(a) - int
+............Call - undef
+..............Id(main) - undef
+..............Or - boolean
+................And - boolean
+..................Add - undef
+....................Add - undef
+......................Add - undef
+........................Sub - undef
+..........................Add - undef
+............................Add - undef
+..............................Add - undef
+................................Add - undef
+..................................Add - undef
+....................................Id(a) - int
+....................................Id(b) - undef
+..................................Id(c) - undef
+................................Id(a) - int
+..............................Id(b) - undef
+............................Id(a) - int
+..........................Id(c) - undef
+........................Mul - undef
+..........................Id(d) - undef
+..........................Id(e) - undef
+......................Div - undef
+........................Id(f) - undef
+........................Id(e) - undef
+....................Id(a) - int
+..................Add - undef
+....................Id(r) - undef
+....................Id(r) - undef
+................Neq - boolean
+..................Eq - boolean
+....................Geq - boolean
+......................Gt - boolean
+........................Leq - boolean
+..........................Lt - boolean
+............................Add - undef
+..............................Id(n) - undef
+..............................DecLit(10) - int
+............................Add - int
+..............................DecLit(50) - int
+..............................DecLit(10) - int
+..........................Add - int
+............................DecLit(40) - int
+............................DecLit(20) - int
+........................Add - int
+..........................DecLit(9) - int
+..........................DecLit(20) - int
+......................DecLit(92) - int
+....................Add - int
+......................DecLit(1) - int
+......................DecLit(2) - int
+..................Add - undef
+....................Add - int
+......................Add - int
+........................DecLit(1) - int
+........................Mod - int
+..........................DecLit(5) - int
+..........................DecLit(5) - int
+......................Add - int
+........................DecLit(1) - int
+........................DecLit(1) - int
+....................Call - undef
+......................Id(main) - undef
+......................Add - undef
+........................Id(a) - int
+........................Id(b) - undef
+..............Assign - int
+................Id(a) - int
+................DecLit(0) - int
+..............Add - undef
+................Add - undef
+..................Add - undef
+....................Add - undef
+......................Add - undef
+........................BoolLit(true) - boolean
+........................RealLit(20.32e+23) - double
+......................DecLit(2) - int
+....................Minus - int
+......................DecLit(4) - int
+..................Not - boolean
+....................Id(s) - undef
+................Length - int
+..................Id(is) - undef
+..FieldDecl
+....Int
+....Id(a)
