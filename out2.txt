@@ -1,4 +1,4 @@
-entro aqui===== Class gcd2 Symbol Table =====
+===== Class gcd2 Symbol Table =====
 a	()	int
 meow	()	int
 meow	(double)	void
@@ -77,8 +77,8 @@ Program
 ........Id(d) - boolean
 ........Id(d) - boolean
 ........Id(d) - boolean
-......Call - undef
-........Id(meow) - undef
+......Call - void
+........Id(meow) - (double)
 ........Id(a) - int
 ..MethodDecl
 ....MethodHeader
@@ -179,8 +179,8 @@ Program
 ........Id(d) - boolean
 ........Id(d) - boolean
 ........Id(d) - boolean
-......Call - undef
-........Id(meow) - undef
+......Call - void
+........Id(meow) - (double)
 ........Id(a) - int
 ......Call - int
 ........Id(a) - ()

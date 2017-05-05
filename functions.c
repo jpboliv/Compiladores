@@ -523,31 +523,31 @@ char* getIdTableType(char* str){
 void checkCall(node* aux){
 	//verificar se existe função
 	int c_params;
-	//char* pop=NULL;
+
 	char* undef = myCat(NULL, "undef");
 	int n_func=0;
-	//table* hold = semanticTable->brother;
+
 	aux->type_print = undef;
 	aux->son->type_print = undef;
-	//char* concatenate = (char*)malloc(sizeof(char)* (10) );
+	char* concatenate=NULL;
 	if(count_method(aux->son->value)!=0){
-
+		
 
 		n_func=count_method(aux->son->value);
-		if(n_func==1){ //se so houver uma funcao declarada com o nome da call;
+		if(n_func==1){ 
 
-			//char* name=NULL;
-			//se só existe uma, verificar params
 			
 			c_params=0;
 			for(node* s = aux->son->brother; s!=NULL; s=s->brother){ //contar numero de paramettros da funçao que faço call
 				c_params++;
 			}
-			//char* aux_p = new_split(,"(");
-			//fazer parse do name, saber o numero de elementos , e ter os elementos num array
-			table* hold = semanticTable;
-			int f_params =0;
+			
+
+			table* hold = semanticTable->brother;
+			
 			for(; hold; hold = hold->brother){
+				int f_params =0;
+
 				if(hold->activated){
 					char* c=NULL;
 					const char *aspa = "(";
@@ -562,10 +562,19 @@ void checkCall(node* aux){
 							}
 						}
 						if(f_params == c_params){
+							
+							concatenate = (char*)malloc(sizeof(char)* (strlen("(")+1) );
+								strcat(concatenate,"(");
 							for(child = hold->child; child; child = child->brother){
 							if(child->flag){
-								if(strcmp(child->type,s2->type_print)==0 || ( (strcmp("int",child->type)==0) && (strcmp("boolean",s2->type_print)==0) )){
-
+								printf("entro aqui\n");
+								if( (strcmp(child->type,s2->type_print)==0 )|| ( (strcmp("double",child->type)==0) && (strcmp("int",s2->type_print)==0) )){
+									concatenate = (char*)realloc(concatenate,sizeof(char)*(strlen(concatenate)+strlen(child->type)+1));
+									strcat(concatenate,child->type);
+									f_params--;
+									if(f_params>0){
+										strcat(concatenate,",");
+									}
 								}
 								else{
 									break;
@@ -573,69 +582,138 @@ void checkCall(node* aux){
 									s2=s2->brother;
 								}
 							}
-							//aux->son->type_print = myCat(NULL,);
-							//aux->type_print = myCat(NULL,getIdTableType(aux->son->value));
+							concatenate = (char*)realloc(concatenate,sizeof(char)*(strlen(concatenate)+strlen(")")+1));
+							strcat(concatenate,")");
+							aux->son->type_print = myCat(NULL,concatenate);
+							aux->type_print = myCat(NULL,hold->child->type);
+							return;
 						}
 
 					}
 					
 				}
 			}
-			/*
-			if(c_params>0){ //se o numero de parametros for maior que 0
-				if(c_params == c){ // se o numro de parametros da call for igual ao numero de parametros da funçao que tem o mesmo nome
-					int i;
-					i=0;
-					int flag_aux=0;
-					for(node* s = aux->son->brother; s!=NULL; s=s->brother){ // percorrer os parametros da call e comparar com os que vêm do parse
-						if(s->type_print !=NULL && arr3[1]!=NULL){
-							//se forem do mesmo tipo, OU se a variavel da call seja double e a da funçao declara é int
-							//exemplo main(int a) --> call main(2.0);
-							if(strcmp(s->type_print,arr3[i])==0 || ( (strcmp("int",arr3[i])==0) && (strcmp("boolean",s->type_print)==0) )  ){
-								i++;
-							}
-							else{ //entra aqui, significa que n ha funçao com o mesmo nome e com parametros iguais
-								aux->son->type_print = undef;
-								aux->type_print = undef;
-								return;
-							}
-						}
-					}
-
-					aux->son->type_print = myCat(NULL,pop);
-					aux->type_print = myCat(NULL,getIdTableType(aux->son->value));
-
-				}
 			}
-				else{ // se o numero de parametros for menor que 0 
+			/*
+			else{
+				c_params=0;
+				for(node* s = aux->son->brother; s!=NULL; s=s->brother){ //contar numero de paramettros da funçao que faço call
+				c_params++;
+				}	
+				int f_params;
+					int flag_a;
+					table* hold = semanticTable->brother;
 					for(; hold; hold = hold->brother){
-						// fazer parse do nome
-
-
-						//verificar se o nome é igual ao nome da call->son
-						int c3 = 0;
-						//int i;
-						//int c_params=0;
-						char **arr5 = NULL;
-						c3 = split(hold->name, '(', &arr5);
-						if(arr5[0]!=NULL && aux->son->value != NULL){
-							if(strcmp(arr5[0], aux->son->value)==0){
-								printf("estou mesomqu:%s\n",arr5[1]);
-								if(arr5[1]!=NULL){
-										if(strcmp(arr5[1],")")==0){
-											aux->son->type_print = myCat(NULL,"()");
-											aux->type_print = myCat(NULL,getIdTableType(aux->son->value));
+						f_params=0;
+						concatenate = (char*)malloc(sizeof(char)* (strlen("(")+1) );
+						strcat(concatenate,"(");
+						flag_a = 1;
+						if(hold->activated){
+								char* c=NULL;
+							const char *aspa = "(";
+							char* aux_name = strdup(hold->name);
+							c = new_split(aux_name, aspa);
+							symbol* child;
+							if(strcmp(c,aux->son->value)==0){
+								node* s2 = aux->son->brother;
+								for(child = hold->child; child; child = child->brother){
+									if(child->flag){
+										f_params++;
+									}
+								}
+								if(f_params == c_params){
+									
+									for(child = hold->child; child; child = child->brother){
+										if(child->flag){
+											if(strcmp(child->type,s2->type_print)==0){
+												concatenate = (char*)realloc(concatenate,sizeof(char)*(strlen(concatenate)+strlen(child->type)+2));
+												strcat(concatenate,child->type);
+												f_params--;
+												if(f_params>0){
+													strcat(concatenate,",");
+												}	
+											}
+											else{
+												flag_a=0;
+												break;
+											}
+											s2=s2->brother;
 										}
 									}
+									if(flag_a==1){
+									concatenate = (char*)realloc(concatenate,sizeof(char)*(strlen(concatenate)+strlen(")")+1));
+									strcat(concatenate,")");
+									aux->son->type_print = myCat(NULL,concatenate);
+									aux->type_print = myCat(NULL,hold->child->type);
+									return;
+									}
+								}
 							}
 						}
 					}
-				}*/
-			}
-
-			else{
-
-			}
+					
+					if(flag_a==0){//se nao encontrar o caso perfeito, vai procurar um alternativo
+						int f_params;
+						int flag_a;
+						int alternativ;
+						char* save_point=NULL;
+						table* hold = semanticTable->brother;
+						for(; hold; hold = hold->brother){
+							f_params=0;
+							alternativ=0;
+							concatenate = (char*)malloc(sizeof(char)* (strlen("(")+1) );
+							strcat(concatenate,"(");
+							flag_a = 1;
+							if(hold->activated){
+									char* c=NULL;
+								const char *aspa = "(";
+								char* aux_name = strdup(hold->name);
+								c = new_split(aux_name, aspa);
+								symbol* child;
+								if(strcmp(c,aux->son->value)==0){
+									node* s2 = aux->son->brother;
+									for(child = hold->child; child; child = child->brother){
+										if(child->flag){
+											f_params++;
+										}
+									}
+									if(f_params == c_params){
+										
+										for(child = hold->child; child; child = child->brother){
+											if(child->flag){
+												if(strcmp(child->type,s2->type_print)==0 || ( (strcmp("double",child->type)==0) && (strcmp("int",s2->type_print)==0) )){
+													concatenate = (char*)realloc(concatenate,sizeof(char)*(strlen(concatenate)+strlen(child->type)+2));
+													strcat(concatenate,child->type);
+													f_params--;
+													if(f_params>0){
+														strcat(concatenate,",");
+													}	
+												}
+												else{
+													flag_a=0;
+													break;
+												}
+												s2=s2->brother;
+											}
+										}
+										if(flag_a==1){
+											alternativ++;
+											concatenate = (char*)realloc(concatenate,sizeof(char)*(strlen(concatenate)+strlen(")")+1));
+											strcat(concatenate,")");
+											save_point = strdup(concatenate);
+										}
+									}
+								}
+							}
+						}
+						if(alternativ==1){
+							aux->son->type_print = myCat(NULL,save_point);
+							aux->type_print = myCat(NULL,hold->child->type);
+							return;
+						}
+				}
+			
+			}*/
 
 		}
 	}
@@ -710,10 +788,8 @@ char* new_split(char* str, const char* delimeter){
 						table_anotation(noob, child);
 						child= child->brother;
 					}
-			}
-	
-		
-			/*
+			}	
+		/*	
 		for(son = aux->son; son != NULL; son = son->brother){
 			table_anotation_call(son);
 		}*/
