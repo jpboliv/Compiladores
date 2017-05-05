@@ -445,20 +445,8 @@ void table_anotation(node *aux,table* tab){
 			aux->type_print = myCat(NULL,string);
 		}
 		else if(strcmp("Assign",aux->value)==0){
-			if(aux->son->brother->type_print!=NULL){
-				if(strcmp(aux->son->type_print,"undef")==0 || strcmp(aux->son->brother->type_print,"undef")==0){
-					aux->type_print = undef;
-				}
-				else if(strcmp(aux->son->type_print,"boolean")==0 || strcmp(aux->son->brother->type_print,"boolean")==0){
-					aux->type_print = undef;
-				}
-				else{
-					aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
-				}
-			}
-			else{
-				aux->type_print = myCat(NULL, getIdType(aux->son->value, tab));
-			}
+				aux->type_print = myCat(NULL, aux->son->type_print);
+			
 		}
 		else if(strcmp("Add",aux->value)==0 || strcmp("Sub",aux->value)==0 || strcmp("Div",aux->value)==0 || strcmp("Mul",aux->value)==0 || strcmp("Mod",aux->value)==0){
 			if(aux->son->type_print!=NULL){
