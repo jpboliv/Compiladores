@@ -1,5 +1,4 @@
 # Compiladores
-Compiladores 2017
+College project - Compilers 2017
 
-
-LETS MAKE COMPILADORES GREAT AGAIN \o/
+Finished mini Java compiler.
